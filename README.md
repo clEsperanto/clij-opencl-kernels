@@ -43,6 +43,7 @@ The following list of placeholders are used at the moment:
 <a href="https://github.com/clij/clij-clearcl/blob/master/src/main/java/net/haesleinhuepf/clij/clearcl/ocllib/preamble/preamble.cl#L355">clij_convert_float_sat</a>
 </pre>
 </td>
+<td rowspan="2">Convert any number to a given type.</td>
 </tr>
 <tr>
 <td><pre>CONVERT_DTYPE_OUT</pre></td>
@@ -57,6 +58,7 @@ __global short*
 __global ushort*
 __global float*
 </pre></td>
+<td>Two dimensional input image type definition</td>
 </tr>
 <tr>
 <td><pre>DTYPE_IMAGE_IN_3D</pre></td>
@@ -68,6 +70,7 @@ __global short*
 __global ushort*
 __global float*
 </pre></td>
+<td>Three dimensional input image type definition</td>
 </tr>
 <tr>
 <td><pre>DTYPE_IMAGE_OUT_2D</pre></td>
@@ -79,6 +82,7 @@ __global short*
 __global ushort*
 __global float*
 </pre></td>
+<td>Two dimensional output image type definition</td>
 </tr>
 <tr>
 <td><pre>DTYPE_IMAGE_OUT_3D</pre></td>
@@ -90,18 +94,22 @@ __global short*
 __global ushort*
 __global float*
 </pre></td>
+<td>Three dimensional output image type definition</td>
 </tr>
 <tr>
 <td><pre>GET_IMAGE_DEPTH</pre></td>
 <td>constant number</td>
+<td>Image size in Z</td>
 </tr>
 <tr>
 <td><pre>GET_IMAGE_HEIGHT</pre></td>
 <td>constant number</td>
+<td>Image size in Y</td>
 </tr>
 <tr>
 <td><pre>GET_IMAGE_WIDTH</pre></td>
 <td>constant number</td>
+<td>Image size in X</td>
 </tr>
 <tr>
 <td><pre>READ_IMAGE_2D</pre></td>
@@ -114,6 +122,7 @@ __global float*
 <a href="https://github.com/clij/clij-clearcl/blob/master/src/main/java/net/haesleinhuepf/clij/clearcl/ocllib/preamble/preamble.cl#L215">read_buffer2dui</a>
 <a href="https://github.com/clij/clij-clearcl/blob/master/src/main/java/net/haesleinhuepf/clij/clearcl/ocllib/preamble/preamble.cl#L231">read_buffer2df</a>
 </pre></td>
+<td>Read pixel intensity from a given position</td>
 </tr>
 <tr>
 <td><pre>READ_IMAGE_3D</pre></td>
@@ -126,6 +135,7 @@ __global float*
 <a href="https://github.com/clij/clij-clearcl/blob/master/src/main/java/net/haesleinhuepf/clij/clearcl/ocllib/preamble/preamble.cl#L86">read_buffer3dui</a>
 <a href="https://github.com/clij/clij-clearcl/blob/master/src/main/java/net/haesleinhuepf/clij/clearcl/ocllib/preamble/preamble.cl#L104">read_buffer3df</a>
 </pre></td>
+<td>Read pixel intensity from a given position</td>
 </tr>
 <tr>
 <td><pre>WRITE_IMAGE_2D</pre></td>
@@ -138,6 +148,7 @@ __global float*
 <a href="https://github.com/clij/clij-clearcl/blob/master/src/main/java/net/haesleinhuepf/clij/clearcl/ocllib/preamble/preamble.cl#L274">write_buffer2dui</a>
 <a href="https://github.com/clij/clij-clearcl/blob/master/src/main/java/net/haesleinhuepf/clij/clearcl/ocllib/preamble/preamble.cl#L283">write_buffer2df</a>
 </pre></td>
+<td>Write pixel intensity to a given position</td>
 </tr>
 <tr>
 <td><pre>WRITE_IMAGE_3D</pre></td>
@@ -150,6 +161,7 @@ __global float*
 <a href="https://github.com/clij/clij-clearcl/blob/master/src/main/java/net/haesleinhuepf/clij/clearcl/ocllib/preamble/preamble.cl#L149">write_buffer3dui</a>
 <a href="https://github.com/clij/clij-clearcl/blob/master/src/main/java/net/haesleinhuepf/clij/clearcl/ocllib/preamble/preamble.cl#L158">write_buffer3df</a>
 </pre></td>
+<td>Write pixel intensity to a given position</td>
 </tr>
 
 </table>
@@ -161,6 +173,7 @@ be release in summer 2020.
 * Some of the placeholders represent image size in x/y/z. This results in performance drop in case many images of 
 different size are processed as individual kernels need to be implemented. We have this in mind for the summer 2020 
 update of the OpenCL-dialect.
+* Image dimensionality is limited to three dimensions.
 
 ## Deprecation note
 The opencl-kernels presented here will be replaced by Summer 2020. Background

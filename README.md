@@ -97,6 +97,20 @@ __global float*
 <td>Three dimensional output image type definition</td>
 </tr>
 <tr>
+<td><pre>DTYPE_IN</pre></td>
+<td rowspan="2"><pre>
+char
+uchar
+short
+ushort
+float
+</pre></td>
+<td rowspan="2">Pixel type definition</td>
+</tr>
+<tr>
+<td><pre>DTYPE_OUT</pre></td>
+</tr>
+<tr>
 <td><pre>GET_IMAGE_DEPTH</pre></td>
 <td>constant number</td>
 <td>Image size in Z</td>

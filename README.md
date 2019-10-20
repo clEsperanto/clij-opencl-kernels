@@ -18,12 +18,12 @@ Florian Jug, Eugene W Myers.
 OpenCL offers several pixel types, such as `uint8`, `unit16` and `float`. 
 Theoretically, one has to write OpenCL-kernels specifically for given input- and output-images, such as a kernel for 
 adding images of type `float` resulting in a `float` image and a kernel for adding image of type `uint8` resulting in 
-an image of `type` float. Furthermore, OpenCL defines images and buffers. However, as both are arrays of pixel 
-intensities in memory, we wanted to access them in a unified way. As this results in a ridiculous large number of individual kernel implementations, we used
+an image of type `float`. Furthermore, OpenCL defines images and buffers. However, as both are arrays of pixel 
+intensities in memory, we wanted to access them in a unified way. As this would result in a ridiculous large number of individual kernel implementations, we used
 a dialect where placeholders such as `DTYPE_OUT` represent the pixel type of the output image.
 
 ## List of placeholders
-The following list of placeholders are use at the moment:
+The following list of placeholders are used at the moment:
 <table border="1">
 
 <tr>

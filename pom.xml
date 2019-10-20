@@ -92,7 +92,7 @@
 		<repository>
 			<id>bintray-haesleinhuepf-snapshots</id>
 			<name>bintray-snapshots</name>
-			<url>https://api.bintray.com/maven/haesleinhuepf/clij/clij-core/;publish=1</url>
+			<url>https://api.bintray.com/maven/haesleinhuepf/clij/clij-opencl-kernels/;publish=1</url>
 		</repository>
 	</distributionManagement>
 </project>

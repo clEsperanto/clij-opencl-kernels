@@ -5,7 +5,7 @@
 //default xorfractal u =0f
 
 
-__kernel void xorfractal  (__write_only DTYPE_IMAGE_OUT_3D dst, 
+__kernel void xorfractal  (DTYPE_IMAGE_OUT_3D dst, 
                                         int       dx, 
                                         int       dy, 
                                         float     u 
@@ -24,7 +24,7 @@ __kernel void xorfractal  (__write_only DTYPE_IMAGE_OUT_3D dst,
 //default xorsphere cy=0i
 //default xorsphere cz=0i
 //default xorsphere r =80f
-__kernel void xorsphere   (__write_only DTYPE_IMAGE_OUT_3D dst, 
+__kernel void xorsphere   (DTYPE_IMAGE_OUT_3D dst, 
                                         int       cx, 
                                         int       cy,
                                         int       cz,  
@@ -58,7 +58,7 @@ __kernel void xorsphere   (__write_only DTYPE_IMAGE_OUT_3D dst,
 //default sphere cy=0i
 //default sphere cz=0i
 //default sphere r =80f
-__kernel void sphere   (__write_only DTYPE_IMAGE_OUT_3D dst, 
+__kernel void sphere   (DTYPE_IMAGE_OUT_3D dst, 
                                         int       cx, 
                                         int       cy,
                                         int       cz,  
@@ -92,7 +92,7 @@ __kernel void sphere   (__write_only DTYPE_IMAGE_OUT_3D dst,
 //default aline c=0i
 //default aline d=1i
 //default aline r=0.1f
-__kernel void aline   (__write_only DTYPE_IMAGE_OUT_3D dst, 
+__kernel void aline   (DTYPE_IMAGE_OUT_3D dst, 
                                    int       a, 
                                    int       b,
                                    int       c,

@@ -1,5 +1,5 @@
-Copyright 2019 Robert Haase, Max Planck Institute for Molecular Cell Biology 
-and Genetics, Dresden
+Copyright 2019 Robert Haase, Nico Stuurman, Max Planck Institute for Molecular Cell Biology
+and Genetics Dresden, Regents of the Univeristy of California
 
 Redistribution and use in source and binary forms, with or without 
 modification, are permitted provided that the following conditions are met:

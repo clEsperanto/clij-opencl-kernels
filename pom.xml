@@ -8,13 +8,13 @@
 	<parent>
 		<groupId>net.haesleinhuepf</groupId>
 		<artifactId>clij-parent-pom</artifactId>
-		<version>1.4.0</version>
+		<version>1.4.1</version>
 		<relativePath />
 	</parent>
 
 	<groupId>net.haesleinhuepf</groupId>
 	<artifactId>clij-opencl-kernels</artifactId>
-	<version>1.4.0</version>
+	<version>1.4.1</version>
 
 	<name>clij-opencl-kernels</name>
 	<description>clij-opencl-kernels</description>
@@ -50,7 +50,7 @@
 	</developers>
 	<contributors>
 		<contributor>
-			<name>none</name>
+			<name>Nico Stuurman</name>
 		</contributor>
 	</contributors>
 
@@ -78,7 +78,7 @@
 	<properties>
 		<package-name>net.haesleinhuepf</package-name>
 		<license.licenseName>bsd_3</license.licenseName>
-		<license.copyrightOwners>Robert Haase, MPI CBG</license.copyrightOwners>
+		<license.copyrightOwners>Robert Haase, Nico Stuurman, MPI CBG, Regents of the Univeristy of California</license.copyrightOwners>
 		<imagej.app.directory>C:/programs/fiji-win64/Fiji.app/</imagej.app.directory>
 	</properties>
 	<repositories>

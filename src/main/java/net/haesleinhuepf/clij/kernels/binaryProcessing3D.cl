@@ -94,10 +94,10 @@ __kernel void erode_box_neighborhood_3d(DTYPE_IMAGE_IN_3D  src,
 
   float value = READ_IMAGE_3D(src, sampler, pos).x;
   if (value != 0) {
-    for (int x = -1; x <= 1; x++) {
-      for (int y = -1; y <= 1; y++) {
-        for (int z = -1; z <= 1; z++) {
-          value = READ_IMAGE_3D(src, sampler, (pos + (int4){x, y, z, 0})).x;
+    for (int ax = -1; ax <= 1; ax++) {
+      for (int ay = -1; ay <= 1; ay++) {
+        for (int az = -1; az <= 1; az++) {
+          value = READ_IMAGE_3D(src, sampler, (pos + (int4){ax, ay, az, 0})).x;
           if (value == 0) {
             break;
           }
@@ -130,9 +130,9 @@ __kernel void erode_box_neighborhood_slice_by_slice(DTYPE_IMAGE_IN_3D  src,
 
   float value = READ_IMAGE_3D(src, sampler, pos).x;
   if (value != 0) {
-    for (int x = -1; x <= 1; x++) {
-      for (int y = -1; y <= 1; y++) {
-        value = READ_IMAGE_3D(src, sampler, (pos + (int4){x, y, z, 0})).x;
+    for (int ax = -1; ax <= 1; ax++) {
+      for (int ay = -1; ay <= 1; ay++) {
+        value = READ_IMAGE_3D(src, sampler, (pos + (int4){ax, ay, 0, 0})).x;
         if (value == 0) {
           break;
         }
@@ -168,12 +168,6 @@ __kernel void erode_diamond_neighborhood_3d(DTYPE_IMAGE_IN_3D  src,
         value = READ_IMAGE_3D(src, sampler, (pos + (int4){0, 1, 0, 0})).x;
         if (value != 0) {
           value = READ_IMAGE_3D(src, sampler, (pos + (int4){0, -1, 0, 0})).x;
-          if (value != 0) {
-            value = READ_IMAGE_3D(src, sampler, (pos + (int4){0, 0, 1, 0})).x;
-            if (value != 0) {
-              value = READ_IMAGE_3D(src, sampler, (pos + (int4){0, 0, -1, 0})).x;
-            }
-          }
         }
       }
     }
@@ -227,10 +221,10 @@ __kernel void dilate_box_neighborhood_3d(DTYPE_IMAGE_IN_3D  src,
 
   float value = READ_IMAGE_3D(src, sampler, pos).x;
   if (value < 1) {
-    for (int x = -1; x <= 1; x++) {
-      for (int y = -1; y <= 1; y++) {
-        for (int z = -1; z <= 1; z++) {
-          value = READ_IMAGE_3D(src, sampler, (pos + (int4){x, y, z, 0})).x;
+    for (int ax = -1; ax <= 1; ax++) {
+      for (int ay = -1; ay <= 1; ay++) {
+        for (int az = -1; az <= 1; az++) {
+          value = READ_IMAGE_3D(src, sampler, (pos + (int4){ax, ay, az, 0})).x;
           if (value != 0) {
             break;
           }
@@ -263,9 +257,9 @@ __kernel void dilate_box_neighborhood_slice_by_slice(DTYPE_IMAGE_IN_3D  src,
 
   float value = READ_IMAGE_3D(src, sampler, pos).x;
   if (value == 0) {
-    for (int x = -1; x <= 1; x++) {
-      for (int y = -1; y <= 1; y++) {
-        value = READ_IMAGE_3D(src, sampler, (pos + (int4){x, y, z, 0})).x;
+    for (int ax = -1; ax <= 1; ax++) {
+      for (int ay = -1; ay <= 1; ay++) {
+        value = READ_IMAGE_3D(src, sampler, (pos + (int4){ax, ay, 0, 0})).x;
         if (value != 0) {
           break;
         }
@@ -339,12 +333,6 @@ __kernel void dilate_diamond_neighborhood_slice_by_slice(DTYPE_IMAGE_IN_3D  src,
         value = READ_IMAGE_3D(src, sampler, (pos + (int4){0, 1, 0, 0})).x;
         if (value == 0) {
           value = READ_IMAGE_3D(src, sampler, (pos + (int4){0, -1, 0, 0})).x;
-          if (value == 0) {
-            value = READ_IMAGE_3D(src, sampler, (pos + (int4){0, 0, 1, 0})).x;
-            if (value == 0) {
-              value = READ_IMAGE_3D(src, sampler, (pos + (int4){0, 0, -1, 0})).x;
-            }
-          }
         }
       }
     }

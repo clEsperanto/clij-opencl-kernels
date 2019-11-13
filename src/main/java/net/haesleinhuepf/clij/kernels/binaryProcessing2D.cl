@@ -90,9 +90,9 @@ __kernel void erode_box_neighborhood_2d(DTYPE_IMAGE_IN_2D  src,
 
   float value = READ_IMAGE_2D(src, sampler, pos).x;
   if (value != 0) {
-    for (int x = -1; x <= 1; x++) {
-      for (int y = -1; y <= 1; y++) {
-        value = READ_IMAGE_2D(src, sampler, (pos + (int2){x, y})).x;
+    for (int ax = -1; ax <= 1; ax++) {
+      for (int ay = -1; ay <= 1; ay++) {
+        value = READ_IMAGE_2D(src, sampler, (pos + (int2){ax, ay})).x;
         if (value == 0) {
           break;
         }
@@ -151,9 +151,9 @@ __kernel void dilate_box_neighborhood_2d(DTYPE_IMAGE_IN_2D  src,
 
   float value = READ_IMAGE_2D(src, sampler, pos).x;
   if (value == 0) {
-    for (int x = -1; x <= 1; x++) {
-      for (int y = -1; y <= 1; y++) {
-        value = READ_IMAGE_2D(src, sampler, (pos + (int2){x, y})).x;
+    for (int ax = -1; ax <= 1; ax++) {
+      for (int ay = -1; ay <= 1; ay++) {
+        value = READ_IMAGE_2D(src, sampler, (pos + (int2){ax, ay})).x;
         if (value != 0) {
           break;
         }

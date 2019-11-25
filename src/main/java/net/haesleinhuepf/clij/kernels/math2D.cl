@@ -10,9 +10,9 @@ __kernel void multiplyPixelwise_2d(DTYPE_IMAGE_IN_2D  src,
 
   const int2 pos = (int2){x,y};
 
-  const DTYPE_OUT value = CONVERT_DTYPE_OUT(READ_IMAGE_2D(src, sampler, pos).x * READ_IMAGE_2D(src1, sampler, pos).x);
+  const float value = (float)READ_IMAGE_2D(src, sampler, pos).x * READ_IMAGE_2D(src1, sampler, pos).x;
 
-  WRITE_IMAGE_2D (dst, pos, value);
+  WRITE_IMAGE_2D (dst, pos, CONVERT_DTYPE_OUT(value));
 }
 
 __kernel void dividePixelwise_2d(DTYPE_IMAGE_IN_2D  src,
@@ -25,9 +25,9 @@ __kernel void dividePixelwise_2d(DTYPE_IMAGE_IN_2D  src,
 
   const int2 pos = (int2){x,y};
 
-  const DTYPE_OUT value = CONVERT_DTYPE_OUT(READ_IMAGE_2D(src, sampler, pos).x / READ_IMAGE_2D(src1, sampler, pos).x);
+  const float value = (float)READ_IMAGE_2D(src, sampler, pos).x / READ_IMAGE_2D(src1, sampler, pos).x;
 
-  WRITE_IMAGE_2D (dst, pos, value);
+  WRITE_IMAGE_2D (dst, pos, CONVERT_DTYPE_OUT(value));
 }
 
 __kernel void addPixelwise_2d(DTYPE_IMAGE_IN_2D  src,

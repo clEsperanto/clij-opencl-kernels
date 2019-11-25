@@ -11,9 +11,9 @@ __kernel void multiplyPixelwise_3d(DTYPE_IMAGE_IN_3D  src,
 
   const int4 pos = (int4){x,y,z,0};
 
-  const DTYPE_OUT value = CONVERT_DTYPE_OUT(READ_IMAGE_3D(src, sampler, pos).x * READ_IMAGE_3D(src1, sampler, pos).x);
+  const float value = (float)READ_IMAGE_3D(src, sampler, pos).x * READ_IMAGE_3D(src1, sampler, pos).x;
 
-  WRITE_IMAGE_3D (dst, pos, value);
+  WRITE_IMAGE_3D (dst, pos, CONVERT_DTYPE_OUT(value));
 }
 
 __kernel void dividePixelwise_3d(DTYPE_IMAGE_IN_3D  src,
@@ -27,9 +27,9 @@ __kernel void dividePixelwise_3d(DTYPE_IMAGE_IN_3D  src,
 
   const int4 pos = (int4){x,y,z,0};
 
-  const DTYPE_OUT value = CONVERT_DTYPE_OUT(READ_IMAGE_3D(src, sampler, pos).x / READ_IMAGE_3D(src1, sampler, pos).x);
+  const float value = (float)READ_IMAGE_3D(src, sampler, pos).x / READ_IMAGE_3D(src1, sampler, pos).x;
 
-  WRITE_IMAGE_3D (dst, pos, value);
+  WRITE_IMAGE_3D (dst, pos, CONVERT_DTYPE_OUT(value));
 }
 
 __kernel void multiplySliceBySliceWithScalars(DTYPE_IMAGE_IN_3D  src,

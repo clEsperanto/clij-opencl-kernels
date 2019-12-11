@@ -50,7 +50,12 @@
 	</developers>
 	<contributors>
 		<contributor>
-			<name>none</name>
+			<name>Peter Haub</name>
+			<properties><id>iwbh15</id></properties>
+		</contributor>
+		<contributor>
+			<name>Ruth Whelan-Jeans</name>
+			<properties><id>ruthwj</id></properties>
 		</contributor>
 	</contributors>
 

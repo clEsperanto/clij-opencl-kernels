@@ -7,10 +7,10 @@ __kernel void max_project_3d_2d(
 
   const int x = get_global_id(0);
   const int y = get_global_id(1);
-  DTYPE_IN max = 0;
+  float max = 0;
   for(int z = 0; z < GET_IMAGE_IN_DEPTH(src); z++)
   {
-    DTYPE_IN value = READ_IMAGE_3D(src,sampler,(int4)(x,y,z,0)).x;
+    float value = READ_IMAGE_3D(src,sampler,(int4)(x,y,z,0)).x;
     if (value > max || z == 0) {
       max = value;
     }

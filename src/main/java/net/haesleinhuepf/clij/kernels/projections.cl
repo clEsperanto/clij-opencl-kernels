@@ -8,7 +8,7 @@ __kernel void mean_project_3d_2d(
 
   const int x = get_global_id(0);
   const int y = get_global_id(1);
-  DTYPE_IN sum = 0;
+  float sum = 0;
   int count = 0;
   for(int z = 0; z < GET_IMAGE_IN_DEPTH(src); z++)
   {
@@ -27,10 +27,10 @@ __kernel void min_project_3d_2d(
 
   const int x = get_global_id(0);
   const int y = get_global_id(1);
-  DTYPE_IN min = 0;
+  float min = 0;
   for(int z = 0; z < GET_IMAGE_IN_DEPTH(src); z++)
   {
-    DTYPE_IN value = READ_IMAGE_3D(src,sampler,(int4)(x,y,z,0)).x;
+    float value = READ_IMAGE_3D(src,sampler,(int4)(x,y,z,0)).x;
     if (value < min || z == 0) {
       min = value;
     }

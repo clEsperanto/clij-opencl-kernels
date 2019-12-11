@@ -1,6 +1,4 @@
-
-
-__kernel void mean_project_3d_2d(
+__kernel void stddev_project_3d_2d(
     DTYPE_IMAGE_OUT_2D dst,
     DTYPE_IMAGE_IN_3D src
 ) {
@@ -8,91 +6,67 @@ __kernel void mean_project_3d_2d(
 
   const int x = get_global_id(0);
   const int y = get_global_id(1);
+
   float sum = 0;
   int count = 0;
   for(int z = 0; z < GET_IMAGE_IN_DEPTH(src); z++)
   {
-    sum = sum + READ_IMAGE_3D(src,sampler,(int4)(x,y,z,0)).x;
+    sum = sum + (float)(READ_IMAGE_3D(src,sampler,(int4)(x,y,z,0)).x);
     count++;
   }
-  WRITE_IMAGE_2D(dst,(int2)(x,y), CONVERT_DTYPE_OUT(sum / count));
+  float mean = (sum / count);
+
+  sum = 0;
+  for(int z = 0; z < GET_IMAGE_IN_DEPTH(src); z++)
+  {
+    float value = (float)(READ_IMAGE_3D(src,sampler,(int4)(x,y,z,0)).x) - mean;
+    sum = sum + (value * value);
+  }
+  float stdDev = sqrt((float2){sum / (count - 1), 0}).x;
+
+  WRITE_IMAGE_2D(dst,(int2)(x,y),(DTYPE_OUT)stdDev);
+}
+
+inline void sort(DTYPE_OUT array[], int array_size)
+{
+    DTYPE_OUT temp;
+    for(int i = 0; i < array_size; i++) {
+        int j;
+        temp = array[i];
+        for(j = i - 1; j >= 0 && temp < array[j]; j--) {
+            array[j+1] = array[j];
+        }
+        array[j+1] = temp;
+    }
+}
+
+inline DTYPE_OUT median(DTYPE_OUT array[], int array_size)
+{
+    sort(array, array_size);
+    return array[array_size / 2];
 }
 
 
-__kernel void min_project_3d_2d(
-    DTYPE_IMAGE_OUT_2D dst_min,
-    DTYPE_IMAGE_IN_3D src
-) {
+__kernel void median_project_3d_2d
+(
+  DTYPE_IMAGE_OUT_2D dst, DTYPE_IMAGE_IN_3D src
+)
+{
+  DTYPE_OUT array[MAX_ARRAY_SIZE];
   const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
   const int x = get_global_id(0);
   const int y = get_global_id(1);
-  float min = 0;
+
+  int count = 0;
   for(int z = 0; z < GET_IMAGE_IN_DEPTH(src); z++)
   {
-    float value = READ_IMAGE_3D(src,sampler,(int4)(x,y,z,0)).x;
-    if (value < min || z == 0) {
-      min = value;
-    }
+    array[count] = (float)(READ_IMAGE_3D(src,sampler,(int4)(x,y,z,0)).x);
+    count++;
   }
-  WRITE_IMAGE_2D(dst_min,(int2)(x,y), CONVERT_DTYPE_OUT(min));
+
+  DTYPE_OUT res = median(array, count);
+
+  WRITE_IMAGE_2D(dst,(int2)(x,y),(DTYPE_OUT)res);
 }
-
-
-__kernel void max_project_dim_select_3d_2d(
-    DTYPE_IMAGE_OUT_2D dst_max,
-    DTYPE_IMAGE_IN_3D src,
-    int projection_x,
-    int projection_y,
-    int projection_dim
-) {
-  const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
-
-  int4 sourcePos = (int4)(0,0,0,0);
-  int2 targetPos = (int2)(get_global_id(0), get_global_id(1));
-
-  if (projection_x == 0) {
-    sourcePos.x = get_global_id(0);
-  } else if (projection_x == 1) {
-    sourcePos.y = get_global_id(0);
-  } else {
-    sourcePos.z = get_global_id(0);
-  }
-  if (projection_y == 0) {
-    sourcePos.x = get_global_id(1);
-  } else if (projection_y == 1) {
-    sourcePos.y = get_global_id(1);
-  } else {
-    sourcePos.z = get_global_id(1);
-  }
-
-
-  int max_d = 0;
-  if (projection_dim == 0) {
-    max_d = GET_IMAGE_IN_WIDTH(src);
-  } else if (projection_dim == 1) {
-    max_d = GET_IMAGE_IN_HEIGHT(src);
-  } else {
-    max_d = GET_IMAGE_IN_DEPTH(src);
-  }
-
-  DTYPE_IN max = 0;
-  for(int d = 0; d < max_d; d++)
-  {
-    if (projection_dim == 0) {
-      sourcePos.x = d;
-    } else if (projection_dim == 0) {
-      sourcePos.y = d;
-    } else {
-      sourcePos.z = d;
-    }
-    DTYPE_IN value = READ_IMAGE_3D(src,sampler, sourcePos).x;
-    if (value > max || d == 0) {
-      max = value;
-    }
-  }
-  WRITE_IMAGE_2D(dst_max,targetPos, CONVERT_DTYPE_OUT(max));
-}
-
-
 

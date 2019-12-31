@@ -1,7 +1,7 @@
 # clij-opencl-kernels
 
-This repository contains a collection of [OpenCL](https://www.khronos.org/opencl/) [kernels for generic image 
-processing](https://github.com/clij/clij-opencl-kernels/tree/master/src/main/java/net/haesleinhuepf/clij/kernels). 
+This repository contains a collection of [OpenCL](https://www.khronos.org/opencl/) kernels for [image 
+processing](https://github.com/clij/clij-opencl-kernels/tree/development/src/main/java/net/haesleinhuepf/clij/kernels). 
 The [CLIJ](https://clij.github.io) is build on top of it allowing
 [ImageJ](https://imagej.nih.gov/ij/) / [Fiji](https://fiji.sc) users in doing
 GPU-accelerated image processing without the need for learning OpenCL.

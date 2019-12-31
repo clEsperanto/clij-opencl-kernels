@@ -20,7 +20,7 @@ Theoretically, one has to write OpenCL-kernels specifically for given input- and
 adding images of type `float` resulting in a `float` image and a kernel for adding image of type `uint8` resulting in 
 an image of type `float`. Furthermore, OpenCL defines images and buffers. However, as both are arrays of pixel 
 intensities in memory, we wanted to access them in a unified way. As this would result in a ridiculous large number of individual kernel implementations, we used
-a dialect where placeholders such as `DTYPE_OUT` represent the pixel type of the output image.
+a dialect where placeholders such as `IMAGE_src_PIXEL_TYPE` represent the pixel type of the output image.
 
 ## List of placeholders
 The following list of placeholders are used at the moment. The name `imagename` must contain `src` or `dst` to differentiate `readonly` and `writeonly` images.

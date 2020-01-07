@@ -87,6 +87,17 @@ float
 <td>Image size in X</td>
 </tr>
 <tr>
+<td><pre>POS_imagename_TYPE</pre></td>
+<td>int2<br>int4</td>
+<td>Type of coordinate</td>
+</tr>
+<tr>
+<td><pre>POS_imagename_INSTANCE</pre></td>
+<td>int2<br>int4</td>
+<td>instantiate variable of coordinate</td>
+</tr>
+
+<tr>
 <td><pre>READ_imagename_IMAGE</pre></td>
 <td><pre>
 <a href="https://www.khronos.org/registry/OpenCL/sdk/1.2/docs/man/xhtml/read_imagei2d.html">read_imageui (2d)</a>

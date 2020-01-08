@@ -92,8 +92,8 @@ float
 <td>Type of coordinate</td>
 </tr>
 <tr>
-<td><pre>POS_imagename_INSTANCE</pre></td>
-<td>int2<br>int4</td>
+<td><pre>POS_imagename_INSTANCE(pos0,pos1,pos2,pos3)</pre></td>
+<td>int2(pos0, pos1)<br>int4(pos0,pos1,pos2,pos3)</td>
 <td>instantiate variable of coordinate</td>
 </tr>
 

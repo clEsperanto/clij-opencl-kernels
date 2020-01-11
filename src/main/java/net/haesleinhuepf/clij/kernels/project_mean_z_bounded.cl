@@ -1,6 +1,6 @@
 
-__kernel void project_maximum_z_bounded(
-    DTYPE_IMAGE_OUT_2D dst_max,
+__kernel void project_mean_z_bounded(
+    DTYPE_IMAGE_OUT_2D dst_mean,
     DTYPE_IMAGE_IN_3D src,
     int min_z,
     int max_z
@@ -9,7 +9,8 @@ __kernel void project_maximum_z_bounded(
 
   const int x = get_global_id(0);
   const int y = get_global_id(1);
-  float max = 0;
+  float sum = 0;
+  float count = 1;
 
   int start = 0;
   if (min_z > start) {
@@ -24,9 +25,8 @@ __kernel void project_maximum_z_bounded(
   for(int z = start; z <= end; z++)
   {
     float value = READ_IMAGE_3D(src,sampler,(int4)(x,y,z,0)).x;
-    if (value > max || z == start) {
-      max = value;
-    }
+    sum = sum + value;
+    count = count + 1;
   }
-  WRITE_IMAGE_2D(dst_max,(int2)(x,y), CONVERT_DTYPE_OUT(max));
+  WRITE_IMAGE_2D(dst_mean,(int2)(x,y), CONVERT_DTYPE_OUT(sum / count));
 }

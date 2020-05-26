@@ -12,9 +12,12 @@ float factor1
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  const int4 pos = (int4){x,y,z,0};
+  const int4 pos = (int4)(x,y,z,0);
 
-  const IMAGE_dst_PIXEL_TYPE value = CONVERT_dst_PIXEL_TYPE(READ_src_IMAGE(src, sampler, pos).x * factor + READ_src1_IMAGE(src1, sampler, pos).x * factor1);
+  const float value1 = factor * ((float)(READ_IMAGE(src, sampler, pos).x));
+  const float value2 = factor1 * ((float)(READ_IMAGE(src1, sampler, pos).x));
 
-  WRITE_dst_IMAGE (dst, pos, value);
+  float value = value1 + value2);
+
+  WRITE_IMAGE (dst, pos, CONVERT_dst_PIXEL_TYPE( value));
 }

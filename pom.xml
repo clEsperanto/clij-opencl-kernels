@@ -8,13 +8,13 @@
 	<parent>
 		<groupId>net.haesleinhuepf</groupId>
 		<artifactId>clij-parent-pom</artifactId>
-		<version>1.4.1</version>
+		<version>2.0.0.10</version>
 		<relativePath />
 	</parent>
 
 	<groupId>net.haesleinhuepf</groupId>
 	<artifactId>clij-opencl-kernels</artifactId>
-	<version>1.4.1</version>
+	<version>2.0.0.10</version>
 
 	<name>clij-opencl-kernels</name>
 	<description>clij-opencl-kernels</description>
@@ -49,8 +49,16 @@
 		</developer>
 	</developers>
 	<contributors>
-		<contributor>
+	    <contributor>
 			<name>Nico Stuurman</name>
+		</contributor>
+		<contributor>
+			<name>Peter Haub</name>
+			<properties><id>iwbh15</id></properties>
+		</contributor>
+		<contributor>
+			<name>Ruth Whelan-Jeans</name>
+			<properties><id>ruthwj</id></properties>
 		</contributor>
 	</contributors>
 

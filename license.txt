@@ -1,5 +1,7 @@
-Copyright 2019 Robert Haase, Nico Stuurman, Max Planck Institute for Molecular Cell Biology
-and Genetics Dresden, Regents of the Univeristy of California
+Copyright 2019 Robert Haase, Nico Stuurman, Deborah Schmidt, Uwe Schmidt, Martin Weigert, Peter Haub, Fabrice P. Cordelières
+Max Planck Institute for Molecular Cell Biology
+and Genetics Dresden, University of Virginia,
+Regents of the Univeristy of California
 
 Redistribution and use in source and binary forms, with or without 
 modification, are permitted provided that the following conditions are met:

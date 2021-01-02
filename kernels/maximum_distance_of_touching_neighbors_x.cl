@@ -1,5 +1,5 @@
 
-__kernel void minimum_distance_of_touching_neighbors (
+__kernel void maximum_distance_of_touching_neighbors (
     IMAGE_src_distance_matrix_TYPE src_distance_matrix,
     IMAGE_src_touch_matrix_TYPE src_touch_matrix,
     IMAGE_dst_distance_list_TYPE dst_distance_list
@@ -19,7 +19,7 @@ __kernel void minimum_distance_of_touching_neighbors (
     float value = READ_src_touch_matrix_IMAGE(src_touch_matrix, sampler, pos).x;
     if (value > 0) {
       value = READ_src_distance_matrix_IMAGE(src_distance_matrix, sampler, pos).x;
-      if (value < minimum || initialized == 0) {
+      if (value > minimum || initialized == 0) {
         minimum = value;
         initialized = 1;
       }
@@ -31,7 +31,7 @@ __kernel void minimum_distance_of_touching_neighbors (
     float value = READ_src_touch_matrix_IMAGE(src_touch_matrix, sampler, pos).x;
     if (value > 0) {
       value = READ_src_distance_matrix_IMAGE(src_distance_matrix, sampler, pos).x;
-      if (value < minimum || initialized == 0) {
+      if (value > minimum || initialized == 0) {
         minimum = value;
         initialized = 1;
       }

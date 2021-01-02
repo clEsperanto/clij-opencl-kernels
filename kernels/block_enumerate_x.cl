@@ -1,13 +1,12 @@
-
+__const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 __kernel void block_enumerate(
     IMAGE_dst_TYPE dst,
     IMAGE_src_TYPE src,
     IMAGE_src_sums_TYPE src_sums,
     int blocksize
-) {
-  const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
-
+) 
+{
   const int x = get_global_id(0);
   const int z = get_global_id(1);
   const int y = get_global_id(2);

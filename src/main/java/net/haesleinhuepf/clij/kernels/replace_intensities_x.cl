@@ -3,7 +3,8 @@ const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDG
 
 __kernel void replace_intensities
 (
-  IMAGE_dst_TYPE dst, IMAGE_src_TYPE src,
+  IMAGE_dst_TYPE dst, 
+  IMAGE_src_TYPE src,
   IMAGE_map_TYPE map
 )
 {

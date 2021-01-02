@@ -19,14 +19,14 @@ __kernel void downsample_xy_by_half_median_3d (
   const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
   const int i = get_global_id(0), j = get_global_id(1), k = get_global_id(2);
-  const int4 coord_out = (int4){i,j,k,0};
+  const POS_dst_TYPE coord_out = POS_dst_INSTANCE(i,j,k,0);
   const int x = 2*i, y = 2*j, z = k;
 
   IMAGE_src_PIXEL_TYPE pixel[4];
-  pixel[0] = READ_src_IMAGE(src,sampler,((int4){x+0,y+0,z,0})).x;
-  pixel[1] = READ_src_IMAGE(src,sampler,((int4){x+0,y+1,z,0})).x;
-  pixel[2] = READ_src_IMAGE(src,sampler,((int4){x+1,y+0,z,0})).x;
-  pixel[3] = READ_src_IMAGE(src,sampler,((int4){x+1,y+1,z,0})).x;
+  pixel[0] = READ_src_IMAGE(src,sampler,(POS_src_INSTANCE(x+0,y+0,z,0))).x;
+  pixel[1] = READ_src_IMAGE(src,sampler,(POS_src_INSTANCE(x+0,y+1,z,0))).x;
+  pixel[2] = READ_src_IMAGE(src,sampler,(POS_src_INSTANCE(x+1,y+0,z,0))).x;
+  pixel[3] = READ_src_IMAGE(src,sampler,(POS_src_INSTANCE(x+1,y+1,z,0))).x;
 
   // // sort pixel array
   // swap(pixel,0,1);

@@ -6,12 +6,10 @@ IMAGE_dst_mesh_TYPE dst_mesh) {
   const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
   const int pointIndex = get_global_id(0);
-  if (pointIndex == 0) {
-    return;
-  }
-  const float pointAx = READ_src_pointlist_IMAGE(src_pointlist, sampler, POS_src_pointlist_INSTANCE(pointIndex - 1, 0, 0, 0)).x;
-  const float pointAy = READ_src_pointlist_IMAGE(src_pointlist, sampler, POS_src_pointlist_INSTANCE(pointIndex - 1, 1, 0, 0)).x;
-  const float pointAz = READ_src_pointlist_IMAGE(src_pointlist, sampler, POS_src_pointlist_INSTANCE(pointIndex - 1, 2, 0, 0)).x;
+
+  const float pointAx = READ_src_pointlist_IMAGE(src_pointlist, sampler, POS_src_pointlist_INSTANCE(pointIndex, 0, 0, 0)).x;
+  const float pointAy = READ_src_pointlist_IMAGE(src_pointlist, sampler, POS_src_pointlist_INSTANCE(pointIndex, 1, 0, 0)).x;
+  const float pointAz = READ_src_pointlist_IMAGE(src_pointlist, sampler, POS_src_pointlist_INSTANCE(pointIndex, 2, 0, 0)).x;
 
   //int4 pointA = (int4){pointAx, pointAy, pointAz, 0};
 

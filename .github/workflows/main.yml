@@ -20,13 +20,9 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
-      - name: YAML Schema Validator
-        # You may pin to the exact commit or the version.
-        # uses: nwisbeta/validate-yaml-schema@d6d0e9a1ff5fceb6f59b9751c79f899b324730fc
-        uses: nwisbeta/validate-yaml-schema@v1.0.3
+      - uses: actions/setup-node@v2
         with:
-          yamlSchemasJson: |
-            {
-                "./schema.json": ["cle.yaml"]
-            }
+          node-version: '14'
+      - run: npm install -g ajv-cli
+      - name: Validate Schema
+        run: ajv -s schema.json -d cle.yaml

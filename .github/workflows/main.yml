@@ -28,5 +28,5 @@ jobs:
         with:
           yamlSchemasJson: |
             {
-                "schema/cle_schema.json": ["cle.yaml"]
+                "./schema.json": ["cle.yaml"]
             }

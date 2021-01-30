@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "definitions": {
+    "category": {
+      "type": "string",
+      "enum": [
+        "filter",
+        "in_assistant",
+        "combine",
+        "neighbor",
+        "map",
+        "binary processing",
+        "background removal",
+        "binarize",
+        "transform",
+        "edge detection",
+        "denoise",
+        "projection",
+        "label",
+        "label processing",
+        "label measurement"
+      ]
+    },
+    "parameter": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "parameter name" },
+        "type": { "type": "string", "description": "parameter type" },
+        "description": {
+          "type": "string",
+          "description": "parameter description"
+        },
+        "output": { "type": "boolean", "default": false }
+      }
+    },
+    "operation": {
+      "id": "#operation",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "the name of the function"
+        },
+        "description": {
+          "type": "string",
+          "description": "Brief summary of the function"
+        },
+        "details": {
+          "type": "string",
+          "description": "Extended explanation of the function"
+        },
+        "categories": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/category" },
+          "description": "Brief summary of the function"
+        },
+        "dimensions": {
+          "oneOf": [
+            { "enum": [2, 3] },
+            { "type": "array", "items": { "enum": [2, 3] } }
+          ]
+        },
+        "tier": { "enum": [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+        "parameters": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/parameter" }
+        },
+        "uses": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["name", "parameters"],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "operations": {
+      "description": "operations",
+      "type": "array",
+      "items": { "$ref": "#/definitions/operation" }
+    }
+  }
+}

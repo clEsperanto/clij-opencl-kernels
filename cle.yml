@@ -1,0 +1,15 @@
+operations:
+  - name: absolute
+    description: Computes the absolute value of every individual pixel x in a given image.
+    details: <pre>f(x) = |x| </pre>
+    categories: [filter, in_assistant]
+    dimensions: [2, 3]
+    tier: 1
+    parameters:
+      - name: source
+        type: IMAGE_src_TYPE
+        description: The input image to be processed.
+      - name: destination
+        type: IMAGE_dst_TYPE
+        description: The output image where results are written into.
+        output: true

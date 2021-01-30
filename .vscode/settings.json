@@ -1,5 +1,5 @@
 {
   "yaml.schemas": {
-    "schema/schema.json": ["cle.yaml"]
+    "schema.json": ["cle.yaml"]
   }
 }

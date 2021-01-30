@@ -1,7 +1,7 @@
 operations:
   - name: absolute
     description: Computes the absolute value of every individual pixel x in a given image.
-    details: <pre>f(x) = |x| </pre>
+    detdails: <pre>f(x) = |x| </pre>
     categories: [filter, in_assistant]
     dimensions: [2, 3]
     tier: 1

@@ -22,4 +22,4 @@ jobs:
       - name: Validate Schema
         run: |
           npm install -g ajv-cli
-          ajv -s schema.json -d cle.yaml
+          ajv -s schema.json -d cle.yml

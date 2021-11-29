@@ -9,10 +9,10 @@ __kernel void absolute(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  float value = READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
+  float value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
   if ( value < 0 ) {
     value = -1 * value;
   }
 
-  WRITE_dst_IMAGE (dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
+  WRITE_IMAGE (dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
 }

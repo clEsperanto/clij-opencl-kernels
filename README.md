@@ -158,7 +158,7 @@ const int z = get_global_id(2);
 
 POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
 
-flooat value = READ_src_IMAGE(src, sampler, pos).x;
+float value = READ_src_IMAGE(src, sampler, pos).x;
 ```
 
 This code will work with 1, 2 and 3-dimensional images because `POS_src_INSTANCE` will be set to `int`, `int2` or `int4` depending on image dimensionality during runtime. Note, if the same position should be written to a `dst` image, one can do this for example like that:

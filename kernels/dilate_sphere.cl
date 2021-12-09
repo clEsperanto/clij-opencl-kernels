@@ -11,8 +11,7 @@ __kernel void dilate_sphere(
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
 
   IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, pos).x;
-  if (GET_IMAGE_WIDTH(src) > 1)
-  {
+  if (GET_IMAGE_WIDTH(src) > 1) {
     if (value == 0) {
       value = READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(1,0,0,0)).x;
       if (value == 0) {
@@ -20,8 +19,7 @@ __kernel void dilate_sphere(
       }
     }
   }
-  if (GET_IMAGE_HEIGHT(src) > 1)
-  {
+  if (GET_IMAGE_HEIGHT(src) > 1) {
     if (value == 0) {
       value = READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,1,0,0)).x;
       if (value == 0) {
@@ -29,8 +27,7 @@ __kernel void dilate_sphere(
       }
     }
   }
-  if (GET_IMAGE_DEPTH(src) > 1)
-  {
+  if (GET_IMAGE_DEPTH(src) > 1) {
     if (value == 0) {
       value = READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,0,1,0)).x;
       if (value == 0) {

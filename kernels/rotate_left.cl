@@ -9,7 +9,7 @@ __kernel void rotate_left(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  const int dx = GET_IMAGE_HEIGHT(src) - y - 1; // get_global_size(1) - y - 1 ?;
+  const int dx = get_global_size(1) - y - 1;
   const int dy = x;
   const int dz = z;
 

@@ -9,9 +9,9 @@ __kernel void sum_z_projection(
   const int y = get_global_id(1);
 
   float sum = 0;
-  for (int z = 0; z < GET_IMAGE_DEPTH(src); ++z)
-  {
+  for (int z = 0; z < GET_IMAGE_DEPTH(src); ++z) {
     sum += (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
   }
+  
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,0,0), CONVERT_dst_PIXEL_TYPE(sum));
 }

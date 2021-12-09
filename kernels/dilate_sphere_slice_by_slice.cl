@@ -12,8 +12,7 @@ __kernel void dilate_sphere_slice_by_slice(
 
 
   IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, pos).x;
-  if (GET_IMAGE_WIDTH(src) > 1)
-  {
+  if (GET_IMAGE_WIDTH(src) > 1) {
     if (value == 0) {
       value = READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(1,0,0,0)).x;
       if (value == 0) {
@@ -21,8 +20,7 @@ __kernel void dilate_sphere_slice_by_slice(
       }
     }
   }
-  if (GET_IMAGE_HEIGHT(src) > 1)
-  {
+  if (GET_IMAGE_HEIGHT(src) > 1) {
     if (value == 0) {
       value = READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,1,0,0)).x;
       if (value == 0) {

@@ -20,8 +20,7 @@ __kernel void flood_fill_diamond(
   }
 
   bool replace = false;
-  if (GET_IMAGE_WIDTH(src) > 1)
-  {
+  if (GET_IMAGE_WIDTH(src) > 1) {
     if (READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(-1,0,0,0)).x == scalar1 ) {
       replace = true;
     }
@@ -29,8 +28,7 @@ __kernel void flood_fill_diamond(
       replace = true;
     }
   }
-  if (GET_IMAGE_HEIGHT(src) > 1)
-  {
+  if (GET_IMAGE_HEIGHT(src) > 1) {
     if (!replace && READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,-1,0,0)).x == scalar1 ) {
       replace = true;
     }

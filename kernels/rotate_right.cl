@@ -10,7 +10,7 @@ __kernel void rotate_right(
   const int z = get_global_id(2);
 
   const int dx = y;
-  const int dy = GET_IMAGE_WIDTH(src) - x - 1; // get_global_size(0) - x - 1; ?
+  const int dy = get_global_size(0) - x - 1;
   const int dz = z;
 
   const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(dx,dy,dz,0)).x;

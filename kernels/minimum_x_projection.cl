@@ -9,8 +9,7 @@ __kernel void minimum_x_projection(
   const int y = get_global_id(1);
 
   IMAGE_src_PIXEL_TYPE min = 0;
-  for (int x = 0; x < GET_IMAGE_WIDTH(src); ++x)
-  {
+  for (int x = 0; x < GET_IMAGE_WIDTH(src); ++x) {
     IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
     if (value < min || x == 0) {
       min = value;

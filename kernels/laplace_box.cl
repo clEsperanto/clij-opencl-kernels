@@ -15,13 +15,14 @@ __kernel void laplace_box(
   if (GET_IMAGE_WIDTH(src)  > 1) { r.x = 1; }
 
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
+  const float norm = (r.z + r.y + r.z) * 2;
 
   float result = 0;
   for (int dx = -r.x; dx <= r.x; ++dx) {
     for (int dy = -r.y; dy <= r.y; ++dy) {
       for (int dz = -r.z; dz <= r.z; ++dz) {
         if (dx == 0 && dy == 0 && dz == 0) {
-          result += (float) READ_IMAGE(src, sampler, pos).x * (r.z + r.y + r.z) * 2;
+          result += (float) READ_IMAGE(src, sampler, pos).x * norm;
         } else {
           result += (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(dx,dy,dz,0)).x * -1;
         }

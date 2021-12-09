@@ -10,7 +10,7 @@ __kernel void mean_z_projection(
 
   float sum = 0;
   int count = 0;
-  for(int z = 0; z < GET_IMAGE_DEPTH(src); z++)
+  for (int z = 0; z < GET_IMAGE_DEPTH(src); z++)
   {
     sum += (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
     count++;

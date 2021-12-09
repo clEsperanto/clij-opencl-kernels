@@ -13,7 +13,7 @@ __kernel void depth_projection(
  
   float max = 0;
   float max_z = 0;
-  for(float z = 0; z < GET_IMAGE_DEPTH(src); z += GET_IMAGE_DEPTH(src) / 255.0 )
+  for (float z = 0; z < GET_IMAGE_DEPTH(src); z += GET_IMAGE_DEPTH(src) / 255.0 )
   {
     float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
     if (value > max || z == 0) {

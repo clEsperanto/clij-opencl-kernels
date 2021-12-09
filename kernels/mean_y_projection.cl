@@ -10,7 +10,7 @@ __kernel void mean_y_projection (
 
   float sum = 0;
   int count = 0;
-  for(int y = 0; y < GET_IMAGE_HEIGHT(src); ++y)
+  for (int y = 0; y < GET_IMAGE_HEIGHT(src); ++y)
   {
     sum += (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
     count++;

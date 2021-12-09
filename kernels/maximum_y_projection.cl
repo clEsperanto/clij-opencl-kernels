@@ -9,7 +9,7 @@ __kernel void maximum_y_projection(
   const int z = get_global_id(1);
 
   IMAGE_src_PIXEL_TYPE max = 0;
-  for(int y = 0; y < GET_IMAGE_HEIGHT(src); ++y)
+  for (int y = 0; y < GET_IMAGE_HEIGHT(src); ++y)
   {
     IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
     if (value > max || y == 0) {

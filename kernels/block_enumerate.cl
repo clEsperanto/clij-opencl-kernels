@@ -12,12 +12,12 @@ __kernel void block_enumerate(
   const int y = get_global_id(2);
 
   float sum = 0;
-  for(int sx = 0; sx < x; sx++)
+  for (int sx = 0; sx < x; sx++)
   {
     sum += (float) READ_IMAGE(src1, sampler, POS_src1_INSTANCE(sx,y,z,0)).x;
   }
 
-  for(int dx = 0; dx < scalar; dx++)
+  for (int dx = 0; dx < scalar; dx++)
   {
     float value = (float) READ_IMAGE(src0, sampler, POS_src0_INSTANCE(x * scalar + dx,y,z,0)).x;
     if (value != 0) {

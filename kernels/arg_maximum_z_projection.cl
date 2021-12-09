@@ -11,7 +11,7 @@ __kernel void arg_maximum_z_projection (
  
   IMAGE_src_PIXEL_TYPE max = 0;
   int arg = 0;
-  for(int z = 0; z < GET_IMAGE_DEPTH(src); ++z)
+  for (int z = 0; z < GET_IMAGE_DEPTH(src); ++z)
   {
     const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
     if (value > max || z == 0) {

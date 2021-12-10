@@ -29,10 +29,10 @@ __kernel void erode_sphere(
   }
   if (GET_IMAGE_DEPTH(src) > 1) {
     if (value != 0) {
-        value = READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,0,1,0)).x;
-        if (value != 0) {
+      value = READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,0,1,0)).x;
+      if (value != 0) {
         value = READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,0,-1,0)).x;
-        }
+      }
     }
   }
   if (value != 0) {

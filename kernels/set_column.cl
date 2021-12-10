@@ -2,11 +2,11 @@ __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_T
 
 __kernel void set_column(
     IMAGE_dst_TYPE  dst,
-    const int       cst,
+    const int       index,
     const float     scalar
 )
 {
-  const int x = cst;
+  const int x = index;
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 

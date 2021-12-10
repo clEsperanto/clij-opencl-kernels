@@ -15,8 +15,8 @@ __kernel void convolve(
   const int kernelDepth  = GET_IMAGE_DEPTH(src1)  > 1 ? GET_IMAGE_DEPTH(src1)  : 0;
 
   const int4 c = (int4){kernelWidth / 2, kernelHeight / 2, kernelDepth / 2, 0};
-  const POS_src_TYPE pos_image  = POS_src0_INSTANCE(  i,  j,  k,0);
-  const POS_src_TYPE pos_kernel = POS_src1_INSTANCE(c.x,c.y,c.z,0);
+  const POS_src0_TYPE pos_image  = POS_src0_INSTANCE(  i,  j,  k,0);
+  const POS_src1_TYPE pos_kernel = POS_src1_INSTANCE(c.x,c.y,c.z,0);
 
   float sum = 0;
   for (int x = -c.x; x <= c.x; ++x) {

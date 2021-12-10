@@ -9,7 +9,7 @@ __kernel void absolute(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x);
+  IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
   if ( value < 0 ) {
     value = -1 * value;
   }

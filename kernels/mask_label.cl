@@ -4,7 +4,7 @@ __kernel void mask_label(
     IMAGE_src0_TYPE  src0,
     IMAGE_src1_TYPE  src1,
     IMAGE_dst_TYPE   dst,
-    const float      scalar,
+    const float      scalar
 )
 {
   const int x = get_global_id(0);

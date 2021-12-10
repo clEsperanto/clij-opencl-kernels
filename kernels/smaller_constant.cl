@@ -3,7 +3,7 @@ __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_T
 __kernel void smaller_constant(
     IMAGE_src_TYPE  src,
     IMAGE_dst_TYPE  dst,
-    const float     scalar,
+    const float     scalar
 )
 {
   const int x = get_global_id(0);

@@ -43,13 +43,13 @@ __kernel void sobel(
   for(int m=0; m<=r.x; ++m) {
       for(int n=0; n<=r.y; ++n) {
           for(int k=0; k<=r.z; ++k) {
-              if (GET_IMAGE_DEPTH(src)  > 1) { 
+              if (GET_IMAGE_WIDTH(src)  > 1) { 
                 sum_x += gx[m][n][k] * (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(m-1,n-1,k-1,0)).x;
               }
               if (GET_IMAGE_HEIGHT(src) > 1) { 
                 sum_y += gy[m][n][k] * (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(m-1,n-1,k-1,0)).x;
               }
-              if (GET_IMAGE_WIDTH(src)  > 1) { 
+              if (GET_IMAGE_DEPTH(src)  > 1) { 
                 sum_z += gz[m][n][k] * (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(m-1,n-1,k-1,0)).x;
               }
           }

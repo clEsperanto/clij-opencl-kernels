@@ -15,8 +15,7 @@ __kernel void detect_minima(
   if (GET_IMAGE_DEPTH(src)  > 1) { r.z = 1; }
 
   POS_src_TYPE localMinPos = POS_src_INSTANCE(i,j,k,0);
-  POS_src_TYPE localPos = POS_src_INSTANCE(i,j,k,0);  
-  IMAGE_src_PIXEL_TYPE localMin = READ_IMAGE(src, sampler, localPos).x - 1;
+  IMAGE_src_PIXEL_TYPE localMin = READ_IMAGE(src, sampler, localMinPos).x - 1;
   for (int x = -r.x; x <= r.x; ++x) {
       for (int y = -r.y; y <= r.y; ++y) {
           for (int z = -r.z; z <= r.z; ++z) {
@@ -30,7 +29,7 @@ __kernel void detect_minima(
       }
   }
   IMAGE_dst_PIXEL_TYPE result = 0;
-  if (all(localPos == localMinPos)) {
+  if (all(POS_src_INSTANCE(i,j,k,0) == localMinPos)) {
       result = 1;
   }
   

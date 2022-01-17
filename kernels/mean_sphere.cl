@@ -15,9 +15,9 @@ __kernel void mean_sphere(
 
   int4 radius = (int4) {0,0,0,0};
   float4 squared = (float4) {FLT_MIN,FLT_MIN,FLT_MIN,0};
-  if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (scalar0 - 1) / 2; squared.x = radius.x * radius.x;}
-  if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = (scalar1 - 1) / 2; squared.y = radius.y * radius.y;}
-  if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = (scalar2 - 1) / 2; squared.z = radius.z * radius.z;}
+  if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = (scalar2-1)/2; squared.x = convert_float(radius.x*radius.x);}
+  if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = (scalar1-1)/2; squared.y = convert_float(radius.y*radius.y);}
+  if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (scalar0-1)/2; squared.z = convert_float(radius.z*radius.z);}
 
   int count = 0;
   float sum = 0;

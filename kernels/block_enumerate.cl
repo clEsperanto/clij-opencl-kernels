@@ -4,7 +4,7 @@ __kernel void block_enumerate(
     IMAGE_src0_TYPE  src0,
     IMAGE_src1_TYPE  src1,
     IMAGE_dst_TYPE   dst,
-    const int        scalar
+    const int        index
 ) 
 {
   const int x = get_global_id(0);
@@ -16,13 +16,13 @@ __kernel void block_enumerate(
     sum += (float) READ_IMAGE(src1, sampler, POS_src1_INSTANCE(sx,y,z,0)).x;
   }
 
-  for (int dx = 0; dx < scalar; ++dx) {
-    float value = (float) READ_IMAGE(src0, sampler, POS_src0_INSTANCE(x * scalar + dx,y,z,0)).x;
+  for (int dx = 0; dx < index; ++dx) {
+    float value = (float) READ_IMAGE(src0, sampler, POS_src0_INSTANCE(x * index + dx,y,z,0)).x;
     if (value != 0) {
       sum += value;
-      WRITE_IMAGE(dst, POS_dst_INSTANCE(x * scalar + dx,y,z,0), CONVERT_dst_PIXEL_TYPE(sum));
+      WRITE_IMAGE(dst, POS_dst_INSTANCE(x * index + dx,y,z,0), CONVERT_dst_PIXEL_TYPE(sum));
     } else {
-      WRITE_IMAGE(dst, POS_dst_INSTANCE(x * scalar + dx,y,z,0), 0);
+      WRITE_IMAGE(dst, POS_dst_INSTANCE(x * index + dx,y,z,0), 0);
     }
   }
 }

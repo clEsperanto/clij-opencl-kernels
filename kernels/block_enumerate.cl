@@ -8,8 +8,8 @@ __kernel void block_enumerate(
 ) 
 {
   const int x = get_global_id(0);
-  const int z = get_global_id(1);
-  const int y = get_global_id(2);
+  const int y = get_global_id(1);
+  const int z = get_global_id(2);
 
   float sum = 0;
   for (int sx = 0; sx < x; ++sx) {

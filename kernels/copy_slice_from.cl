@@ -1,6 +1,6 @@
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
-__kernel void copy_slice_from_3d( 
+__kernel void copy_slice_from( 
     IMAGE_src_TYPE  src,
     IMAGE_dst_TYPE  dst,  
     const int       index

@@ -8,7 +8,6 @@ __kernel void erode_box(
   const int x = get_global_id(0);
   const int y = get_global_id(1);
   const int z = get_global_id(2);
-
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
 
   int4 r = (int4){0,0,0,0};

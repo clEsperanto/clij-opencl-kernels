@@ -10,11 +10,11 @@ __kernel void gaussian_blur_separable(
     const float     s
 )
 {
-  const int i = get_global_id(0);
-  const int j = get_global_id(1);
-  const int k = get_global_id(2);
+  const int x = get_global_id(0);
+  const int y = get_global_id(1);
+  const int z = get_global_id(2);
 
-  const POS_src_TYPE coord = POS_src_INSTANCE(i,j,k,0);
+  const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
   const POS_src_TYPE dir   = POS_src_INSTANCE(dim==0,dim==1,dim==2,0);
 
   const int   center = (int) (N - 1) / 2;
@@ -28,5 +28,5 @@ __kernel void gaussian_blur_separable(
     hsum += h;
   }
   
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(i,j,k,0), CONVERT_dst_PIXEL_TYPE(res / hsum));
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(res / hsum));
 }

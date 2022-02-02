@@ -5,12 +5,12 @@ __kernel void gradient_x(
     IMAGE_dst_TYPE  dst
 )
 {
-  const int i = get_global_id(0);
-  const int j = get_global_id(1);
-  const int k = get_global_id(2);
+  const int x = get_global_id(0);
+  const int y = get_global_id(1);
+  const int z = get_global_id(2);
 
-  const float valueA = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(i-1,j,k,0)).x;
-  const float valueB = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(i+1,j,k,0)).x;
+  const float valueA = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x-1,y,z,0)).x;
+  const float valueB = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x+1,y,z,0)).x;
 
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(i,j,k,0), CONVERT_dst_PIXEL_TYPE(valueB - valueA));
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(valueB - valueA));
 }

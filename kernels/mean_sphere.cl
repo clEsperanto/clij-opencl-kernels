@@ -8,10 +8,10 @@ __kernel void mean_sphere(
     const int        scalar2
 )
 {
-  const int i = get_global_id(0);
-  const int j = get_global_id(1);
-  const int k = get_global_id(2);
-  const POS_src_TYPE coord = POS_src_INSTANCE(i,j,k,0);
+  const int x = get_global_id(0);
+  const int y = get_global_id(1);
+  const int z = get_global_id(2);
+  const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
 
   int4 radius = (int4) {0,0,0,0};
   float4 squared = (float4) {FLT_MIN,FLT_MIN,FLT_MIN,0};
@@ -35,5 +35,5 @@ __kernel void mean_sphere(
     }
   }
 
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(i,j,k,0), CONVERT_dst_PIXEL_TYPE(sum / count));
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(sum / count));
 }

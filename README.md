@@ -140,6 +140,35 @@ float
 
 </table>
 
+## Coding rules
+
+We define a list of coding rules for the OpenCL-code so that facilitate using it from multiple frameworks.
+
+### Source and destination images/buffers.
+
+There are many image processing filters which just take one source image and produce one destination image. Those should be simply called `src` and `dst`. In case multiple source and/or destination images appear in the kernel, those should be called `src0`, `src1`, ...
+
+### nD-kernels (n<=3)
+
+We can write image processing kernels that can work with 1, 2 and 3-dimensional images. Therefore, it is necessary to always write code like this:
+```
+const int x = get_global_id(0);
+const int y = get_global_id(1);
+const int z = get_global_id(2);
+
+POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
+
+float value = READ_src_IMAGE(src, sampler, pos).x;
+```
+
+This code will work with 1, 2 and 3-dimensional images because `POS_src_INSTANCE` will be set to `int`, `int2` or `int4` depending on image dimensionality during runtime. Note, if the same position should be written to a `dst` image, one can do this for example like that:
+
+```
+WRITE_IMAGE (dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
+```
+
+Note, that `_dst_` is used here. This allows that `src` and `dst` have different dimensionality. `src` could be a 3D image with one Z-plane and `dst` could be a 2D image for example.
+
 ## Known issues
 * Image dimensionality is limited to three dimensions.
 

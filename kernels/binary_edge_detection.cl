@@ -43,12 +43,12 @@ __kernel void binary_edge_detection(
       if (GET_IMAGE_DEPTH(src) > 1 && valueToWrite == 0 ){  
         value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,1,0))).x;
         if ( value == 0) {
-        valueToWrite = 1;
+          valueToWrite = 1;
         } 
         else {
           value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,-1,0))).x;
           if ( value == 0) {
-          valueToWrite = 1;
+            valueToWrite = 1;
           }
         }
       }

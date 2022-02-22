@@ -1,11 +1,11 @@
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 __kernel void mean_sphere(
-    IMAGE_src_TYPE   src,
-    IMAGE_dst_TYPE   dst,
-    const int        scalar0,
-    const int        scalar1,
-    const int        scalar2
+    IMAGE_src_TYPE  src,
+    IMAGE_dst_TYPE  dst,
+    const int       scalar0,
+    const int       scalar1,
+    const int       scalar2
 )
 {
   const int x = get_global_id(0);

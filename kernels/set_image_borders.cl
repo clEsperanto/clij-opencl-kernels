@@ -1,7 +1,7 @@
 
 __kernel void set_image_borders(
     IMAGE_dst_TYPE  dst,
-    float           scalar
+    const float     scalar
 )
 {
   const int x = get_global_id(0);

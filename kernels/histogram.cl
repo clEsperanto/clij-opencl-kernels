@@ -5,21 +5,18 @@
 const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 kernel void histogram(
-    IMAGE_src_TYPE src,
-    IMAGE_dst_TYPE dst,
-    float minimum,
-    float maximum,
-    int step_size_x,
-    int step_size_y,
-    int step_size_z
+    IMAGE_src_TYPE  src,
+    IMAGE_dst_TYPE  dst,
+    const float     minimum,
+    const float     maximum,
+    const int       step_size_x,
+    const int       step_size_y,
+    const int       step_size_z
 )
-{
-    const int image_width  = GET_IMAGE_WIDTH(src);
-    const int image_height = GET_IMAGE_HEIGHT(src);
-    const int image_depth  = GET_IMAGE_DEPTH(src);
-    
+{   
     const int y = get_global_id(0) * step_size_y;
-    float range = maximum - minimum;
+    const float width = GET_IMAGE_WIDTH(dst) - 1;
+    const float range = (maximum - minimum);
 
     uint tmp_histogram[NUMBER_OF_HISTOGRAM_BINS];
     for (int i = 0; i < NUMBER_OF_HISTOGRAM_BINS; ++i) {
@@ -28,13 +25,13 @@ kernel void histogram(
 
     for (int z = 0; z < GET_IMAGE_DEPTH(src); z += step_size_z) {
         for (int x = 0; x < GET_IMAGE_WIDTH(src); x += step_size_x) {
-            float clr = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
-            uint indx_x = convert_uint_sat( ( (clr - minimum) * (GET_IMAGE_WIDTH(dst) - 1) ) / range + 0.5);
+            const float value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
+            const uint indx_x = convert_uint_sat(((value - minimum) * width ) / range + 0.5f);
             tmp_histogram[indx_x]++;
         }  
     }
 
     for (int idx = 0; idx < GET_IMAGE_WIDTH(dst); ++idx) {
-        WRITE_IMAGE(dst, POS_dst_INSTANCE(idx,0,y,0), CONVERT_dst_PIXEL_TYPE(tmp_histogram[idx]));
+        WRITE_IMAGE(dst, POS_dst_INSTANCE(idx,y,0,0), CONVERT_dst_PIXEL_TYPE(tmp_histogram[idx]));
     }
 }

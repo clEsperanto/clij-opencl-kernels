@@ -10,7 +10,7 @@ __kernel void minimum_z_projection(
 
   IMAGE_src_PIXEL_TYPE min = 0;
   for (int z = 0; z < GET_IMAGE_DEPTH(src); ++z) {
-    IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
+    const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
     if (value < min || z == 0) {
       min = value;
     }

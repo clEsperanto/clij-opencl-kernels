@@ -12,8 +12,8 @@ __kernel void onlyzero_overwrite_maximum_diamond(
 
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
 
-  const IMAGE_src_PIXEL_TYPE foundMaximum = READ_IMAGE(src, sampler, pos).x;
-  IMAGE_src_PIXEL_TYPE originalValue = foundMaximum;
+  const IMAGE_src_PIXEL_TYPE originalValue = READ_IMAGE(src, sampler, pos).x;
+  IMAGE_src_PIXEL_TYPE foundMaximum = originalValue;
   if (foundMaximum == 0) {
     IMAGE_src_PIXEL_TYPE value;
     if(GET_IMAGE_WIDTH(src) > 1) {

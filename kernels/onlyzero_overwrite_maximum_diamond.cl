@@ -10,7 +10,7 @@ __kernel void onlyzero_overwrite_maximum_diamond(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
+  const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
 
   const IMAGE_src_PIXEL_TYPE foundMaximum = READ_IMAGE(src, sampler, pos).x;
   IMAGE_src_PIXEL_TYPE originalValue = foundMaximum;

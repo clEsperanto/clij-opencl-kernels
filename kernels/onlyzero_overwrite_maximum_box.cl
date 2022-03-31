@@ -10,7 +10,7 @@ __kernel void onlyzero_overwrite_maximum_box(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
+  const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
 
   int4 radius = (int4) {0,0,0,0};
   if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = 1; }

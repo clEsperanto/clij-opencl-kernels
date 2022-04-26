@@ -29,7 +29,7 @@ kernel void histogram(
     for (int z = 0; z < image_depth; z += step_size_z) {
         for (int x = 0; x < image_width; x += step_size_x) {
             const float value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
-            const uint indx_x = convert_uint_sat(((value - minimum) * hist_width-1 ) / range + 0.5f);
+            const uint indx_x = convert_uint_sat(((value - minimum) * hist_width-1 ) / range);
             tmp_histogram[indx_x]++;
         }  
     }

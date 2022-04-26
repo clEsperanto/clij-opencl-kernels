@@ -15,7 +15,6 @@ kernel void histogram(
 )
 {   
     const int image_width = GET_IMAGE_WIDTH(src);
-    const int image_heigh = GET_IMAGE_HEIGH(src);
     const int image_depth = GET_IMAGE_DEPTH(src);
     const int y = get_global_id(0) * step_size_y;
 

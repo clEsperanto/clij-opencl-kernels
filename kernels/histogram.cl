@@ -14,6 +14,7 @@ kernel void histogram(
     const int       step_size_z
 )
 {   
+    const int hist_width = GET_IMAGE_WIDTH(dst);
     const int image_width = GET_IMAGE_WIDTH(src);
     const int image_depth = GET_IMAGE_DEPTH(src);
     const int y = get_global_id(0) * step_size_y;
@@ -28,12 +29,12 @@ kernel void histogram(
     for (int z = 0; z < image_depth; z += step_size_z) {
         for (int x = 0; x < image_width; x += step_size_x) {
             const float value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
-            const uint indx_x = convert_uint_sat(((value - minimum) * image_width-1 ) / range + 0.5f);
+            const uint indx_x = convert_uint_sat(((value - minimum) * hist_width-1 ) / range + 0.5f);
             tmp_histogram[indx_x]++;
         }  
     }
 
-    for (int idx = 0; idx < image_width; ++idx) {
+    for (int idx = 0; idx < hist_width; ++idx) {
         WRITE_IMAGE(dst, POS_dst_INSTANCE(idx,0,y,0), CONVERT_dst_PIXEL_TYPE(tmp_histogram[idx]));
     }
 }

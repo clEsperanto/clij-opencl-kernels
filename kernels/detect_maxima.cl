@@ -14,13 +14,13 @@ __kernel void detect_maxima(
   if (GET_IMAGE_HEIGHT(src) > 1) { r.y = 1; }
   if (GET_IMAGE_DEPTH(src)  > 1) { r.z = 1; }
 
-  IMAGE_src_PIXEL_TYPE localMax = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x - 1;
+  float localMax = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x - 1;
   int4 localMaxPos = (int4){x,y,z,0};
   for (int rx = -r.x; rx <= r.x; ++rx) {
       for (int ry = -r.y; ry <= r.y; ++ry) {
           for (int rz = -r.z; rz <= r.z; ++rz) {
               int4 localPos = localMaxPos + (int4){rx,ry,rz,0};
-              const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(localPos.x,localPos.y,localPos.z,0)).x;
+              const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(localPos.x,localPos.y,localPos.z,0)).x;
               if (value > localMax) {
                   localMax = value;
                   localMaxPos = localPos;

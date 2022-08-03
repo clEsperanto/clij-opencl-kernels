@@ -20,10 +20,12 @@ __kernel void detect_maxima(
       for (int ry = -r.y; ry <= r.y; ++ry) {
           for (int rz = -r.z; rz <= r.z; ++rz) {
               int4 localPos = localMaxPos + (int4){rx,ry,rz,0};
-              const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(localPos.x,localPos.y,localPos.z,0)).x;
-              if (value > localMax) {
-                  localMax = value;
-                  localMaxPos = localPos;
+              if( all(localPos >= 0) ) {
+                const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(localPos.x,localPos.y,localPos.z,0)).x;
+                if (value > localMax) {
+                    localMax = value;
+                    localMaxPos = localPos;
+                }
               }
           }
       }

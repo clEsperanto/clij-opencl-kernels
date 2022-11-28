@@ -1,4 +1,15 @@
-// adapted code from https://github.com/bgaster/opencl-book-samples/blob/master/src/Chapter_14/histogram/histogram_image.cl
+// adapted code from
+// https://github.com/bgaster/opencl-book-samples/blob/master/src/Chapter_14/histogram/histogram_image.cl
+//
+// It was published unter BSD license according to 
+// https://code.google.com/archive/p/opencl-book-samples/
+//
+// Book:      OpenCL(R) Programming Guide
+// Authors:   Aaftab Munshi, Benedict Gaster, Timothy Mattson, James Fung, Dan Ginsburg
+// ISBN-10:   0-321-74964-2
+// ISBN-13:   978-0-321-74964-2
+// Publisher: Addison-Wesley Professional
+//
 
 #pragma OPENCL EXTENSION cl_khr_local_int32_base_atomics : enable
 

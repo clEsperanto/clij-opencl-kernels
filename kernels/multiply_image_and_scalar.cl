@@ -10,7 +10,7 @@ __kernel void multiply_image_and_scalar(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
+  float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
 
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_TYPE(value * scalar));
 }

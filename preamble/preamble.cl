@@ -584,7 +584,7 @@ inline ushort2 read_buffer1dus(int read_buffer_width, int read_buffer_height, in
     return (ushort2){buffer_var[pos_in_buffer],0};
 }
 
-inline long2 read_buffer1dl(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global float * buffer_var, sampler_t sampler, int position )
+inline long2 read_buffer1dl(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global long * buffer_var, sampler_t sampler, int position )
 {
     int pos = (int){position};
     if (true) { // if (CLK_ADDRESS_CLAMP_TO_EDGE & sampler) {
@@ -598,7 +598,7 @@ inline long2 read_buffer1dl(int read_buffer_width, int read_buffer_height, int r
     return (long2){buffer_var[pos_in_buffer],0};
 }
 
-inline ulong2 read_buffer1dul(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global float * buffer_var, sampler_t sampler, int position )
+inline ulong2 read_buffer1dul(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global ulong * buffer_var, sampler_t sampler, int position )
 {
     int pos = (int){position};
     if (true) { // if (CLK_ADDRESS_CLAMP_TO_EDGE & sampler) {

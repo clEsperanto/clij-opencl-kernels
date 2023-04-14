@@ -14,19 +14,11 @@ __kernel void laplace_box(
   if (GET_IMAGE_HEIGHT(src) > 1) { r.y = 1; }
   if (GET_IMAGE_WIDTH(src)  > 1) { r.x = 1; }
 
-  float norm = 0;
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
-
-  if ((r.x + r.y + r.z) > 2)
-  {
-    norm = 26;
-  } else if ((r.x + r.y + r.z) > 1)
-  {
-    norm = 8;
-  } else
-  {
-    norm = 2;
-  }
+  
+  int sum = r.x + r.y + r.z;
+  const float norm_table[] = {2, 8, 26};
+  float norm = norm_table[sum - 1];
 
   float result = 0;
   for (int dx = -1; dx <= 1; ++dx) {

@@ -15,7 +15,7 @@ __kernel void laplace_box(
   if (GET_IMAGE_WIDTH(src)  > 1) { r.x = 1; }
 
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
-  const float norm = (r.z + r.y + r.x) * 2;
+  const float norm = pow(3.0f, (int)(r.x + r.y + r.z)) - 1;
 
   float result = 0;
   for (int dx = -r.x; dx <= r.x; ++dx) {

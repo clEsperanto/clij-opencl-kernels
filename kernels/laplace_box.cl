@@ -16,9 +16,7 @@ __kernel void laplace_box(
 
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
   
-  int sum = r.x + r.y + r.z;
-  const float norm_table[] = {2, 8, 26};
-  float norm = norm_table[sum - 1];
+  float norm = pow(3, r.x + r.y + r.z) - 1;
 
   float result = 0;
   for (int dx = -r.x; dx <= r.x; ++dx) {

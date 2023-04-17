@@ -16,8 +16,8 @@ __kernel void laplace_box(
 
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
   
-  float norm = pow(3, r.x + r.y + r.z) - 1;
-
+  float norm = pow(3.0f, (int)(r.x + r.y + r.z)) - 1;
+  
   float result = 0;
   for (int dx = -r.x; dx <= r.x; ++dx) {
     for (int dy = -r.y; dy <= r.y; ++dy) {

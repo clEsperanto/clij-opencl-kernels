@@ -21,9 +21,9 @@ __kernel void laplace_box(
   float norm = norm_table[sum - 1];
 
   float result = 0;
-  for (int dx = -1; dx <= 1; ++dx) {
-    for (int dy = -1; dy <= 1; ++dy) {
-      for (int dz = -1; dz <= 1; ++dz) {
+  for (int dx = -r.x; dx <= r.x; ++dx) {
+    for (int dy = -r.y; dy <= r.y; ++dy) {
+      for (int dz = -r.z; dz <= r.z; ++dz) {
         if (dx == 0 && dy == 0 && dz == 0) {
           result += (float) READ_IMAGE(src, sampler, pos).x * norm;
         } else {

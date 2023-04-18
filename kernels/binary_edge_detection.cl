@@ -14,7 +14,7 @@ __kernel void binary_edge_detection(
   IMAGE_src_PIXEL_TYPE valueToWrite = READ_IMAGE(src, sampler, pos).x;
   if (valueToWrite != 0) {
       valueToWrite = 0;
-      IMAGE_src_PIXEL_TYPE value = 0
+      IMAGE_src_PIXEL_TYPE value = 0;
 
       if (GET_IMAGE_WIDTH(src) > 1 && valueToWrite == 0 ){  
         value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(1,0,0,0))).x;

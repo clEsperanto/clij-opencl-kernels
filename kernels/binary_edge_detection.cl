@@ -13,45 +13,44 @@ __kernel void binary_edge_detection(
 
   IMAGE_src_PIXEL_TYPE valueToWrite = READ_IMAGE(src, sampler, pos).x;
   if (valueToWrite != 0) {
-      valueToWrite = 0;
-      IMAGE_src_PIXEL_TYPE value = 0;
-
-      if (GET_IMAGE_WIDTH(src) > 1 && valueToWrite == 0 ){  
-        value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(1,0,0,0))).x;
+    valueToWrite = 0;
+    IMAGE_src_PIXEL_TYPE value = 0;
+    if (GET_IMAGE_WIDTH(src) > 1 && valueToWrite == 0 ){  
+      value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(1,0,0,0))).x;
+      if ( value == 0) {
+          valueToWrite = 1;
+      } 
+      else {
+        value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(-1,0,0,0))).x;
         if ( value == 0) {
             valueToWrite = 1;
         } 
-        else {
-          value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(-1,0,0,0))).x;
-          if ( value == 0) {
-              valueToWrite = 1;
-          } 
-        }
       }
-      if (GET_IMAGE_HEIGHT(src) > 1 && valueToWrite == 0 ){  
-          value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,1,0,0))).x;
-          if ( value == 0) {
-            valueToWrite = 1;
-          } 
-          else {
-            value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,-1,0,0))).x;
-            if ( value == 0) {
-              valueToWrite = 1;
-            } 
-          }
-      }
-      if (GET_IMAGE_DEPTH(src) > 1 && valueToWrite == 0 ){  
-        value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,1,0))).x;
+    }
+    if (GET_IMAGE_HEIGHT(src) > 1 && valueToWrite == 0 ){  
+        value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,1,0,0))).x;
         if ( value == 0) {
           valueToWrite = 1;
         } 
         else {
-          value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,-1,0))).x;
+          value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,-1,0,0))).x;
           if ( value == 0) {
             valueToWrite = 1;
-          }
+          } 
+        }
+    }
+    if (GET_IMAGE_DEPTH(src) > 1 && valueToWrite == 0 ){  
+      value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,1,0))).x;
+      if ( value == 0) {
+        valueToWrite = 1;
+      } 
+      else {
+        value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,-1,0))).x;
+        if ( value == 0) {
+          valueToWrite = 1;
         }
       }
-
-    WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(valueToWrite));
+    }
+  }
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(valueToWrite));
 }

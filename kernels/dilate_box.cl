@@ -15,7 +15,7 @@ __kernel void dilate_box(
   if (GET_IMAGE_HEIGHT(src) > 1) { r.y = 1; }
   if (GET_IMAGE_WIDTH(src)  > 1) { r.x = 1; }
 
-  IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, pos).x;
+  float value = READ_IMAGE(src, sampler, pos).x;
   if (value < 1) {
     for (int dx = -r.x; dx <= r.x; ++dx) {
       for (int dy = -r.y; dy <= r.y; ++dy) {

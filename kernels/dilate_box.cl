@@ -25,13 +25,13 @@ __kernel void dilate_box(
             break;
           }
         } 
-        if (value != 0) {
-          break;
-        }
+        //if (value != 0) {
+        //  break;
+        //}
       } 
-      if (value != 0) {
-        break;
-      }
+      //if (value != 0) {
+      //  break;
+      //}
     }
   }
 

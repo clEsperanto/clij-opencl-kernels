@@ -11,6 +11,62 @@
 #define uint unsigned int
 #define ulong unsigned long
 
+#define CLK_NORMALIZED_COORDS_FALSE 1
+#define CLK_ADDRESS_CLAMP_TO_EDGE 2
+#define CLK_FILTER_NEAREST 4
+#define CLK_NORMALIZED_COORDS_TRUE 8
+#define CLK_ADDRESS_CLAMP 16
+#define CLK_FILTER_LINEAR 32
+#define CLK_ADDRESS_NONE 64
+
+
+__device__ inline int2 operator+(int2 a, int2 b)
+{
+    return make_int2(a.x + b.x, a.y + b.y);
+}
+
+__device__ inline int4 operator+(int4 a, int4 b)
+{
+    return make_int4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+}
+
+__device__ inline int2 operator*(int b, int2 a)
+{
+    return make_int2(b * a.x, b * a.y);
+}
+
+__device__ inline int4 operator*(int b, int4 a)
+{
+    return make_int4(b * a.x, b * a.y, b * a.z, b * a.w);
+}
+
+__device__ inline float pow(float x, int y) {
+    return pow(float(x), float(y));
+}
+
+__device__ inline float2 sqrt(float2 a) {
+    return make_float2(sqrt(a.x), sqrt(a.y));
+}
+
+__device__ inline float4 cross(float4 a, float4 b)
+{ 
+    return make_float4(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x, 0); 
+}
+
+__device__ inline float dot(float4 a, float4 b)
+{ 
+    return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+}
+
+__device__ inline float length(float4 v)
+{
+    return sqrtf(dot(v, v));
+}
+
+__device__ inline unsigned int atomic_add(unsigned int* address, unsigned int value) {
+    return atomicAdd(address, value);
+}
+
 
 __device__ inline uchar clij_convert_uchar_sat(float value) {
     if (value > 255) {
@@ -22,7 +78,6 @@ __device__ inline uchar clij_convert_uchar_sat(float value) {
     return (uchar)value;
 }
 
-
 __device__ inline char clij_convert_char_sat(float value) {
     if (value > 127) {
         return 127;
@@ -33,7 +88,6 @@ __device__ inline char clij_convert_char_sat(float value) {
     return (char)value;
 }
 
-
 __device__ inline ushort clij_convert_ushort_sat(float value) {
     if (value > 65535) {
         return 65535;
@@ -43,7 +97,6 @@ __device__ inline ushort clij_convert_ushort_sat(float value) {
     }
     return (ushort)value;
 }
-
 
 __device__ inline short clij_convert_short_sat(float value) {
     if (value > 32767) {
@@ -75,7 +128,6 @@ __device__ inline uint convert_uint_sat(float value) {
     return (uint)value;
 }
 
-
 __device__ inline int clij_convert_int_sat(float value) {
     if (value > 2147483647) {
         return 2147483647;
@@ -85,7 +137,6 @@ __device__ inline int clij_convert_int_sat(float value) {
     }
     return (int)value;
 }
-
 
 __device__ inline uint clij_convert_ulong_sat(float value) {
     if (value > 18446744073709551615) {
@@ -109,6 +160,17 @@ __device__ inline int clij_convert_long_sat(float value) {
 
 __device__ inline float clij_convert_float_sat(float value) {
     return value;
+}
+
+
+__device__ inline int get_global_id(int dim) {
+    if (dim == 0) {
+        return blockDim.x * blockIdx.x + threadIdx.x;
+    } else if (dim == 1) {
+        return blockDim.y * blockIdx.y + threadIdx.y;
+    } else {
+        return blockDim.z * blockIdx.z + threadIdx.z;
+    } 
 }
 
 

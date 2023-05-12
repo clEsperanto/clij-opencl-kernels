@@ -714,3 +714,6 @@ __device__ inline void write_buffer2dul(int write_buffer_width, int write_buffer
     }
     buffer_var[pos_in_buffer] = value;
 }
+
+#define READ_IMAGE(a,b,c) READ_ ## a ## _IMAGE(a,b,c)
+#define WRITE_IMAGE(a,b,c) WRITE_ ## a ## _IMAGE(a,b,c)

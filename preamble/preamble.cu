@@ -154,8 +154,6 @@ __device__ inline float clij_convert_float_sat(float value) {
     return value;
 }
 
-#define get_global_size(dim) global_size_ ## dim ## _size
-
 #define READ_IMAGE(a,b,c) READ_ ## a ## _IMAGE(a,b,c)
 #define WRITE_IMAGE(a,b,c) WRITE_ ## a ## _IMAGE(a,b,c)
 
@@ -717,233 +715,233 @@ __device__ inline void write_buffer2dul(int write_buffer_width, int write_buffer
 
 
 
-// __device__ inline float2 read_buffer1df(int read_buffer_width, int read_buffer_height, int read_buffer_depth, float * buffer_var, int sampler, int position )
-// {
-//     int pos = position;
+__device__ inline float2 read_buffer1df(int read_buffer_width, int read_buffer_height, int read_buffer_depth, float * buffer_var, int sampler, int position )
+{
+    int pos = position;
 
-//     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
-//     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
+    pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
+    pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
 
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= read_buffer_width) {
-//         return make_float2(0, 0);
-//     }
-//     return make_float2(buffer_var[pos_in_buffer],0);
-// }
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= read_buffer_width) {
+        return make_float2(0, 0);
+    }
+    return make_float2(buffer_var[pos_in_buffer],0);
+}
 
-// __device__ inline double2 read_buffer1dd(int read_buffer_width, int read_buffer_height, int read_buffer_depth, double * buffer_var, int sampler, int position )
-// {
-//     int pos = position;
+__device__ inline double2 read_buffer1dd(int read_buffer_width, int read_buffer_height, int read_buffer_depth, double * buffer_var, int sampler, int position )
+{
+    int pos = position;
 
-//     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
-//     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
+    pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
+    pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
 
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= read_buffer_width) {
-//         return make_double2(0, 0);
-//     }
-//     return make_double2(buffer_var[pos_in_buffer],0);
-// }
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= read_buffer_width) {
+        return make_double2(0, 0);
+    }
+    return make_double2(buffer_var[pos_in_buffer],0);
+}
 
-// __device__ inline char2 read_buffer1dc(int read_buffer_width, int read_buffer_height, int read_buffer_depth, char * buffer_var, int sampler, int position )
-// {
-//     int pos = position;
+__device__ inline char2 read_buffer1dc(int read_buffer_width, int read_buffer_height, int read_buffer_depth, char * buffer_var, int sampler, int position )
+{
+    int pos = position;
 
-//     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
-//     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
+    pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
+    pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
 
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= read_buffer_width) {
-//         return make_char2(0, 0);
-//     }
-//     return make_char2(buffer_var[pos_in_buffer],0);
-// }
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= read_buffer_width) {
+        return make_char2(0, 0);
+    }
+    return make_char2(buffer_var[pos_in_buffer],0);
+}
 
-// __device__ inline uchar2 read_buffer1duc(int read_buffer_width, int read_buffer_height, int read_buffer_depth, uchar * buffer_var, int sampler, int position )
-// {
-//     int pos = position;
+__device__ inline uchar2 read_buffer1duc(int read_buffer_width, int read_buffer_height, int read_buffer_depth, uchar * buffer_var, int sampler, int position )
+{
+    int pos = position;
 
-//     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
-//     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
+    pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
+    pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
 
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= read_buffer_width) {
-//         return make_uchar2(0, 0);
-//     }
-//     return make_uchar2(buffer_var[pos_in_buffer],0);
-// }
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= read_buffer_width) {
+        return make_uchar2(0, 0);
+    }
+    return make_uchar2(buffer_var[pos_in_buffer],0);
+}
 
-// __device__ inline short2 read_buffer1ds(int read_buffer_width, int read_buffer_height, int read_buffer_depth, short * buffer_var, int sampler, int position )
-// {
-//     int pos = position;
+__device__ inline short2 read_buffer1ds(int read_buffer_width, int read_buffer_height, int read_buffer_depth, short * buffer_var, int sampler, int position )
+{
+    int pos = position;
 
-//     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
-//     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
+    pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
+    pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
 
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= read_buffer_width) {
-//         return make_short2(0, 0);
-//     }
-//     return make_short2(buffer_var[pos_in_buffer],0);
-// }
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= read_buffer_width) {
+        return make_short2(0, 0);
+    }
+    return make_short2(buffer_var[pos_in_buffer],0);
+}
 
-// __device__ inline ushort2 read_buffer1dus(int read_buffer_width, int read_buffer_height, int read_buffer_depth, ushort * buffer_var, int sampler, int position )
-// {
-//     int pos = position;
+__device__ inline ushort2 read_buffer1dus(int read_buffer_width, int read_buffer_height, int read_buffer_depth, ushort * buffer_var, int sampler, int position )
+{
+    int pos = position;
 
-//     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
-//     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
+    pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
+    pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
 
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= read_buffer_width) {
-//         return make_ushort2(0, 0);
-//     }
-//     return make_ushort2(buffer_var[pos_in_buffer],0);
-// }
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= read_buffer_width) {
+        return make_ushort2(0, 0);
+    }
+    return make_ushort2(buffer_var[pos_in_buffer],0);
+}
 
-// __device__ inline int2 read_buffer1di(int read_buffer_width, int read_buffer_height, int read_buffer_depth, int * buffer_var, int sampler, int position )
-// {
-//     int pos = position;
+__device__ inline int2 read_buffer1di(int read_buffer_width, int read_buffer_height, int read_buffer_depth, int * buffer_var, int sampler, int position )
+{
+    int pos = position;
 
-//     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
-//     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
+    pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
+    pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
 
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= read_buffer_width) {
-//         return make_int2(0, 0);
-//     }
-//     return make_int2(buffer_var[pos_in_buffer],0);
-// }
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= read_buffer_width) {
+        return make_int2(0, 0);
+    }
+    return make_int2(buffer_var[pos_in_buffer],0);
+}
 
-// __device__ inline uint2 read_buffer1dui(int read_buffer_width, int read_buffer_height, int read_buffer_depth, uint * buffer_var, int sampler, int position ) 
-// {
-//     int pos = position;
+__device__ inline uint2 read_buffer1dui(int read_buffer_width, int read_buffer_height, int read_buffer_depth, uint * buffer_var, int sampler, int position ) 
+{
+    int pos = position;
 
-//     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
-//     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
+    pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
+    pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
 
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= read_buffer_width) {
-//         return make_uint2(0, 0);
-//     }
-//     return make_uint2(buffer_var[pos_in_buffer],0);
-// }
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= read_buffer_width) {
+        return make_uint2(0, 0);
+    }
+    return make_uint2(buffer_var[pos_in_buffer],0);
+}
 
-// __device__ inline long2 read_buffer1dl(int read_buffer_width, int read_buffer_height, int read_buffer_depth, long * buffer_var, int sampler, int position )
-// {
-//     int pos = position;
+__device__ inline long2 read_buffer1dl(int read_buffer_width, int read_buffer_height, int read_buffer_depth, long * buffer_var, int sampler, int position )
+{
+    int pos = position;
 
-//     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
-//     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
+    pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
+    pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
 
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= read_buffer_width) {
-//         return make_long2(0, 0);
-//     }
-//     return make_long2(buffer_var[pos_in_buffer],0);
-// }
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= read_buffer_width) {
+        return make_long2(0, 0);
+    }
+    return make_long2(buffer_var[pos_in_buffer],0);
+}
 
-// __device__ inline ulong2 read_buffer1dul(int read_buffer_width, int read_buffer_height, int read_buffer_depth, ulong * buffer_var, int sampler, int position )
-// {
-//     int pos = position;
+__device__ inline ulong2 read_buffer1dul(int read_buffer_width, int read_buffer_height, int read_buffer_depth, ulong * buffer_var, int sampler, int position )
+{
+    int pos = position;
 
-//     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
-//     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
+    pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
+    pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
 
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= read_buffer_width) {
-//         return make_ulong2(0, 0);
-//     }
-//     return make_ulong2(buffer_var[pos_in_buffer],0);
-// }
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= read_buffer_width) {
+        return make_ulong2(0, 0);
+    }
+    return make_ulong2(buffer_var[pos_in_buffer],0);
+}
 
 
-// __device__ inline void write_buffer1df(int write_buffer_width, int write_buffer_height, int write_buffer_depth, float * buffer_var, int pos, float value )
-// {
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= write_buffer_width) {
-//         return;
-//     }
-//     buffer_var[pos_in_buffer] = value;
-// }
+__device__ inline void write_buffer1df(int write_buffer_width, int write_buffer_height, int write_buffer_depth, float * buffer_var, int pos, float value )
+{
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= write_buffer_width) {
+        return;
+    }
+    buffer_var[pos_in_buffer] = value;
+}
 
-// __device__ inline void write_buffer1dd(int write_buffer_width, int write_buffer_height, int write_buffer_depth, double * buffer_var, int pos, double value )
-// {
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= write_buffer_width) {
-//         return;
-//     }
-//     buffer_var[pos_in_buffer] = value;
-// }
+__device__ inline void write_buffer1dd(int write_buffer_width, int write_buffer_height, int write_buffer_depth, double * buffer_var, int pos, double value )
+{
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= write_buffer_width) {
+        return;
+    }
+    buffer_var[pos_in_buffer] = value;
+}
 
-// __device__ inline void write_buffer1dc(int write_buffer_width, int write_buffer_height, int write_buffer_depth, char * buffer_var, int pos, char value )
-// {
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= write_buffer_width) {
-//         return;
-//     }
-//     buffer_var[pos_in_buffer] = value;
-// }
+__device__ inline void write_buffer1dc(int write_buffer_width, int write_buffer_height, int write_buffer_depth, char * buffer_var, int pos, char value )
+{
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= write_buffer_width) {
+        return;
+    }
+    buffer_var[pos_in_buffer] = value;
+}
 
-// __device__ inline void write_buffer1duc(int write_buffer_width, int write_buffer_height, int write_buffer_depth, uchar * buffer_var, int pos, uchar value )
-// {
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= write_buffer_width) {
-//         return;
-//     }
-//     buffer_var[pos_in_buffer] = value;
-// }
+__device__ inline void write_buffer1duc(int write_buffer_width, int write_buffer_height, int write_buffer_depth, uchar * buffer_var, int pos, uchar value )
+{
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= write_buffer_width) {
+        return;
+    }
+    buffer_var[pos_in_buffer] = value;
+}
 
-// __device__ inline void write_buffer1ds(int write_buffer_width, int write_buffer_height, int write_buffer_depth, short * buffer_var, int pos, short value )
-// {
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= write_buffer_width) {
-//         return;
-//     }
-//     buffer_var[pos_in_buffer] = value;
-// }
+__device__ inline void write_buffer1ds(int write_buffer_width, int write_buffer_height, int write_buffer_depth, short * buffer_var, int pos, short value )
+{
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= write_buffer_width) {
+        return;
+    }
+    buffer_var[pos_in_buffer] = value;
+}
 
-// __device__ inline void write_buffer1dus(int write_buffer_width, int write_buffer_height, int write_buffer_depth, ushort * buffer_var, int pos, ushort value )
-// {
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= write_buffer_width) {
-//         return;
-//     }
-//     buffer_var[pos_in_buffer] = value;
-// }
+__device__ inline void write_buffer1dus(int write_buffer_width, int write_buffer_height, int write_buffer_depth, ushort * buffer_var, int pos, ushort value )
+{
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= write_buffer_width) {
+        return;
+    }
+    buffer_var[pos_in_buffer] = value;
+}
 
-// __device__ inline void write_buffer1di(int write_buffer_width, int write_buffer_height, int write_buffer_depth, int * buffer_var, int pos, int value )
-// {
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= write_buffer_width) {
-//         return;
-//     }
-//     buffer_var[pos_in_buffer] = value;
-// }
+__device__ inline void write_buffer1di(int write_buffer_width, int write_buffer_height, int write_buffer_depth, int * buffer_var, int pos, int value )
+{
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= write_buffer_width) {
+        return;
+    }
+    buffer_var[pos_in_buffer] = value;
+}
 
-// __device__ inline void write_buffer1dui(int write_buffer_width, int write_buffer_height, int write_buffer_depth, uint * buffer_var, int pos, uint value )
-// {
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= write_buffer_width) {
-//         return;
-//     }
-//     buffer_var[pos_in_buffer] = value;
-// }
+__device__ inline void write_buffer1dui(int write_buffer_width, int write_buffer_height, int write_buffer_depth, uint * buffer_var, int pos, uint value )
+{
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= write_buffer_width) {
+        return;
+    }
+    buffer_var[pos_in_buffer] = value;
+}
 
-// __device__ inline void write_buffer1dl(int write_buffer_width, int write_buffer_height, int write_buffer_depth, long * buffer_var, int pos, long value )
-// {
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= write_buffer_width) {
-//         return;
-//     }
-//     buffer_var[pos_in_buffer] = value;
-// }
+__device__ inline void write_buffer1dl(int write_buffer_width, int write_buffer_height, int write_buffer_depth, long * buffer_var, int pos, long value )
+{
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= write_buffer_width) {
+        return;
+    }
+    buffer_var[pos_in_buffer] = value;
+}
 
-// __device__ inline void write_buffer1dul(int write_buffer_width, int write_buffer_height, int write_buffer_depth, ulong * buffer_var, int pos, ulong value )
-// {
-//     int pos_in_buffer = pos;
-//     if (pos < 0 || pos >= write_buffer_width) {
-//         return;
-//     }
-//     buffer_var[pos_in_buffer] = value;
-// }
+__device__ inline void write_buffer1dul(int write_buffer_width, int write_buffer_height, int write_buffer_depth, ulong * buffer_var, int pos, ulong value )
+{
+    int pos_in_buffer = pos;
+    if (pos < 0 || pos >= write_buffer_width) {
+        return;
+    }
+    buffer_var[pos_in_buffer] = value;
+}

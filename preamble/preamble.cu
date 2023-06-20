@@ -154,8 +154,6 @@ __device__ inline float clij_convert_float_sat(float value) {
     return value;
 }
 
-#define get_global_size(dim) global_size_ ## dim ## _size
-
 #define READ_IMAGE(a,b,c) READ_ ## a ## _IMAGE(a,b,c)
 #define WRITE_IMAGE(a,b,c) WRITE_ ## a ## _IMAGE(a,b,c)
 
@@ -719,7 +717,7 @@ __device__ inline void write_buffer2dul(int write_buffer_width, int write_buffer
 
 __device__ inline float2 read_buffer1df(int read_buffer_width, int read_buffer_height, int read_buffer_depth, float * buffer_var, int sampler, int position )
 {
-    int pos = make_int(position);
+    int pos = position;
 
     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
@@ -733,7 +731,7 @@ __device__ inline float2 read_buffer1df(int read_buffer_width, int read_buffer_h
 
 __device__ inline double2 read_buffer1dd(int read_buffer_width, int read_buffer_height, int read_buffer_depth, double * buffer_var, int sampler, int position )
 {
-    int pos = make_int(position);
+    int pos = position;
 
     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
@@ -747,7 +745,7 @@ __device__ inline double2 read_buffer1dd(int read_buffer_width, int read_buffer_
 
 __device__ inline char2 read_buffer1dc(int read_buffer_width, int read_buffer_height, int read_buffer_depth, char * buffer_var, int sampler, int position )
 {
-    int pos = make_int(position);
+    int pos = position;
 
     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
@@ -761,7 +759,7 @@ __device__ inline char2 read_buffer1dc(int read_buffer_width, int read_buffer_he
 
 __device__ inline uchar2 read_buffer1duc(int read_buffer_width, int read_buffer_height, int read_buffer_depth, uchar * buffer_var, int sampler, int position )
 {
-    int pos = make_int(position);
+    int pos = position;
 
     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
@@ -775,7 +773,7 @@ __device__ inline uchar2 read_buffer1duc(int read_buffer_width, int read_buffer_
 
 __device__ inline short2 read_buffer1ds(int read_buffer_width, int read_buffer_height, int read_buffer_depth, short * buffer_var, int sampler, int position )
 {
-    int pos = make_int(position);
+    int pos = position;
 
     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
@@ -789,7 +787,7 @@ __device__ inline short2 read_buffer1ds(int read_buffer_width, int read_buffer_h
 
 __device__ inline ushort2 read_buffer1dus(int read_buffer_width, int read_buffer_height, int read_buffer_depth, ushort * buffer_var, int sampler, int position )
 {
-    int pos = make_int(position);
+    int pos = position;
 
     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
@@ -803,7 +801,7 @@ __device__ inline ushort2 read_buffer1dus(int read_buffer_width, int read_buffer
 
 __device__ inline int2 read_buffer1di(int read_buffer_width, int read_buffer_height, int read_buffer_depth, int * buffer_var, int sampler, int position )
 {
-    int pos = make_int(position);
+    int pos = position;
 
     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
@@ -817,7 +815,7 @@ __device__ inline int2 read_buffer1di(int read_buffer_width, int read_buffer_hei
 
 __device__ inline uint2 read_buffer1dui(int read_buffer_width, int read_buffer_height, int read_buffer_depth, uint * buffer_var, int sampler, int position ) 
 {
-    int pos = make_int(position);
+    int pos = position;
 
     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
@@ -831,7 +829,7 @@ __device__ inline uint2 read_buffer1dui(int read_buffer_width, int read_buffer_h
 
 __device__ inline long2 read_buffer1dl(int read_buffer_width, int read_buffer_height, int read_buffer_depth, long * buffer_var, int sampler, int position )
 {
-    int pos = make_int(position);
+    int pos = position;
 
     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);
@@ -845,7 +843,7 @@ __device__ inline long2 read_buffer1dl(int read_buffer_width, int read_buffer_he
 
 __device__ inline ulong2 read_buffer1dul(int read_buffer_width, int read_buffer_height, int read_buffer_depth, ulong * buffer_var, int sampler, int position )
 {
-    int pos = make_int(position);
+    int pos = position;
 
     pos = max((MINMAX_TYPE)pos, (MINMAX_TYPE)0);
     pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1);

@@ -14,7 +14,7 @@ __kernel void set_nonzero_pixels_to_pixelindex(
   const int h = GET_IMAGE_HEIGHT(src);
   const int d = GET_IMAGE_DEPTH(src);
 
-  const float pixel_index = x * h * d + y * d + z + offset;
+  float pixel_index = x * h * d + y * d + z + offset;
   IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
   if (value == 0) {
       pixel_index = 0;

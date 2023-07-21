@@ -9,6 +9,9 @@ __kernel void copy_slice_from(
   const int x = get_global_id(0);
   const int y = get_global_id(1);
 
-  const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,index,0)).x;
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,0,0), CONVERT_dst_PIXEL_TYPE(value));
+  const POS_src_TYPE pos_src = POS_src_INSTANCE(x, y, index, 0);
+  const POS_dst_TYPE pos_dst = POS_dst_INSTANCE(x, y, 0, 0);
+
+  const float value = READ_src_IMAGE(src, sampler, pos_src).x;
+  WRITE_dst_IMAGE(dst, pos_dst, CONVERT_dst_PIXEL_TYPE(value));
 }

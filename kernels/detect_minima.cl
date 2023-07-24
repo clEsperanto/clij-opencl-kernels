@@ -33,17 +33,17 @@ __kernel void detect_minima(
   }
 
   IMAGE_dst_PIXEL_TYPE result = 0;
-  if (r.z > 1) {  
+  if (r.z == 1) {  
     if (localMinPos.x == x && localMinPos.y == y && localMinPos.z == z) {
     result = 1;
     }
   }
-  else if (r.y > 1) {  
+  else if (r.y == 1) {  
     if (localMinPos.x == x && localMinPos.y == y) {
     result = 1;
     } 
   }
-  else if (r.x > 1) {  
+  else if (r.x == 1) {  
     if (localMinPos.x == x) {
     result = 1;
     }

@@ -33,8 +33,20 @@ __kernel void detect_minima(
   }
 
   IMAGE_dst_PIXEL_TYPE result = 0;
-  if (localMinPos.x == pos.x && localMinPos.y == pos.y && localMinPos.z == pos.z) {
-      result = 1;
+  if (r.z > 1) {  
+    if (localMinPos.x == x && localMinPos.y == y && localMinPos.z == z) {
+    result = 1;
+    }
+  }
+  else if (r.y > 1) {  
+    if (localMinPos.x == x && localMinPos.y == y) {
+    result = 1;
+    } 
+  }
+  else if (r.x > 1) {  
+    if (localMinPos.x == x) {
+    result = 1;
+    }
   }
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), result);
 }

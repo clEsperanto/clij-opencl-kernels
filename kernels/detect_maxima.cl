@@ -33,8 +33,20 @@ __kernel void detect_maxima(
   }
 
   IMAGE_dst_PIXEL_TYPE result = 0;
-  if (localMaxPos.x == pos.x && localMaxPos.y == pos.y && localMaxPos.z == pos.z) {
-      result = 1;
+  if (r.z > 1) {  
+    if (localMaxPos.x == x && localMaxPos.y == y && localMaxPos.z == z) {
+    result = 1;
+    }
+  }
+  else if (r.y > 1) {  
+    if (localMaxPos.x == x && localMaxPos.y == y) {
+    result = 1;
+    } 
+  }
+  else if (r.x > 1) {  
+    if (localMaxPos.x == x) {
+    result = 1;
+    }
   }
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), result);
 }

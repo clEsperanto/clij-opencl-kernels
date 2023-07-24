@@ -16,6 +16,10 @@ __kernel void paste(
   const int dy = y + scalar1;
   const int dz = z + scalar2;
 
-  const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(dx,dy,dz,0)).x;
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
+  if (x >= GET_IMAGE_WIDTH(src)) return;
+  if (y >= GET_IMAGE_HEIGHT(src)) return;
+  if (z >= GET_IMAGE_DEPTH(src)) return;
+
+  const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(dx,dy,dz,0), CONVERT_dst_PIXEL_TYPE(value));
 }

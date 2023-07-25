@@ -25,8 +25,8 @@ __kernel void draw_line(
     return;
   }
 
-  // float4 r1 = (float4) {dx-x2, dy-y2, dz-z2, 0};
-  // float4 r2 = (float4) {x1-x2, y1-y2, z1-z2, 0};
+  // float4 r1 = (float4){dx-x2, dy-y2, dz-z2, 0};
+  // float4 r2 = (float4){x1-x2, y1-y2, z1-z2, 0};
   const POS_dst_TYPE r1 = POS_dst_INSTANCE(dx-x2, dy-y2, dz-z2, 0);
   const POS_dst_TYPE r2 = POS_dst_INSTANCE(x1-x2, y1-y2, z1-z2, 0);
   const POS_dst_TYPE vector = cross(r2, r1);

@@ -63,7 +63,7 @@ __kernel void detect_maxima(
   for (int rx = -r.x; rx <= r.x; ++rx) {
       for (int ry = -r.y; ry <= r.y; ++ry) {
           for (int rz = -r.z; rz <= r.z; ++rz) {
-              int4 localPos = localMaxPos + (int4){rx,ry,rz,0};
+              int4 localPos = pos + (int4){rx,ry,rz,0};
               if( localPos.x == pos.x && localPos.y == pos.y && localPos.z == pos.z) {
                 continue;
               }

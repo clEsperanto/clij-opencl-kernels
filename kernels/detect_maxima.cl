@@ -14,7 +14,6 @@ __kernel void detect_maxima(
   if (GET_IMAGE_HEIGHT(src) > 1) { r.y = 1; }
   if (GET_IMAGE_DEPTH(src)  > 1) { r.z = 1; }
 
-  bool foundMax = false;
   float localMax = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
   int4 localMaxPos = (int4){x,y,z,0};
   const int4 pos = (int4){x,y,z,0};
@@ -27,7 +26,6 @@ __kernel void detect_maxima(
                 if (value > localMax) {
                     localMax = value;
                     localMaxPos = localPos;
-                    foundMax = true;
                 }
               }
           }
@@ -35,7 +33,7 @@ __kernel void detect_maxima(
   }
 
   IMAGE_dst_PIXEL_TYPE result = 0;
-  if (foundMax && localMaxPos.x == x && localMaxPos.y == y && localMaxPos.z == z) {
+  if (localMaxPos.x == x && localMaxPos.y == y && localMaxPos.z == z) {
       result = 1;
   }
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), result);

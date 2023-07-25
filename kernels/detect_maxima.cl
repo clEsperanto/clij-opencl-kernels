@@ -15,7 +15,7 @@ __kernel void detect_maxima(
   if (GET_IMAGE_DEPTH(src)  > 1) { r.z = 1; }
 
   bool foundMax = false;
-  float localMax = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x -1;
+  float localMax = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
   int4 localMaxPos = (int4){x,y,z,0};
   const int4 pos = (int4){x,y,z,0};
   for (int rx = -r.x; rx <= r.x; ++rx) {
@@ -25,7 +25,6 @@ __kernel void detect_maxima(
               if( localPos.x >= 0 && localPos.y >= 0 && localPos.z >= 0) {
                 const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(localPos.x,localPos.y,localPos.z,0)).x;
                 if (value > localMax) {
-                    printf("Found maxima at %d %d %d, with value %f.", localPos.x, localPos.y, localPos.z, value);
                     localMax = value;
                     localMaxPos = localPos;
                     foundMax = true;

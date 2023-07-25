@@ -13,7 +13,7 @@ __kernel void mean_sphere(
   const int z = get_global_id(2);
   const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
 
-  int4 radius = (int4) {0,0,0,0};
+  int4 radius = (int4){0,0,0,0};
   float4 squared = (float4) {FLT_MIN,FLT_MIN,FLT_MIN,0};
   if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = (scalar0-1)/2; squared.x = convert_float(radius.x*radius.x);}
   if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = (scalar1-1)/2; squared.y = convert_float(radius.y*radius.y);}

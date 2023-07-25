@@ -25,7 +25,7 @@ __kernel void detect_maxima(
               if( localPos.x >= 0 && localPos.y >= 0 && localPos.z >= 0) {
                 const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(localPos.x,localPos.y,localPos.z,0)).x;
                 if (value > localMax) {
-                    printf("Found maxima at %d %d %d, with value %f\\n", localPos.x, localPos.y, localPos.z, value);
+                    printf("Found maxima at %d %d %d, with value %f.", localPos.x, localPos.y, localPos.z, value);
                     localMax = value;
                     localMaxPos = localPos;
                     foundMax = true;

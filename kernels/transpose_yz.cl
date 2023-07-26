@@ -9,6 +9,10 @@ __kernel void transpose_yz(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  IMAGE_src_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,z,y,0)).x;
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
+  const POS_src_TYPE spos = POS_src_INSTANCE(x, z, y, 0);
+  const POS_dst_TYPE dpos = POS_dst_INSTANCE(x, y, z, 0);
+
+  float value = READ_src_IMAGE(src, sampler, spos).x;
+
+  WRITE_IMAGE(dst, dpos, CONVERT_dst_PIXEL_TYPE(value));
 }

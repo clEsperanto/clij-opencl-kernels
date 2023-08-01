@@ -48,7 +48,7 @@ __kernel void median_sphere(
       const float ySquared = dy * dy;
       for (int dz = -radius.z; dz <= radius.z; dz++) {
         const float zSquared = dz * dz;
-        if (xSquared / aSquared + ySquared / bSquared + zSquared / cSquared <= 1.0) {
+        if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
           const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz, 0);
           IMAGE_src_PIXEL_TYPE value_res = READ_src_IMAGE(src, sampler, coord + pos).x;
           array[count] = CONVERT_dst_PIXEL_TYPE(value_res);

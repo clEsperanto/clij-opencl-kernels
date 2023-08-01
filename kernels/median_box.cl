@@ -39,11 +39,10 @@ __kernel void median_box(
   if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (scalar2-1)/2; squared.z = (float) (radius.z*radius.z);}
   const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
 
-  int array_size = scalar0 * scalar1 * scalar2;
-  IMAGE_dst_PIXEL_TYPE array[array_size];
+  // int array_size = scalar0 * scalar1 * scalar2;
+  IMAGE_dst_PIXEL_TYPE array[MAX_ARRAY_SIZE];
 
   int count = 0;
-
   for (int dx = -radius.x; dx <= radius.x; dx++) {
     for (int dy = -radius.y; dy <= radius.y; dy++) {
       for (int dz = -radius.z; dz <= radius.z; dz++) {
@@ -54,10 +53,10 @@ __kernel void median_box(
       }
     }
   }
-  array_size = count;
+  // array_size = count;
   // = copyBoxVolumeNeighborhoodToArray(src, array, coord, Nx, Ny, Nz);
 
-  IMAGE_dst_PIXEL_TYPE res = median(array, array_size);
+  IMAGE_dst_PIXEL_TYPE res = median(array, count);
   WRITE_dst_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), res);
 }
 

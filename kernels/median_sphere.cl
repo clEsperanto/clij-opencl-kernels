@@ -38,11 +38,10 @@ __kernel void median_sphere(
   if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = (scalar1-1)/2; squared.y = (float) (radius.y*radius.y);}
   if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (scalar2-1)/2; squared.z = (float) (radius.z*radius.z);}
 
-  int array_size = scalar0 * scalar1 * scalar2;
-  IMAGE_dst_PIXEL_TYPE array[array_size];
+  // int array_size = scalar0 * scalar1 * scalar2;
+  IMAGE_dst_PIXEL_TYPE array[MAX_ARRAY_SIZE];
 
   int count = 0;
-
   for (int dx = -radius.x; dx <= radius.x; dx++) {
     const float xSquared = dx * dx;
     for (int dy = -radius.y; dy <= radius.y; dy++) {
@@ -59,10 +58,10 @@ __kernel void median_sphere(
     }
   }
 
-  array_size = count;
+  // array_size = count;
   //copyVolumeNeighborhoodToArray(src, array, coord, Nx, Ny, Nz);
 
-  IMAGE_dst_PIXEL_TYPE res = median(array, array_size);
+  IMAGE_dst_PIXEL_TYPE res = median(array, count);
   WRITE_dst_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), res);
 }
 

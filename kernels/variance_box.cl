@@ -1,8 +1,8 @@
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 __kernel void variance_box(
-    IMAGE_dst_TYPE  dst,
     IMAGE_src_TYPE  src,
+    IMAGE_dst_TYPE  dst,
     const int       index0,
     const int       index1,
     const int       index2

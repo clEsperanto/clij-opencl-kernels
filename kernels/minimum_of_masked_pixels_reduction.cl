@@ -14,15 +14,15 @@ __kernel void minimum_of_masked_pixels_reduction(
   float min = FLT_MIN;
   float mask_value = 0;
   bool initial = true;
-  IMAGE_mask_PIXEL_TYPE binary;
-  IMAGE_src_PIXEL_TYPE value;
+  float binary;
+  float value;
   for(int z = 0; z < depth; z++)
   {
-    binary = READ_IMAGE(mask, sampler, POS_mask_INSTANCE(x, y, z, 0)).x;
+    binary = (float) READ_IMAGE(mask, sampler, POS_mask_INSTANCE(x, y, z, 0)).x;
     if (binary != 0) 
     {
         mask_value = 1;
-        value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;
+        value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;
         if (value < min || initial) {
           min = value;
           initial = false;

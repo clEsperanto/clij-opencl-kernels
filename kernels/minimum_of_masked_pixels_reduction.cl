@@ -3,7 +3,7 @@ __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_T
 __kernel void minimum_of_masked_pixels_reduction(
     IMAGE_src_TYPE       src
     IMAGE_mask_TYPE      mask,
-    IMAGE_dst_min_TYPE   dst_src,
+    IMAGE_dst_src_TYPE   dst_src,
     IMAGE_dst_mask_TYPE  dst_mask,
 ) 
 {
@@ -29,6 +29,6 @@ __kernel void minimum_of_masked_pixels_reduction(
         }
     }
   }
-  WRITE_IMAGE(dst_min, POS_dst_min_INSTANCE(x, y, z, 0), CONVERT_dst_min_PIXEL_TYPE(min));
+  WRITE_IMAGE(dst_src, POS_dst_min_INSTANCE(x, y, z, 0), CONVERT_dst_src_PIXEL_TYPE(min));
   WRITE_IMAGE(dst_mask, POS_dst_max_INSTANCE(x, y, z, 0), CONVERT_dst_mask_PIXEL_TYPE(mask_value));
 }

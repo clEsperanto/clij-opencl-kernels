@@ -29,6 +29,6 @@ __kernel void minimum_of_masked_pixels_reduction(
         }
     }
   }
-  WRITE_IMAGE(dst_src, POS_dst_min_INSTANCE(x, y, z, 0), CONVERT_dst_src_PIXEL_TYPE(min));
+  WRITE_IMAGE(dst_src, POS_dst_src_INSTANCE(x, y, z, 0), CONVERT_dst_src_PIXEL_TYPE(min));
   WRITE_IMAGE(dst_mask, POS_dst_max_INSTANCE(x, y, z, 0), CONVERT_dst_mask_PIXEL_TYPE(mask_value));
 }

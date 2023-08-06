@@ -4,7 +4,7 @@ __kernel void minimum_of_masked_pixels_reduction(
     IMAGE_src_TYPE       src,
     IMAGE_mask_TYPE      mask,
     IMAGE_dst_src_TYPE   dst_src,
-    IMAGE_dst_mask_TYPE  dst_mask,
+    IMAGE_dst_mask_TYPE  dst_mask
 ) 
 {
   const int x = get_global_id(0);

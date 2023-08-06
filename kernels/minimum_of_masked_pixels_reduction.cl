@@ -1,9 +1,9 @@
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
-__kernel void minimum_of_masked_pixels_3d_2d(
+__kernel void minimum_of_masked_pixels_reduction(
     IMAGE_src_TYPE       src
     IMAGE_mask_TYPE      mask,
-    IMAGE_dst_min_TYPE   dst_min,
+    IMAGE_dst_min_TYPE   dst_src,
     IMAGE_dst_mask_TYPE  dst_mask,
 ) 
 {
@@ -13,7 +13,7 @@ __kernel void minimum_of_masked_pixels_3d_2d(
 
   float min = FLT_MIN;
   float mask_value = 0;
-//   bool initial = true;
+  bool initial = true;
   IMAGE_mask_PIXEL_TYPE binary;
   IMAGE_src_PIXEL_TYPE value;
   for(int z = 0; z < depth; z++)
@@ -23,9 +23,9 @@ __kernel void minimum_of_masked_pixels_3d_2d(
     {
         mask_value = 1;
         value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;
-        if (value < min /*|| initial*/) {
+        if (value < min || initial) {
           min = value;
-        //   initial = false;
+          initial = false;
         }
     }
   }

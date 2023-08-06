@@ -1,7 +1,7 @@
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 __kernel void minimum_of_masked_pixels_reduction(
-    IMAGE_src_TYPE       src
+    IMAGE_src_TYPE       src,
     IMAGE_mask_TYPE      mask,
     IMAGE_dst_src_TYPE   dst_src,
     IMAGE_dst_mask_TYPE  dst_mask,

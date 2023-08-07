@@ -15,7 +15,7 @@ __kernel void minimum_of_masked_pixels_reduction(
   float mask_value = 0;
   float binary;
   float value;
-  for(int z = 0; z < depth; z++)
+  for(int z = 0; z < depth; ++z)
   {
     binary = (float) READ_IMAGE(mask, sampler, POS_mask_INSTANCE(x, y, z, 0)).x;
     if (binary != 0) 
@@ -25,6 +25,6 @@ __kernel void minimum_of_masked_pixels_reduction(
         min = (value < min)? value : min;
     }
   }
-  WRITE_IMAGE(dst_src, POS_dst_src_INSTANCE(x, y, z, 0), CONVERT_dst_src_PIXEL_TYPE(min));
-  WRITE_IMAGE(dst_mask, POS_dst_max_INSTANCE(x, y, z, 0), CONVERT_dst_mask_PIXEL_TYPE(mask_value));
+  WRITE_IMAGE(dst_src, POS_dst_src_INSTANCE(x, y, 0, 0), CONVERT_dst_src_PIXEL_TYPE(min));
+  WRITE_IMAGE(dst_mask, POS_dst_max_INSTANCE(x, y, 0, 0), CONVERT_dst_mask_PIXEL_TYPE(mask_value));
 }

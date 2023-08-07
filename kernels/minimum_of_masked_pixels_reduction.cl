@@ -11,10 +11,10 @@ __kernel void minimum_of_masked_pixels_reduction(
   const int y = get_global_id(1);
   const int depth = GET_IMAGE_DEPTH(src);
 
-  float min = FLT_MAX;
+  float minimum = FLT_MAX;
+  float value = FLT_MAX;
   float mask_value = 0;
-  float binary;
-  float value;
+  float binary = 0;
   for(int z = 0; z < depth; ++z)
   {
     binary = (float) READ_IMAGE(mask, sampler, POS_mask_INSTANCE(x, y, z, 0)).x;
@@ -22,9 +22,9 @@ __kernel void minimum_of_masked_pixels_reduction(
     {
         mask_value = 1;
         value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;
-        min = (value < min)? value : min;
+        minimum = (value < minimum)? value : minimum;
     }
   }
-  WRITE_IMAGE(dst_src, POS_dst_src_INSTANCE(x, y, 0, 0), CONVERT_dst_src_PIXEL_TYPE(min));
+  WRITE_IMAGE(dst_src, POS_dst_src_INSTANCE(x, y, 0, 0), CONVERT_dst_src_PIXEL_TYPE(minimum));
   WRITE_IMAGE(dst_mask, POS_dst_mask_INSTANCE(x, y, 0, 0), CONVERT_dst_mask_PIXEL_TYPE(mask_value));
 }

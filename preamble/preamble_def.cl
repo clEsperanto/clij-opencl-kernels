@@ -1,6 +1,9 @@
+#ifndef PREAMBLE_DEFINE
+#define PREAMBLE_DEFINE
+
 #pragma OPENCL EXTENSION cl_khr_3d_image_writes : enable
-#pragma OPENCL EXTENSION cl_amd_printf : enable
 #pragma OPENCL EXTENSION cl_khr_byte_addressable_store : enable
+// #pragma OPENCL EXTENSION cl_amd_printf : enable
 
 #ifndef M_PI
     #define   M_PI 3.14159265358979323846f /* pi */
@@ -22,12 +25,6 @@
     #define   M_LN10   2.30258509299404568402f /* log_e 10 */
 #endif
 
-#ifndef BUFFER_READ_WRITE
-    #define BUFFER_READ_WRITE 1
-
-#define MINMAX_TYPE int
-
-
 inline uchar clij_convert_uchar_sat(float value) {
     if (value > 255) {
         return 255;
@@ -37,7 +34,6 @@ inline uchar clij_convert_uchar_sat(float value) {
     }
     return (uchar)value;
 }
-
 
 inline char clij_convert_char_sat(float value) {
     if (value > 127) {
@@ -49,7 +45,6 @@ inline char clij_convert_char_sat(float value) {
     return (char)value;
 }
 
-
 inline ushort clij_convert_ushort_sat(float value) {
     if (value > 65535) {
         return 65535;
@@ -59,7 +54,6 @@ inline ushort clij_convert_ushort_sat(float value) {
     }
     return (ushort)value;
 }
-
 
 inline short clij_convert_short_sat(float value) {
     if (value > 32767) {
@@ -117,3 +111,5 @@ inline float clij_convert_float_sat(float value) {
 
 #define READ_IMAGE(a,b,c) READ_ ## a ## _IMAGE(a,b,c)
 #define WRITE_IMAGE(a,b,c) WRITE_ ## a ## _IMAGE(a,b,c)
+
+#endif // PREAMBLE_DEFINE

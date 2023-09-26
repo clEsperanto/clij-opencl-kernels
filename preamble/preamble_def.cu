@@ -1,4 +1,6 @@
-#define MINMAX_TYPE int
+#ifndef PREAMBLE_DEFINE
+#define PREAMBLE_DEFINE
+
 #define sampler_t int
 
 #define FLT_MIN 1.19209e-07
@@ -165,3 +167,5 @@ __device__ inline float clij_convert_float_sat(float value) {
 #define CLK_ADDRESS_CLAMP 16
 #define CLK_FILTER_LINEAR 32
 #define CLK_ADDRESS_NONE 64
+
+#endif // PREAMBLE_DEFINE

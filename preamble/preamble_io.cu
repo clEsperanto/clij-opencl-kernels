@@ -1,3 +1,7 @@
+#ifdef BUFFER_READ_WRITE
+#define BUFFER_READ_WRITE
+#define MINMAX_TYPE int
+
 __device__ inline {pixel_type}2 read_buffer3d{short_pixel_type}(int read_buffer_width, int read_buffer_height, int read_buffer_depth, {pixel_type} * buffer_var, int sampler, int4 position )
 {
     int4 pos = make_int4(position.x, position.y, position.z, 0);
@@ -74,3 +78,5 @@ __device__ inline void write_buffer1d{short_pixel_type}(int write_buffer_width, 
     }
     buffer_var[pos_in_buffer] = value;
 }
+
+#endif // BUFFER_READ_WRITE

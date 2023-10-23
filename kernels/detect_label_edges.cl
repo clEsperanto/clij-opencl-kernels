@@ -8,6 +8,7 @@ __kernel void detect_label_edges(
   const int x = get_global_id(0);
   const int y = get_global_id(1);
   const int z = get_global_id(2);
+
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
   const IMAGE_src_PIXEL_TYPE center = READ_IMAGE(src, sampler, pos).x;
 
@@ -31,7 +32,7 @@ __kernel void detect_label_edges(
       valueToWrite = 1;
     } 
     else {
-      value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,1,0,0))).x;
+      value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,-1,0,0))).x;
       if (value != center) {
         valueToWrite = 1;
       }

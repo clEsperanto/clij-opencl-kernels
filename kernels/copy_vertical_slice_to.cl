@@ -6,7 +6,7 @@ __kernel void copy_vertical_slice_to(
     const int       index
 ) 
 {
-  const int x = get_global_id(0);
+  const int y = get_global_id(0);
   const int z = get_global_id(1);
 
   const POS_src_TYPE pos_src = POS_src_INSTANCE(y, z, 0, 0);

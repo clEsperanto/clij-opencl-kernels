@@ -1,7 +1,6 @@
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
-__attribute__((overloadable)) 
-__kernel void sign(
+__kernel void pixel_sign(
     IMAGE_dst_TYPE  dst,
     IMAGE_src_TYPE  src
 ) 

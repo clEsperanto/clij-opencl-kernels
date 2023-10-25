@@ -18,31 +18,31 @@ __kernel void nonzero_minimum_diamond(
     IMAGE_src_PIXEL_TYPE value = 0;
     
     if(GET_IMAGE_WIDTH(src) > 1) {
-        value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(1,0,0,0)).x;
+        value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(1,0,0,0))).x;
         if ( value < foundMinimum && value > 0) {
             foundMinimum = value;
         }
-        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(-1,0,0,0)).x;
+        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(-1,0,0,0))).x;
         if ( value < foundMinimum && value > 0) {
             foundMinimum = value;
         }
     }
     if(GET_IMAGE_HEIGHT(src) > 1) {
-        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,1,0,0)).x;
+        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,1,0,0))).x;
         if ( value < foundMinimum && value > 0) {
             foundMinimum = value;
         }
-        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,-1,0,0)).x;
+        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,-1,0,0))).x;
         if ( value < foundMinimum && value > 0) {
             foundMinimum = value;
         }
     }
     if(GET_IMAGE_DEPTH(src) > 1) {
-        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,1,0)).x;
+        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,1,0))).x;
         if ( value < foundMinimum && value > 0) {
             foundMinimum = value;
         }
-        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,-1,0)).x;
+        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,-1,0))).x;
         if ( value < foundMinimum && value > 0) {
             foundMinimum = value;
         }

@@ -12,9 +12,13 @@ __kernel void flip(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  const int dx = index0 ? (get_global_size(0) - 1 - x) : x;
-  const int dy = index1 ? (get_global_size(1) - 1 - y) : y;
-  const int dz = index2 ? (get_global_size(2) - 1 - z) : z;
+  const int w = get_global_size(0);
+  const int h = get_global_size(1);
+  const int d = get_global_size(2);
+
+  const int dx = index0 ? (w - 1 - x) : x;
+  const int dy = index1 ? (h - 1 - y) : y;
+  const int dz = index2 ? (d - 1 - z) : z;
 
   const IMAGE_src_PIXEL_TYPE value = READ_src_IMAGE(src, sampler, POS_src_INSTANCE(dx,dy,dz,0)).x;
   WRITE_dst_IMAGE(dst, POS_src_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));

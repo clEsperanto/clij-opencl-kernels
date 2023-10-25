@@ -12,9 +12,9 @@ __kernel void flip(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  const int w = GET_IMAGE_WIDTH(0);
-  const int h = GET_IMAGE_HEIGHT(1);
-  const int d = GET_IMAGE_DEPTH(2);
+  const int w = GET_IMAGE_WIDTH(src);
+  const int h = GET_IMAGE_HEIGHT(src);
+  const int d = GET_IMAGE_DEPTH(src);
 
   const int dx = index0 ? (w - 1 - x) : x;
   const int dy = index1 ? (h - 1 - y) : y;

@@ -30,6 +30,7 @@ __kernel void nonzero_minimum_box(
           }
         }
       }
+      
       if (foundMinimum != originalValue) {
         WRITE_IMAGE(dst0, POS_dst0_INSTANCE(0,0,0,0), 1);
       }

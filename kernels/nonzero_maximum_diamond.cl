@@ -12,37 +12,37 @@ __kernel void nonzero_maximum_diamond(
 
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
 
-  IMAGE_src_TYPE foundMaximum = READ_IMAGE(src, sampler, pos).x;
+  IMAGE_src_PIXEL_TYPE foundMaximum = READ_IMAGE(src, sampler, pos).x;
   if (foundMaximum != 0) {
-    IMAGE_src_TYPE originalValue = foundMaximum;
-    IMAGE_src_TYPE value = 0;
+    IMAGE_src_PIXEL_TYPE originalValue = foundMaximum;
+    IMAGE_src_PIXEL_TYPE value = 0;
     
     if(GET_IMAGE_WIDTH(src) > 1) {
-        value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(1,0,0,0)).x;
+        value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(1,0,0,0))).x;
         if ( value > foundMaximum && value > 0) {
             foundMaximum = value;
         }
-        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(-1,0,0,0)).x;
+        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(-1,0,0,0))).x;
         if ( value > foundMaximum && value > 0) {
             foundMaximum = value;
         }
     }
     if(GET_IMAGE_HEIGHT(src) > 1) {
-        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,1,0,0)).x;
+        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,1,0,0))).x;
         if ( value > foundMaximum && value > 0) {
             foundMaximum = value;
         }
-        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,-1,0,0)).x;
+        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,-1,0,0))).x;
         if ( value > foundMaximum && value > 0) {
             foundMaximum = value;
         }
     }
     if(GET_IMAGE_DEPTH(src) > 1) {
-        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,1,0)).x;
+        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,1,0))).x;
         if ( value > foundMaximum && value > 0) {
             foundMaximum = value;
         }
-        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,-1,0)).x;
+        value = READ_src_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,-1,0))).x;
         if ( value > foundMaximum && value > 0) {
             foundMaximum = value;
         }

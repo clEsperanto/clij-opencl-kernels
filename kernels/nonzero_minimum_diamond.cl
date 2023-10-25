@@ -1,9 +1,9 @@
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 __kernel void nonzero_minimum_diamond(
-    IMAGE_src_TYPE   src
+    IMAGE_src_TYPE   src,
     IMAGE_dst0_TYPE  dst0,
-    IMAGE_dst1_TYPE  dst1, 
+    IMAGE_dst1_TYPE  dst1 
 )
 {
   const int x = get_global_id(0);

@@ -11,17 +11,19 @@ __kernel void nonzero_maximum_box(
   const int z = get_global_id(2);
 
   int4 r = (int4){0,0,0,0};
-  if (GET_IMAGE_DEPTH(src)  > 1) { r.z = 1; }
-  if (GET_IMAGE_HEIGHT(src) > 1) { r.y = 1; }
   if (GET_IMAGE_WIDTH(src)  > 1) { r.x = 1; }
+  if (GET_IMAGE_HEIGHT(src) > 1) { r.y = 1; }
+  if (GET_IMAGE_DEPTH(src)  > 1) { r.z = 1; }
 
-  IMAGE_src_PIXEL_TYPE foundMaximum = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
+  const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
+  IMAGE_src_PIXEL_TYPE foundMaximum = READ_IMAGE(src, sampler, coord).x;
   if (foundMaximum != 0) {
       IMAGE_src_PIXEL_TYPE originalValue = foundMaximum;
       for (int dx = -r.x; dx <= r.x; ++dx) {
         for (int dy = -r.y; dy <= r.y; ++dy) {
           for (int dz = -r.z; dz <= r.z; ++dz) {
-            IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x+dx,y+dy,z+dz,0)).x;
+            POS_src_TYPE pos = POS_src_INSTANCE(dx,dy,dz,0);
+            IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, coord + pos).x;
             if ( value > foundMaximum && value > 0) {
               foundMaximum = value;
             }

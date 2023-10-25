@@ -12,8 +12,8 @@ __kernel void mode_sphere
   const int x = get_global_id(0);
   const int y = get_global_id(1);
   const int z = get_global_id(2);
-  const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
 
+  int4 coord = (int4){x,y,z,0};
   int4 radius = (int4){0,0,0,0};
   float4 squared = (float4){FLT_MIN,FLT_MIN,FLT_MIN,0};
   if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = (scalar0-1)/2; squared.x = (float) (radius.x*radius.x);}
@@ -32,9 +32,9 @@ __kernel void mode_sphere
       for (int dz = -radius.z; dz <= radius.z; ++dz) {
         const float zSquared = dz * dz;
         if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
-          const int x1 = (GET_IMAGE_WIDTH(src) > 1) ?  coord.x + dx : 0;
-          const int x2 = (GET_IMAGE_HEIGHT(src) > 1) ?  coord.y + dy : 0;
-          const int x3 = (GET_IMAGE_DEPTH(src) > 1) ?  coord.z + dz : 0;
+          const int x1 = coord.x + dx;
+          const int x2 = coord.y + dy;
+          const int x3 = coord.z + dz;
           
           if (x1 < 0 || x2 < 0 || x3 < 0 || x1 >= GET_IMAGE_WIDTH(src) || x2 >= GET_IMAGE_HEIGHT(src) || x3 >= GET_IMAGE_DEPTH(src)) {
             continue;

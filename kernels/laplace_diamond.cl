@@ -13,18 +13,18 @@ __kernel void laplace_diamond(
   float result = 0;
   float weight = 0;
   if (GET_IMAGE_WIDTH(src) > 1) {
-    result += (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE( 1,0,0,0)).x * -1.0 
-    result += (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(-1,0,0,0)).x * -1.0 ;
+    result += (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE( 1,0,0,0)).x * -1.0;
+    result += (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(-1,0,0,0)).x * -1.0;
     weight += 2;
   }
   if (GET_IMAGE_HEIGHT(src) > 1) {
-    result += (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0, 1,0,0)).x * -1.0 
-    result += (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,-1,0,0)).x * -1.0 ;
+    result += (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0, 1,0,0)).x * -1.0;
+    result += (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,-1,0,0)).x * -1.0;
     weight += 2;
   }
   if (GET_IMAGE_DEPTH(src) > 1) {
-    result += (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,0, 1,0)).x * -1.0 
-    result += (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,0,-1,0)).x * -1.0 ;
+    result += (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,0, 1,0)).x * -1.0;
+    result += (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,0,-1,0)).x * -1.0;
     weight += 2;
   }
   result += (float) READ_IMAGE(src, sampler, pos).x * weight;

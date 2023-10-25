@@ -32,12 +32,14 @@ __kernel void mode_sphere
       for (int dz = -radius.z; dz <= radius.z; ++dz) {
         const float zSquared = dz * dz;
         if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
-          const int x1 = coord.x + dx;
-          const int x2 = coord.y + dy;
-          const int x3 = coord.z + dz;
+          const int x1 = (GET_IMAGE_WIDTH(src) > 1) ?  coord.x + dx : 0;
+          const int x2 = (GET_IMAGE_HEIGHT(src) > 1) ?  coord.y + dy : 0;
+          const int x3 = (GET_IMAGE_DEPTH(src) > 1) ?  coord.z + dz : 0;
+          
           if (x1 < 0 || x2 < 0 || x3 < 0 || x1 >= GET_IMAGE_WIDTH(src) || x2 >= GET_IMAGE_HEIGHT(src) || x3 >= GET_IMAGE_DEPTH(src)) {
             continue;
           }
+          
           const POS_src_TYPE pos = POS_src_INSTANCE(x1,x2,x3,0);
           const int value_res = (int) READ_IMAGE(src, sampler, pos).x;
           histogram[value_res]++;

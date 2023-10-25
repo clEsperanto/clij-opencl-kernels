@@ -12,6 +12,7 @@ __kernel void mode_box
   const int x = get_global_id(0);
   const int y = get_global_id(1);
   const int z = get_global_id(2);
+
   const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
 
   int4 radius = (int4){0,0,0,0};
@@ -27,12 +28,14 @@ __kernel void mode_box
   for (int dx = -radius.x; dx <= radius.x; ++dx) {
     for (int dy = -radius.y; dy <= radius.y; ++dy) {
       for (int dz = -radius.z; dz <= radius.z; ++dz) {
-        const int x1 = coord.x + dx;
-        const int x2 = coord.y + dy;
-        const int x3 = coord.z + dz;
+         const int x1 = (GET_IMAGE_WIDTH(src) > 1) ?  coord.x + dx : 0;
+         const int x2 = (GET_IMAGE_HEIGHT(src) > 1) ?  coord.y + dy : 0;
+         const int x3 = (GET_IMAGE_DEPTH(src) > 1) ?  coord.z + dz : 0;
+
         if (x1 < 0 || x2 < 0 || x3 < 0 || x1 >= GET_IMAGE_WIDTH(src) || x2 >= GET_IMAGE_HEIGHT(src) || x3 >= GET_IMAGE_DEPTH(src)) {
           continue;
         }
+        
         const POS_src_TYPE pos = POS_src_INSTANCE(x1,x2,x3,0);
         const int value_res = (int) READ_IMAGE(src, sampler, pos).x;
         histogram[value_res]++;

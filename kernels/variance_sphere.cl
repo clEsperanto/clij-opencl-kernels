@@ -30,7 +30,7 @@ __kernel void variance_sphere(
         const float zSquared = dz * dz;
         if (xSquared / aSquared + ySquared / bSquared + zSquared / cSquared <= 1.0) {
           const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz,0);
-          sum = sum + (float) READ_src_IMAGE(src, sampler, coord + pos).x;
+          sum = sum + (float) READ_IMAGE(src, sampler, coord + pos).x;
           count++;
         }
       }
@@ -47,12 +47,12 @@ __kernel void variance_sphere(
         const float zSquared = z * z;
         if (xSquared / aSquared + ySquared / bSquared + zSquared / cSquared <= 1.0) {
           const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz,0);
-          const float value = (float) READ_src_IMAGE(src, sampler, coord + pos).x;
+          const float value = (float) READ_IMAGE(src, sampler, coord + pos).x;
           sum = sum + pow(value - mean_intensity, 2);
           count++;
         }
       }
     }
   }
-  WRITE_dst_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(sum / (count)));
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(sum / (count)));
 }

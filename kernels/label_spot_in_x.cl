@@ -22,7 +22,7 @@ __kernel void label_spots_in_x(
   }
   for(int x = 0; x < GET_IMAGE_WIDTH(src); x++)
   {
-    float value = READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
+    float value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
     if (value != 0) {
       startingIndex++;
       WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(startingIndex));

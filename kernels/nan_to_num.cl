@@ -20,7 +20,7 @@ __kernel void nan_to_num(
   if (isinf(ninf)) {
     ninf = -FLT_MAX;
   }
-  float value = READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;
+  float value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;
   if (isnan(value)) {
     value = nan;
   }
@@ -30,5 +30,5 @@ __kernel void nan_to_num(
   if (isinf(value) && value < 0) {
     value = ninf;
   }
-  WRITE_dst_IMAGE(dst, POS_dst_INSTANCE(x, y, z,0), CONVERT_dst_PIXEL_TYPE(value));
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x, y, z,0), CONVERT_dst_PIXEL_TYPE(value));
 }

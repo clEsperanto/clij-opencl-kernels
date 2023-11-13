@@ -19,6 +19,6 @@ __kernel void range(
   const int sy = get_global_id(1) * step_y + start_y;
   const int sz = get_global_id(2) * step_z + start_z;
 
-  const float out = READ_src_IMAGE(src, sampler, POS_src_INSTANCE(sx, sy, sz, 0)).x;
-  WRITE_dst_IMAGE(dst, POS_dst_INSTANCE(dx, dy, dz, 0), CONVERT_dst_PIXEL_TYPE(out));
+  const float out = READ_IMAGE(src, sampler, POS_src_INSTANCE(sx, sy, sz, 0)).x;
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(dx, dy, dz, 0), CONVERT_dst_PIXEL_TYPE(out));
 }

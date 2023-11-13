@@ -12,6 +12,6 @@ __kernel void copy_vertical_slice_to(
   const POS_src_TYPE pos_src = POS_src_INSTANCE(y, z, 0, 0);
   const POS_dst_TYPE pos_dst = POS_dst_INSTANCE(index, y, z, 0);
 
-  const float value = READ_src_IMAGE(src, sampler, pos_src).x;
-  WRITE_dst_IMAGE(dst, pos_dst, CONVERT_dst_PIXEL_TYPE(value));
+  const float value = READ_IMAGE(src, sampler, pos_src).x;
+  WRITE_IMAGE(dst, pos_dst, CONVERT_dst_PIXEL_TYPE(value));
 }

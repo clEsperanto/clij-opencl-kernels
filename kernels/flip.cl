@@ -20,6 +20,6 @@ __kernel void flip(
   const int dy = index1 ? (h - 1 - y) : y;
   const int dz = index2 ? (d - 1 - z) : z;
 
-  const IMAGE_src_PIXEL_TYPE value = READ_src_IMAGE(src, sampler, POS_src_INSTANCE(dx,dy,dz,0)).x;
-  WRITE_dst_IMAGE(dst, POS_src_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
+  const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(dx,dy,dz,0)).x;
+  WRITE_IMAGE(dst, POS_src_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
 }

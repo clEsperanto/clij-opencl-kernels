@@ -50,7 +50,7 @@ __kernel void median_sphere(
         const float zSquared = dz * dz;
         if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
           const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz, 0);
-          IMAGE_src_PIXEL_TYPE value_res = READ_src_IMAGE(src, sampler, coord + pos).x;
+          IMAGE_src_PIXEL_TYPE value_res = READ_IMAGE(src, sampler, coord + pos).x;
           array[count] = CONVERT_dst_PIXEL_TYPE(value_res);
           count++;
         }
@@ -62,6 +62,6 @@ __kernel void median_sphere(
   //copyVolumeNeighborhoodToArray(src, array, coord, Nx, Ny, Nz);
 
   IMAGE_dst_PIXEL_TYPE res = median(array, count);
-  WRITE_dst_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), res);
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), res);
 }
 

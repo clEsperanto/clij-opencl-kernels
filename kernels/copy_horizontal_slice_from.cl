@@ -12,6 +12,6 @@ __kernel void copy_horizontal_slice_from(
   const POS_src_TYPE pos_src = POS_src_INSTANCE(x, index, z, 0);
   const POS_dst_TYPE pos_dst = POS_dst_INSTANCE(x, z, 0, 0);
 
-  const float value = READ_IMAGE(src, sampler, pos_src).x;
+  const float value = (float) READ_IMAGE(src, sampler, pos_src).x;
   WRITE_IMAGE(dst, pos_dst, CONVERT_dst_PIXEL_TYPE(value));
 }

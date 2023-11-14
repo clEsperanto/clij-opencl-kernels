@@ -22,8 +22,7 @@ __kernel void nonzero_minimum_box(
       for (int dx = -r.x; dx <= r.x; ++dx) {
         for (int dy = -r.y; dy <= r.y; ++dy) {
           for (int dz = -r.z; dz <= r.z; ++dz) {
-            POS_src_TYPE pos = POS_src_INSTANCE(dx,dy,dz,0);
-            IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, coord + pos).x;
+            IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(dx,dy,dz,0).x;
             if ( value < foundMinimum && value > 0) {
               foundMinimum = value;
             }
@@ -34,13 +33,9 @@ __kernel void nonzero_minimum_box(
       if (foundMinimum != originalValue) {
         WRITE_IMAGE(dst0, POS_dst0_INSTANCE(0,0,0,0), 1);
       }
-      else {
-        WRITE_IMAGE(dst0, POS_dst0_INSTANCE(0,0,0,0), 0);
-      }
       WRITE_IMAGE(dst1, POS_dst1_INSTANCE(x,y,z,0), CONVERT_dst1_PIXEL_TYPE(foundMinimum));
   }
   else {
-      WRITE_IMAGE(dst0, POS_dst0_INSTANCE(0,0,0,0), 0);
       WRITE_IMAGE(dst1, POS_dst1_INSTANCE(x,y,z,0), 0);
   }
 }

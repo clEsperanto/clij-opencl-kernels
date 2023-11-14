@@ -58,6 +58,6 @@ __kernel void nonzero_maximum_diamond(
   }
   else {
       WRITE_IMAGE(dst0, POS_dst0_INSTANCE(0,0,0,0), 0);
-      WRITE_IMAGE(dst1, POS_dst1_INSTANCE(x,y,z,0), CONVERT_dst1_PIXEL_TYPE(0));
+      WRITE_IMAGE(dst1, POS_dst1_INSTANCE(x,y,z,0), 0);
   }
 }

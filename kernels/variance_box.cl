@@ -22,7 +22,7 @@ __kernel void variance_box(
       for (int dz = -radius.z; dz <= radius.z; ++dz) {
           const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz, 0);
           sum = sum + (float) READ_IMAGE(src, sampler, coord + pos).x;
-          count++;
+          count = count + 1;
       }
     }
   }
@@ -35,7 +35,7 @@ __kernel void variance_box(
           const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz, 0);
           const float value = (float) READ_IMAGE(src, sampler, coord + pos).x;
           sum = sum + pow(value - mean_intensity, 2);
-          count++;
+          count = count + 1;
       }
     }
   }

@@ -40,12 +40,12 @@ __kernel void variance_sphere(
   const float mean_intensity = sum / count;
   sum = 0;
   count = 0;
-  for (int dx = -radius.x; dx <= radius.x; ++dx) {
-    const float xSquared = x * x;
-    for (int dy = -radius.y; dy <= radius.y; ++dy) {
-      const float ySquared = y * y;
-      for (int dz = -radius.z; dz <= radius.z; ++dz) {
-        const float zSquared = z * z;
+  for (int dx = -radius.x; dx <= radius.x; dx++) {
+    const float xSquared = dx * dx;
+    for (int dy = -radius.y; dy <= radius.y; dy++) {
+      const float ySquared = dy * dy;
+      for (int dz = -radius.z; dz <= radius.z; dz++) {
+        const float zSquared = dz * dz;
         if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
           const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz, 0);
           const float value = (float) READ_IMAGE(src, sampler, coord + pos).x;
@@ -55,9 +55,6 @@ __kernel void variance_sphere(
       }
     }
   }
-
-  printf(\"mean_intensity: %f, sum: %f, count: %d\", mean_intensity, sum, count);
-
 
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(sum / count));
 }

@@ -10,6 +10,11 @@ __kernel void multiply_image_and_coordinate(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x * get_global_id(index);
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
+  int coord = 0;
+  if      (index == 0) {coord = x;}
+  else if (index == 1) {coord = y;}
+  else if (index == 2) {coord = z;}
+
+  const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value * coord));
 }

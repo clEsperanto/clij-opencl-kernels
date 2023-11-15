@@ -3,32 +3,23 @@
 __kernel void nan_to_num(
     IMAGE_dst_TYPE  dst,
     IMAGE_src_TYPE  src,
-    const float     nan,
-    const float     pinf,
-    const float     ninf
+    float           nan,
+    float           pinf,
+    float           ninf
 ) 
 {
   const int x = get_global_id(0);
   const int y = get_global_id(1);
   const int z = get_global_id(2);
-  if (isnan(nan)) {
-    nan = 0;
-  }
-  if (isinf(pinf)) {
-    pinf = FLT_MAX;
-  }
-  if (isinf(ninf)) {
-    ninf = -FLT_MAX;
-  }
+
+  if (isnan(nan))  { nan = 0; }
+  if (isinf(pinf)) { pinf = FLT_MAX; }
+  if (isinf(ninf)) { ninf = -FLT_MAX; }
+
   float value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;
-  if (isnan(value)) {
-    value = nan;
-  }
-  if (isinf(value) && value > 0) {
-    value = pinf;
-  }
-  if (isinf(value) && value < 0) {
-    value = ninf;
-  }
+  if (isnan(value)) { value = nan; }
+  if (isinf(value) && value > 0) { value = pinf; }
+  if (isinf(value) && value < 0) { value = ninf; }
+  
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x, y, z,0), CONVERT_dst_PIXEL_TYPE(value));
 }

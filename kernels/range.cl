@@ -1,8 +1,8 @@
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 __kernel void range(
-    IMAGE_dst_TYPE  dst,
     IMAGE_src_TYPE  src,
+    IMAGE_dst_TYPE  dst,
     const int       start_x,
     const int       start_y,    
     const int       start_z,

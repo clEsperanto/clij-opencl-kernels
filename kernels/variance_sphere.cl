@@ -37,8 +37,6 @@ __kernel void variance_sphere(
     }
   }
 
-  printf(\"sum: %f, count: %d\", sum, count);
-
   const float mean_intensity = sum / count;
   sum = 0;
   count = 0;
@@ -57,5 +55,9 @@ __kernel void variance_sphere(
       }
     }
   }
+
+  printf(\"mean_intensity: %f, sum: %f, count: %d\", mean_intensity, sum, count);
+
+
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(sum / count));
 }

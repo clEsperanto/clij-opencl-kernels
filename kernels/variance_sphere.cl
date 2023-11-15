@@ -13,22 +13,22 @@ __kernel void variance_sphere(
   const int z = get_global_id(2);
 
   const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
-  const int4 r = (int4){(index0-1)/2, (index1-1)/2, (index2-1)/2, 0};
   
+  int4 radius = (int4){0,0,0,0};
+  float4 squared = (float4){FLT_MIN, FLT_MIN, FLT_MIN, 0};
+  if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = (index0-1)/2; squared.x = (float) (radius.x*radius.x);}
+  if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = (index1-1)/2; squared.y = (float) (radius.y*radius.y);}
+  if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (index2-1)/2; squared.z = (float) (radius.z*radius.z);}
+
   int count = 0;
   float sum = 0;
-
-  float aSquared = (r.x == 0) ? FLT_MIN : r.x * r.x ;
-  float bSquared = (r.y == 0) ? FLT_MIN : r.y * r.y ;
-  float cSquared = (r.z == 0) ? FLT_MIN : r.z * r.z ;
-
-  for (int dx = -r.x; dx <= r.x; ++dx) {
+  for (int dx = -radius.x; dx <= radius.x; dx++) {
     const float xSquared = dx * dx;
-    for (int dy = -r.y; dy <= r.y; ++dy) {
+    for (int dy = -radius.y; dy <= radius.y; dy++) {
       const float ySquared = dy * dy;
-      for (int dz = -r.z; dz <= r.z; ++dz) {
+      for (int dz = -radius.z; dz <= radius.z; dz++) {
         const float zSquared = dz * dz;
-        if (xSquared / aSquared + ySquared / bSquared + zSquared / cSquared <= 1.0) {
+        if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
           const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz,0);
           sum = sum + (float) READ_IMAGE(src, sampler, coord + pos).x;
           count++;
@@ -39,13 +39,13 @@ __kernel void variance_sphere(
   const float mean_intensity = sum / count;
   sum = 0;
   count = 0;
-  for (int dx = -r.x; dx <= r.x; ++dx) {
+  for (int dx = -radius.x; dx <= radius.x; ++dx) {
     const float xSquared = x * x;
-    for (int dy = -r.y; dy <= r.y; ++dy) {
+    for (int dy = -radius.y; dy <= radius.y; ++dy) {
       const float ySquared = y * y;
-      for (int dz = -r.z; dz <= r.z; ++dz) {
+      for (int dz = -radius.z; dz <= radius.z; ++dz) {
         const float zSquared = z * z;
-        if (xSquared / aSquared + ySquared / bSquared + zSquared / cSquared <= 1.0) {
+        if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
           const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz,0);
           const float value = (float) READ_IMAGE(src, sampler, coord + pos).x;
           sum = sum + pow(value - mean_intensity, 2);

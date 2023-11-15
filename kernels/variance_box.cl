@@ -13,13 +13,13 @@ __kernel void variance_box(
   const int z = get_global_id(2);
 
   const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
-  const int4 r = (int4){(index0-1)/2, (index1-1)/2, (index2-1)/2, 0};
+  const int4 radius = (int4){(index0-1)/2, (index1-1)/2, (index2-1)/2, 0};
   
   int count = 0;
   float sum = 0;
-  for (int dx = -r.x; dx <= r.x; ++dx) {
-    for (int dy = -r.y; dy <= r.y; ++dy) {
-      for (int dz = -r.z; dz <= r.z; ++dz) {
+  for (int dx = -radius.x; dx <= radius.x; ++dx) {
+    for (int dy = -radius.y; dy <= radius.y; ++dy) {
+      for (int dz = -radius.z; dz <= radius.z; ++dz) {
           const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz,0);
           sum = sum + (float) READ_IMAGE(src, sampler, coord + pos).x;
           count++;
@@ -29,9 +29,9 @@ __kernel void variance_box(
   const float mean_intensity = sum / count;
   sum = 0;
   count = 0;
-  for (int dx = -r.x; dx <= r.x; ++dx) {
-    for (int dy = -r.y; dy <= r.y; ++dy) {
-      for (int dz = -r.z; dz <= r.z; ++dz) {
+  for (int dx = -radius.x; dx <= radius.x; ++dx) {
+    for (int dy = -radius.y; dy <= radius.y; ++dy) {
+      for (int dz = -radius.z; dz <= radius.z; ++dz) {
           const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz,0);
           const float value = (float) READ_IMAGE(src, sampler, coord + pos).x;
           sum = sum + pow(value - mean_intensity, 2);

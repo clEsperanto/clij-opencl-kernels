@@ -29,13 +29,16 @@ __kernel void variance_sphere(
       for (int dz = -radius.z; dz <= radius.z; dz++) {
         const float zSquared = dz * dz;
         if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
-          const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz,0);
+          const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz, 0);
           sum = sum + (float) READ_IMAGE(src, sampler, coord + pos).x;
           count++;
         }
       }
     }
   }
+
+  printf(\"sum: %f, count: %d\", sum, count);
+
   const float mean_intensity = sum / count;
   sum = 0;
   count = 0;
@@ -46,7 +49,7 @@ __kernel void variance_sphere(
       for (int dz = -radius.z; dz <= radius.z; ++dz) {
         const float zSquared = z * z;
         if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
-          const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz,0);
+          const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz, );
           const float value = (float) READ_IMAGE(src, sampler, coord + pos).x;
           sum = sum + pow(value - mean_intensity, 2);
           count++;
@@ -54,5 +57,5 @@ __kernel void variance_sphere(
       }
     }
   }
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(sum / (count)));
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(sum / count));
 }

@@ -1,8 +1,8 @@
   __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 __kernel void nan_to_num(
-    IMAGE_dst_TYPE  dst,
     IMAGE_src_TYPE  src,
+    IMAGE_dst_TYPE  dst,
     float           nan,
     float           pinf,
     float           ninf
@@ -20,6 +20,6 @@ __kernel void nan_to_num(
   if (isnan(value)) { value = nan; }
   if (isinf(value) && value > 0) { value = pinf; }
   if (isinf(value) && value < 0) { value = ninf; }
-  
+
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x, y, z,0), CONVERT_dst_PIXEL_TYPE(value));
 }

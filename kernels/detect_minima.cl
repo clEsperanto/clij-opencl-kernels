@@ -10,17 +10,17 @@ __kernel void detect_minima(
   const int z = get_global_id(2);
 
   int4 r = (int4){0,0,0,0};
-  if (GET_IMAGE_WIDTH(src)  > 1) { r.x = 1; }
-  if (GET_IMAGE_HEIGHT(src) > 1) { r.y = 1; }
-  if (GET_IMAGE_DEPTH(src)  > 1) { r.z = 1; }
+  if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = 1; }
+  if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = 1; }
+  if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = 1; }
 
   bool isMin = true;
   float localMin = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
   const int4 pos = (int4){x,y,z,0};
 
-  for (int rx = -r.x; rx <= r.x; ++rx) {
-      for (int ry = -r.y; ry <= r.y; ++ry) {
-          for (int rz = -r.z; rz <= r.z; ++rz) {
+  for (int rx = -radius.x; rx <= radius.x; ++rx) {
+      for (int ry = -radius.y; ry <= radius.y; ++ry) {
+          for (int rz = -radius.z; rz <= radius.z; ++rz) {
               int4 localPos = pos + (int4){rx,ry,rz,0};
               if( localPos.x == pos.x && localPos.y == pos.y && localPos.z == pos.z) {
                 continue;

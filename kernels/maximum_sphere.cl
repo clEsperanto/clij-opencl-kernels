@@ -19,7 +19,7 @@ __kernel void maximum_sphere(
   if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = (int) (scalar1-1)/2; squared.y = (float) (radius.y*radius.y);}
   if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (int) (scalar2-1)/2; squared.z = (float) (radius.z*radius.z);}
 
-  printf(\"image size: %d %d %d\\n\", GET_IMAGE_WIDTH(src), GET_IMAGE_HEIGHT(src), GET_IMAGE_DEPTH(src));
+  printf(\"image coord: %d %d %d\\n\", x,y,z);
 
   IMAGE_src_PIXEL_TYPE maximumValue = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(x,y,z,0)).x;
   for (int dx = -radius.x; dx <= radius.x; dx++) {

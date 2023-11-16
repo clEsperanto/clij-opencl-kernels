@@ -19,7 +19,7 @@ __kernel void minimum_sphere(
   if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = (scalar1-1)/2; squared.y = (float) (radius.y*radius.y);}
   if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (scalar2-1)/2; squared.z = (float) (radius.z*radius.z);}
 
-  IMAGE_src_PIXEL_TYPE minimumValue = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(x,y,z,0)).x;
+  IMAGE_src_PIXEL_TYPE minimumValue = READ_IMAGE(src, sampler, coord).x;
   for (int dx = -radius.x; dx <= radius.x; ++dx) {
     const float xSquared = dx * dx;
     for (int dy = -radius.y; dy <= radius.y; ++dy) {

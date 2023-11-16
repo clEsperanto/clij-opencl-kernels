@@ -20,7 +20,7 @@ __kernel void maximum_sphere(
   if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (int) (scalar2-1)/2; squared.z = (float) (radius.z*radius.z);}
 
 
-  IMAGE_src_PIXEL_TYPE maximumValue = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(x,y,z,0)).x;
+  IMAGE_src_PIXEL_TYPE maximumValue = READ_IMAGE(src, sampler, coord).x;
 
   for (int dx = -radius.x; dx <= radius.x; dx++) {
     const float xSquared = dx * dx;

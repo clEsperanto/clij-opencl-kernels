@@ -191,7 +191,7 @@ __kernel void hessian_eigenvalues(
     eigenvalues[2] l = (DOUBLE_TYPE) (a / 2.0 + sqrt(4 * g_xy * g_xy + (g_xx - g_yy) * (g_xx - g_yy)) / 2.0);
   }
 
-  WRITE_IMAGE(small_eigenvalue, sampler, POS_small_eigenvalue_INSTANCE(x, y, z), CONVERT_small_eigenvalue_PIXEL_TYPE(eigenvalues[0]));
-  WRITE_IMAGE(middle_eigenvalue, sampler, POS_middle_eigenvalue_INSTANCE(x, y, z), CONVERT_middle_eigenvalue_PIXEL_TYPE(eigenvalues[1]));
-  WRITE_IMAGE(large_eigenvalue, sampler, POS_large_eigenvalue_INSTANCE(x, y, z), CONVERT_large_eigenvalue_PIXEL_TYPE(eigenvalues[2]));
+  WRITE_IMAGE(small_eigenvalue, sampler, POS_small_eigenvalue_INSTANCE(x, y, z, 0), CONVERT_small_eigenvalue_PIXEL_TYPE(eigenvalues[0]));
+  WRITE_IMAGE(middle_eigenvalue, sampler, POS_middle_eigenvalue_INSTANCE(x, y, z, 0), CONVERT_middle_eigenvalue_PIXEL_TYPE(eigenvalues[1]));
+  WRITE_IMAGE(large_eigenvalue, sampler, POS_large_eigenvalue_INSTANCE(x, y, z, 0), CONVERT_large_eigenvalue_PIXEL_TYPE(eigenvalues[2]));
 }

@@ -3,9 +3,9 @@ __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_T
 __kernel void variance_box(
     IMAGE_src_TYPE  src,
     IMAGE_dst_TYPE  dst,
-    const int       index0,
-    const int       index1,
-    const int       index2
+    const int       scalar0,
+    const int       scalar1,
+    const int       scalar2
 )
 {
   const int x = get_global_id(0);
@@ -13,7 +13,7 @@ __kernel void variance_box(
   const int z = get_global_id(2);
 
   const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
-  const int4 radius = (int4){(index0-1)/2, (index1-1)/2, (index2-1)/2, 0};
+  const int4 radius = (int4){(scalar0-1)/2, (scalar1-1)/2, (scalar2-1)/2, 0};
   
   int count = 0;
   float sum = 0;

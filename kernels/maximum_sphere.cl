@@ -32,9 +32,9 @@ __kernel void maximum_sphere(
         if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
           const IMAGE_src_PIXEL_TYPE value_res = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(dx,dy,dz,0)).x;
           if (value_res > maximumValue) {
+            printf(\"(%d,%d,%d)=%f - %f - (%d,%d,%d)=%f\\n\", x,y,z,maximumValue, test, x+dx,y+dy,z+dz,value_res);
             maximumValue = value_res;
 
-            printf(\"(%d,%d,%d)=%f - %f - (%d,%d,%d)=%f\\n\", x,y,z,maximumValue, test, x+dx,y+dy,z+dz,value_res);
 
           }
         }

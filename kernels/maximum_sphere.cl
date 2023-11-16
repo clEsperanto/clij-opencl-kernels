@@ -15,16 +15,18 @@ __kernel void maximum_sphere(
 
   int4 radius = (int4){0,0,0,0};
   float4 squared = (float4){FLT_MIN,FLT_MIN,FLT_MIN,0};
-  if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = (scalar0-1)/2; squared.x = (float) (radius.x*radius.x);}
-  if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = (scalar1-1)/2; squared.y = (float) (radius.y*radius.y);}
-  if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (scalar2-1)/2; squared.z = (float) (radius.z*radius.z);}
+  if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = (int) (scalar0-1)/2; squared.x = (float) (radius.x*radius.x);}
+  if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = (int) (scalar1-1)/2; squared.y = (float) (radius.y*radius.y);}
+  if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (int) (scalar2-1)/2; squared.z = (float) (radius.z*radius.z);}
+
+  printf(\"radius: %d %d %d\\n\", radius.x, radius.y, radius.z);
 
   IMAGE_src_PIXEL_TYPE maximumValue = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(x,y,z,0)).x;
-  for (int dx = -radius.x; dx <= radius.x; ++dx) {
+  for (int dx = -radius.x; dx <= radius.x; dx++) {
     const float xSquared = dx * dx;
-    for (int dy = -radius.y; dy <= radius.y; ++dy) {
+    for (int dy = -radius.y; dy <= radius.y; dy++) {
       const float ySquared = dy * dy;
-      for (int dz = -radius.z; dz <= radius.z; ++dz) {
+      for (int dz = -radius.z; dz <= radius.z; dz++) {
         const float zSquared = dz * dz;
         if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
           const IMAGE_src_PIXEL_TYPE value_res = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(dx,dy,dz,0)).x;

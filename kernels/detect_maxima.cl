@@ -17,9 +17,9 @@
 //   float localMax = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x -1;
 //   int4 localMaxPos = (int4){x,y,z,0};
 //   const int4 pos = (int4){x,y,z,0};
-//   for (int rx = -radius.x; rx <= radius.x; ++rx) {
-//       for (int ry = -radius.y; ry <= radius.y; ++ry) {
-//           for (int rz = -radius.z; rz <= radius.z; ++rz) {
+//   for (int dx = -radius.x; dx <= radius.x; ++dx) {
+//       for (int dy = -radius.y; dy <= radius.y; ++dy) {
+//           for (int dz = -radius.z; dz <= radius.z; ++dz) {
 //               int4 localPos = localMaxPos + (int4){rx,ry,rz,0};
 //               if( all(localPos >= 0) && any(localPos != pos) ) {
 //                 const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(localPos.x,localPos.y,localPos.z,0)).x;
@@ -51,7 +51,7 @@ __kernel void detect_maxima(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  int4 r = (int4){0,0,0,0};
+  int4 radius = (int4){0,0,0,0};
   if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = 1; }
   if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = 1; }
   if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = 1; }
@@ -60,10 +60,10 @@ __kernel void detect_maxima(
   float localMax = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
   const int4 pos = (int4){x,y,z,0};
 
-  for (int rx = -radius.x; rx <= radius.x; ++rx) {
-      for (int ry = -radius.y; ry <= radius.y; ++ry) {
-          for (int rz = -radius.z; rz <= radius.z; ++rz) {
-              int4 localPos = pos + (int4){rx,ry,rz,0};
+  for (int dx = -radius.x; dx <= radius.x; ++dx) {
+      for (int dy = -radius.y; dy <= radius.y; ++dy) {
+          for (int dz = -radius.z; dz <= radius.z; ++dz) {
+              int4 localPos = pos + (int4){dx,dy,dz,0};
               if( localPos.x == pos.x && localPos.y == pos.y && localPos.z == pos.z) {
                 continue;
               }

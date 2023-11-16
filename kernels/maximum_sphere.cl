@@ -19,6 +19,8 @@ __kernel void maximum_sphere(
   if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = (int) (scalar1-1)/2; squared.y = (float) (radius.y*radius.y);}
   if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (int) (scalar2-1)/2; squared.z = (float) (radius.z*radius.z);}
 
+  printf(\"image size: %d %d %d\\n\", GET_IMAGE_WIDTH(src), GET_IMAGE_HEIGHT(src), GET_IMAGE_DEPTH(src));
+
   IMAGE_src_PIXEL_TYPE maximumValue = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(x,y,z,0)).x;
   for (int dx = -radius.x; dx <= radius.x; dx++) {
     const float xSquared = dx * dx;
@@ -28,10 +30,6 @@ __kernel void maximum_sphere(
         const float zSquared = dz * dz;
         if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
           const IMAGE_src_PIXEL_TYPE value_res = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(dx,dy,dz,0)).x;
-
-
-          printf(\"(%d,%d,%d): %f vs (%d,%d,%d): %f \\n\", x,y,z, maximumValue, x+dx,y+dy,z+dz, value_res);
-
           if (value_res > maximumValue) {
             maximumValue = value_res;
           }

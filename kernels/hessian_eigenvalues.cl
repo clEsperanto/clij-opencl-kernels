@@ -111,6 +111,61 @@ inline void solve_cubic_equation(DOUBLE_TYPE b0, DOUBLE_TYPE b1, DOUBLE_TYPE b2,
     x[2] = x[2] - s;
 }
 
+
+inline void compute_hessian_2D(IMAGE_src_TYPE src, const int x, const int y, DOUBLE_TYPE hessian[]){
+    DOUBLE_TYPE a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y+1, z, 0)).x
+    DOUBLE_TYPE b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y-1, z, 0)).x
+    DOUBLE_TYPE c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y+1, z, 0)).x
+    DOUBLE_TYPE d = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y-1, z, 0)).x
+    const DOUBLE_TYPE dxy = (a - b - c + d)/4;
+    hessian[1] = (a - b - c + d)/4; //xy
+    a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y, z, 0)).x
+    b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x
+    c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y, z, 0)).x
+    hessian[0] = 1 - 2 * b + c;  //xx
+    a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y+1, z, 0)).x
+    b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x
+    c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y-1, z, 0)).x
+    hessian[3] = a - 2 * b + c;  //yy
+    // matrix [xx, xy, 0, yy, 0, zz]
+}
+
+inline void compute_hessian_3D(IMAGE_src_TYPE src, const int x, const int y, const int z, DOUBLE_TYPE hessian[]){
+    DOUBLE_TYPE a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y+1, z, 0)).x
+    DOUBLE_TYPE b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y-1, z, 0)).x
+    DOUBLE_TYPE c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y+1, z, 0)).x
+    DOUBLE_TYPE d = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y-1, z, 0)).x
+    hessian[1]  = (a - b - c + d)/4; //xy
+    a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y, z+1, 0)).x
+    b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y, z-1, 0)).x
+    c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y, z+1, 0)).x
+    d = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y, z-1, 0)).x
+    hessian[2] = (a - b - c + d)/4; //xz
+    a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y+1, z+1, 0)).x
+    b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y+1, z-1, 0)).x
+    c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y-1, z+1, 0)).x
+    d = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y-1, z-1, 0)).x
+    hessian[4]  = (a - b - c + d)/4; //yz
+    a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y, z, 0)).x
+    b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x
+    c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y, z, 0)).x
+    hessian[0] = 1 - 2 * b + c; //xx
+    a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y+1, z, 0)).x
+    b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x
+    c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y-1, z, 0)).x
+    hessian[3] = a - 2 * b + c; //yy
+    a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z+1, 0)).x
+    b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x
+    c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z-1, 0)).x
+    hessian[5] = a - 2 * b + c; //zz
+    // hessian[0] xx 
+    // hessian[1] xy
+    // hessian[2] xz
+    // hessian[3] yy
+    // hessian[4] yz
+    // hessian[5] zz
+}
+
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 /*
@@ -141,87 +196,128 @@ __kernel void hessian_eigenvalues(
 
   const bool is_3d = GET_IMAGE_DEPTH(src) > 1;
   DOUBLE_TYPE eigenvalues[3] = {0, 0, 0};
-  DOUBLE_TYPE aab = 0;
-  DOUBLE_TYPE abb = 0;
-  DOUBLE_TYPE acb = 0;
-  DOUBLE_TYPE bab = 0;
-  DOUBLE_TYPE bbb = 0;
-  DOUBLE_TYPE bcb = 0;
-  DOUBLE_TYPE cab = 0;
-  DOUBLE_TYPE cbb = 0;
-  DOUBLE_TYPE ccb = 0;
-  DOUBLE_TYPE aba = 0;
-  DOUBLE_TYPE abc = 0;
-  DOUBLE_TYPE baa = 0;
-  DOUBLE_TYPE bac = 0;
-  DOUBLE_TYPE bba = 0;
-  DOUBLE_TYPE bbc = 0;
-  DOUBLE_TYPE bca = 0;
-  DOUBLE_TYPE bcc = 0;
-  DOUBLE_TYPE cba = 0;
-  DOUBLE_TYPE cbc = 0;
+  DOUBLE_TYPE hessian[6] = {0, 0, 0, 0, 0, 0};
 
-  aab = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x - 1, y - 1, z    , 0)).x; // 2d  eq. aa
-  abb = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x - 1, y    , z    , 0)).x; // 2d  eq. ab
-  acb = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x - 1, y + 1, z    , 0)).x; // 2d  eq. ac
-  bab = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y - 1, z    , 0)).x; // 2d  eq. ba
-  bbb = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y    , z    , 0)).x; // 2d  eq. bb
-  bcb = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y + 1, z    , 0)).x; // 2d  eq. bc
-  cab = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y - 1, z    , 0)).x; // 2d  eq. ca
-  cbb = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y    , z    , 0)).x; // 2d  eq. cb
-  ccb = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y + 1, z    , 0)).x; // 2d  eq. cc
-
-  if (is_3d) { // missing computation for 3d
-    aba = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x - 1, y    , z - 1, 0)).x;
-    abc = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x - 1, y    , z + 1, 0)).x;
-    baa = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y - 1, z - 1, 0)).x;
-    bac = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y - 1, z + 1, 0)).x;
-    bba = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y    , z - 1, 0)).x; 
-    bbc = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y    , z + 1, 0)).x;
-    bca = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y + 1, z - 1, 0)).x;
-    bcc = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y + 1, z + 1, 0)).x;
-    cba = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y    , z - 1, 0)).x;
-    cbc = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y    , z + 1, 0)).x;
+  if (is_3d) {
+  compute_hessian_3D(src, x, y, z, hessian)
   }
-
-DOUBLE_TYPE g_xx = 0;
-DOUBLE_TYPE g_yy = 0;
-DOUBLE_TYPE g_zz = 0;
-DOUBLE_TYPE g_xy = 0;
-DOUBLE_TYPE g_xz = 0;
-DOUBLE_TYPE g_yz = 0;
-
-DOUBLE_TYPE a = 0;
-DOUBLE_TYPE b = 0;
-DOUBLE_TYPE c = 0;
-
-  g_xx = abb - 2 * bbb + cbb;
-  g_yy = bab - 2 * bbb + bcb;
-  g_zz = 0;
-  g_xy = (aab + ccb - acb - cab) * 0.25;
-  if (is_3d) { // missing computation for 3d
-    g_zz = bba - 2 * bbb + bbc;
-    g_xz = (aba + cbc - abc - cba) * 0.25;
-    g_yz = (baa + bcc - bac - bca) * 0.25;
+  else{
+  compute_hessian_2D(src, x, y, hessian)
   }
-  
-  a = (g_xx + g_yy + g_zz); // trace (g_zz is 0 if 2d_
+    
+  DOUBLE_TYPE a, b, c;
+  a = (hessian[0] + hessian[3] + hessian[5]);
   if (is_3d) { // missing computation for 3d
-    b = g_xx * g_yy + g_xx * g_zz + g_yy * g_zz - g_xy * g_xy - g_xz * g_xz - g_yz * g_yz;
-    c = g_xx * (g_yz * g_yz - g_yy * g_zz) + g_yy * g_xz * g_xz + g_zz * g_xy * g_xy - 2 * g_xy * g_xz * g_yz;
-  }
-
-  if(is_3d)
-  {
+    b = hessian[0] * hessian[3] + hessian[0] * hessian[5] + hessian[3] * hessian[5] - hessian[1] * hessian[1] - hessian[2] * hessian[2] - hessian[4] * hessian[4];
+    c = hessian[0] * (hessian[4] * hessian[4] - hessian[3] * hessian[5]) + hessian[3] * hessian[2] * hessian[2] + hessian[5] * hessian[1] * hessian[1] - 2 * hessian[1] * hessian[2] * hessian[4];
     solve_cubic_equation(c, b, -a, eigenvalues);
   }
   else
   {
-    eigenvalues[0] = (DOUBLE_TYPE) (a / 2.0 - sqrt(4 * g_xy * g_xy + (g_xx - g_yy) * (g_xx - g_yy)) / 2.0);
-    eigenvalues[2] = (DOUBLE_TYPE) (a / 2.0 + sqrt(4 * g_xy * g_xy + (g_xx - g_yy) * (g_xx - g_yy)) / 2.0);
+    eigenvalues[0] = (DOUBLE_TYPE) (a / 2.0 - sqrt(4 * hessian[1] * hessian[1] + (hessian[0] - hessian[3]) * (hessian[0] - hessian[3])) / 2.0);
+    eigenvalues[2] = (DOUBLE_TYPE) (a / 2.0 + sqrt(4 * hessian[1] * hessian[1] + (hessian[0] - hessian[3]) * (hessian[0] - hessian[3])) / 2.0);
   }
 
   WRITE_IMAGE(small_eigenvalue, POS_small_eigenvalue_INSTANCE(x, y, z, 0), CONVERT_small_eigenvalue_PIXEL_TYPE(eigenvalues[0]));
   WRITE_IMAGE(middle_eigenvalue, POS_middle_eigenvalue_INSTANCE(x, y, z, 0), CONVERT_middle_eigenvalue_PIXEL_TYPE(eigenvalues[1]));
   WRITE_IMAGE(large_eigenvalue, POS_large_eigenvalue_INSTANCE(x, y, z, 0), CONVERT_large_eigenvalue_PIXEL_TYPE(eigenvalues[2]));
 }
+
+
+// __kernel void hessian_eigenvalues(
+//     IMAGE_src_TYPE                src,
+//     IMAGE_small_eigenvalue_TYPE   small_eigenvalue,
+//     IMAGE_middle_eigenvalue_TYPE  middle_eigenvalue,
+//     IMAGE_large_eigenvalue_TYPE   large_eigenvalue
+// )
+// {
+//   const int x = get_global_id(0);
+//   const int y = get_global_id(1);
+//   const int z = get_global_id(2);
+
+//   const bool is_3d = GET_IMAGE_DEPTH(src) > 1;
+//   DOUBLE_TYPE eigenvalues[3] = {0, 0, 0};
+//   DOUBLE_TYPE aab = 0;
+//   DOUBLE_TYPE abb = 0;
+//   DOUBLE_TYPE acb = 0;
+//   DOUBLE_TYPE bab = 0;
+//   DOUBLE_TYPE bbb = 0;
+//   DOUBLE_TYPE bcb = 0;
+//   DOUBLE_TYPE cab = 0;
+//   DOUBLE_TYPE cbb = 0;
+//   DOUBLE_TYPE ccb = 0;
+//   DOUBLE_TYPE aba = 0;
+//   DOUBLE_TYPE abc = 0;
+//   DOUBLE_TYPE baa = 0;
+//   DOUBLE_TYPE bac = 0;
+//   DOUBLE_TYPE bba = 0;
+//   DOUBLE_TYPE bbc = 0;
+//   DOUBLE_TYPE bca = 0;
+//   DOUBLE_TYPE bcc = 0;
+//   DOUBLE_TYPE cba = 0;
+//   DOUBLE_TYPE cbc = 0;
+
+//   aab = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x - 1, y - 1, z    , 0)).x; // 2d  eq. aa
+//   abb = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x - 1, y    , z    , 0)).x; // 2d  eq. ab
+//   acb = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x - 1, y + 1, z    , 0)).x; // 2d  eq. ac
+//   bab = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y - 1, z    , 0)).x; // 2d  eq. ba
+//   bbb = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y    , z    , 0)).x; // 2d  eq. bb
+//   bcb = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y + 1, z    , 0)).x; // 2d  eq. bc
+//   cab = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y - 1, z    , 0)).x; // 2d  eq. ca
+//   cbb = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y    , z    , 0)).x; // 2d  eq. cb
+//   ccb = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y + 1, z    , 0)).x; // 2d  eq. cc
+
+//   if (is_3d) { // missing computation for 3d
+//     aba = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x - 1, y    , z - 1, 0)).x;
+//     abc = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x - 1, y    , z + 1, 0)).x;
+//     baa = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y - 1, z - 1, 0)).x;
+//     bac = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y - 1, z + 1, 0)).x;
+//     bba = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y    , z - 1, 0)).x; 
+//     bbc = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y    , z + 1, 0)).x;
+//     bca = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y + 1, z - 1, 0)).x;
+//     bcc = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x    , y + 1, z + 1, 0)).x;
+//     cba = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y    , z - 1, 0)).x;
+//     cbc = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y    , z + 1, 0)).x;
+//   }
+
+// DOUBLE_TYPE g_xx = 0;
+// DOUBLE_TYPE g_yy = 0;
+// DOUBLE_TYPE g_zz = 0;
+// DOUBLE_TYPE g_xy = 0;
+// DOUBLE_TYPE g_xz = 0;
+// DOUBLE_TYPE g_yz = 0;
+
+// DOUBLE_TYPE a = 0;
+// DOUBLE_TYPE b = 0;
+// DOUBLE_TYPE c = 0;
+
+//   g_xx = abb - 2 * bbb + cbb;
+//   g_yy = bab - 2 * bbb + bcb;
+//   g_zz = 0;
+//   g_xy = (aab + ccb - acb - cab) * 0.25;
+//   if (is_3d) { // missing computation for 3d
+//     g_zz = bba - 2 * bbb + bbc;
+//     g_xz = (aba + cbc - abc - cba) * 0.25;
+//     g_yz = (baa + bcc - bac - bca) * 0.25;
+//   }
+  
+//   a = (g_xx + g_yy + g_zz); // trace (g_zz is 0 if 2d_
+//   if (is_3d) { // missing computation for 3d
+//     b = g_xx * g_yy + g_xx * g_zz + g_yy * g_zz - g_xy * g_xy - g_xz * g_xz - g_yz * g_yz;
+//     c = g_xx * (g_yz * g_yz - g_yy * g_zz) + g_yy * g_xz * g_xz + g_zz * g_xy * g_xy - 2 * g_xy * g_xz * g_yz;
+//   }
+
+//   if(is_3d)
+//   {
+//     solve_cubic_equation(c, b, -a, eigenvalues);
+//   }
+//   else
+//   {
+//     eigenvalues[0] = (DOUBLE_TYPE) (a / 2.0 - sqrt(4 * g_xy * g_xy + (g_xx - g_yy) * (g_xx - g_yy)) / 2.0);
+//     eigenvalues[2] = (DOUBLE_TYPE) (a / 2.0 + sqrt(4 * g_xy * g_xy + (g_xx - g_yy) * (g_xx - g_yy)) / 2.0);
+//   }
+
+//   WRITE_IMAGE(small_eigenvalue, POS_small_eigenvalue_INSTANCE(x, y, z, 0), CONVERT_small_eigenvalue_PIXEL_TYPE(eigenvalues[0]));
+//   WRITE_IMAGE(middle_eigenvalue, POS_middle_eigenvalue_INSTANCE(x, y, z, 0), CONVERT_middle_eigenvalue_PIXEL_TYPE(eigenvalues[1]));
+//   WRITE_IMAGE(large_eigenvalue, POS_large_eigenvalue_INSTANCE(x, y, z, 0), CONVERT_large_eigenvalue_PIXEL_TYPE(eigenvalues[2]));
+// }

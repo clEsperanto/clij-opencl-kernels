@@ -3,9 +3,9 @@ __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_T
 __kernel void variance_sphere(
     IMAGE_src_TYPE  src,
     IMAGE_dst_TYPE  dst,
-    const int       index0,
-    const int       index1,
-    const int       index2
+    const int       scalar0,
+    const int       scalar1,
+    const int       scalar2
 )
 {
   const int x = get_global_id(0);
@@ -16,9 +16,9 @@ __kernel void variance_sphere(
   
   int4 radius = (int4){0,0,0,0};
   float4 squared = (float4){FLT_MIN, FLT_MIN, FLT_MIN, 0};
-  if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = (index0-1)/2; squared.x = (float) (radius.x*radius.x);}
-  if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = (index1-1)/2; squared.y = (float) (radius.y*radius.y);}
-  if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (index2-1)/2; squared.z = (float) (radius.z*radius.z);}
+  if (GET_IMAGE_WIDTH(src)  > 1 && scalar0 > 1) { radius.x = (scalar0-1)/2; squared.x = (float) (radius.x*radius.x);}
+  if (GET_IMAGE_HEIGHT(src) > 1 && scalar1 > 1) { radius.y = (scalar1-1)/2; squared.y = (float) (radius.y*radius.y);}
+  if (GET_IMAGE_DEPTH(src)  > 1 && scalar2 > 1) { radius.z = (scalar2-1)/2; squared.z = (float) (radius.z*radius.z);}
 
   int count = 0;
   float sum = 0;

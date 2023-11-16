@@ -16,9 +16,9 @@ __kernel void mode_sphere
   int4 coord = (int4){x,y,z,0};
   int4 radius = (int4){0,0,0,0};
   float4 squared = (float4){FLT_MIN,FLT_MIN,FLT_MIN,0};
-  if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = (scalar0-1)/2; squared.x = (float) (radius.x*radius.x);}
-  if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = (scalar1-1)/2; squared.y = (float) (radius.y*radius.y);}
-  if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (scalar2-1)/2; squared.z = (float) (radius.z*radius.z);}
+  if (GET_IMAGE_WIDTH(src)  > 1 && scalar0 > 1) { radius.x = (scalar0-1)/2; squared.x = (float) (radius.x*radius.x);}
+  if (GET_IMAGE_HEIGHT(src) > 1 && scalar1 > 1) { radius.y = (scalar1-1)/2; squared.y = (float) (radius.y*radius.y);}
+  if (GET_IMAGE_DEPTH(src)  > 1 && scalar2 > 1) { radius.z = (scalar2-1)/2; squared.z = (float) (radius.z*radius.z);}
 
   long histogram[256];
   for (int h = 0; h < 256; h++){

@@ -28,6 +28,10 @@ __kernel void maximum_sphere(
         const float zSquared = dz * dz;
         if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
           const IMAGE_src_PIXEL_TYPE value_res = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(dx,dy,dz,0)).x;
+
+
+          printf(\"(%d,%d,%d): %f vs (%d,%d,%d): %f \\n\", x,y,z, maximumValue, x+dx,y+dy,z+dz, value_res);
+
           if (value_res > maximumValue) {
             maximumValue = value_res;
           }

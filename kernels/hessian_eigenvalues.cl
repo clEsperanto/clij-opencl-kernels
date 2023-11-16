@@ -111,6 +111,7 @@ inline void solve_cubic_equation(DOUBLE_TYPE b0, DOUBLE_TYPE b1, DOUBLE_TYPE b2,
     x[2] = x[2] - s;
 }
 
+__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 inline void compute_hessian_2D(IMAGE_src_TYPE src, const int x, const int y, DOUBLE_TYPE hessian[]){
     DOUBLE_TYPE a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y+1, z, 0)).x
@@ -165,8 +166,6 @@ inline void compute_hessian_3D(IMAGE_src_TYPE src, const int x, const int y, con
     // hessian[4] yz
     // hessian[5] zz
 }
-
-__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 /*
   This kernel computes the eigenvalues of the hessian matrix of a 3d image.

@@ -28,7 +28,7 @@ __kernel void generate_touch_matrix(
       WRITE_IMAGE(dst, (POS_dst_INSTANCE(labely, label, 0, 0)), CONVERT_dst_PIXEL_TYPE(1));
     }
   }
-  if (z <= d - 1) {
+  if (z > 1 && z <= d - 1) {
     const float labelz = READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z + 1, 0)).x;
     if (label != labelz) {
       WRITE_IMAGE(dst, (POS_dst_INSTANCE(label, labelz, 0, 0)), CONVERT_dst_PIXEL_TYPE(1));

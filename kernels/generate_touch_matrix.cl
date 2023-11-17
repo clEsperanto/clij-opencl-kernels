@@ -1,8 +1,8 @@
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_TRUE| SAMPLER_ADDRESS | SAMPLER_FILTER;
 
 __kernel void generate_touch_matrix(
-    IMAGE_src_TYPE src
-    IMAGE_dst_TYPE dst,
+    IMAGE_src_TYPE src,
+    IMAGE_dst_TYPE dst
 ) 
 {
   const int x = get_global_id(0);

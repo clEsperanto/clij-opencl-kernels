@@ -19,7 +19,7 @@ __kernel void generate_distance_matrix(
   for (int j = 0; j < n_points; j++) {
       float sum = 0;
       for (int i = 0; i < n_dimensions; i ++) {
-          const float value = positions[i] - (float) READ_IMAGE(src1, sampler, POS_src1_INSTANCE(j, i, 0, 0)).x
+          const float value = positions[i] - (float) READ_IMAGE(src1, sampler, POS_src1_INSTANCE(j, i, 0, 0).x
           sum = sum + (value * value);
       }
       WRITE_IMAGE(dst, POS_dst_INSTANCE(x+1, j+1, 0, 0), CONVERT_dst_PIXEL_TYPE(sqrt(sum)));

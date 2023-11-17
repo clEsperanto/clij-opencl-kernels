@@ -2,8 +2,8 @@ __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_T
 
 __kernel void generate_distance_matrix(
     IMAGE_src0_TYPE  src0,
-    IMAGE_src1_TYPE  src1
-    IMAGE_dst_TYPE   dst,
+    IMAGE_src1_TYPE  src1,
+    IMAGE_dst_TYPE   dst
 ) 
 {
   const int x = get_global_id(0);

@@ -10,6 +10,7 @@ __kernel void labelled_spots_to_point_list(
   const int z = get_global_id(2);
 
   const int index = ((int) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x) - 1;
+  printf(\"index: %d - (%d, %d, %d)\\n\", index, x, y, z)
   if (index >= 0) {
     if (GET_IMAGE_WIDTH(src) > 1) {  
       WRITE_IMAGE(dst, POS_dst_INSTANCE(index,0,0,0), CONVERT_dst_PIXEL_TYPE(x));

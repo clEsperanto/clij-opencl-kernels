@@ -9,16 +9,21 @@ __kernel void labelled_spots_to_point_list(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
+  const int w = GET_IMAGE_WIDTH(src);
+  const int h = GET_IMAGE_HEIGHT(src);
+  const int z = GET_IMAGE_DEPT(src);
+
+  if( x > w || y > h || z > d) { return; } // cuda wrong block/grid get outside of coord
+
   const int index = ((int) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x) - 1;
-  printf(\"index: %d - (%d, %d, %d)\\n\", index, x, y, z);
   if (index >= 0) {
-    if (GET_IMAGE_WIDTH(src) > 1) {  
+    if (w > 1) {  
       WRITE_IMAGE(dst, POS_dst_INSTANCE(index,0,0,0), CONVERT_dst_PIXEL_TYPE(x));
     }
-    if (GET_IMAGE_HEIGHT(src) > 1) {
+    if (h > 1) {
       WRITE_IMAGE(dst, POS_dst_INSTANCE(index,1,0,0), CONVERT_dst_PIXEL_TYPE(y));
     }
-    if (GET_IMAGE_DEPTH(src) > 1) {
+    if (z > 1) {
       WRITE_IMAGE(dst, POS_dst_INSTANCE(index,2,0,0), CONVERT_dst_PIXEL_TYPE(z));
     }
   }

@@ -11,9 +11,9 @@ __kernel void sobel(
   
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
 
-  const float hx[3] = {0.25, 0.5, 0.25};
-  const float hy[3] = {0.25, 0.5, 0.25};
-  const float hz[3] = {0.25, 0.5, 0.25};
+  const float hx[3] = {1, 2, 1};
+  const float hy[3] = {1, 2, 1};
+  const float hz[3] = {1, 2, 1};
 
   const float hpx[3] = {1, 0, -1};
   const float hpy[3] = {1, 0, -1};

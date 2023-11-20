@@ -11,7 +11,7 @@ __kernel void labelled_spots_to_point_list(
 
   const int w = GET_IMAGE_WIDTH(src);
   const int h = GET_IMAGE_HEIGHT(src);
-  const int d = GET_IMAGE_DEPT(src);
+  const int d = GET_IMAGE_DEPTH(src);
 
   if( x > w || y > h || z > d) { return; } // cuda wrong block/grid get outside of coord
 

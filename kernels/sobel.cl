@@ -11,13 +11,13 @@ __kernel void sobel(
   
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
 
-  const int hx[3] = {1, 2, 1};
-  const int hy[3] = {1, 2, 1};
-  const int hz[3] = {1, 2, 1};
+  const float hx[3] = {0.25, 0.5, 0.25};
+  const float hy[3] = {0.25, 0.5, 0.25};
+  const float hz[3] = {0.25, 0.5, 0.25};
 
-  const int hpx[3] = {1, 0, -1};
-  const int hpy[3] = {1, 0, -1};
-  const int hpz[3] = {1, 0, -1};
+  const float hpx[3] = {1, 0, -1};
+  const float hpy[3] = {1, 0, -1};
+  const float hpz[3] = {1, 0, -1};
 
   int4 r = (int4){0,0,0,0};
   if (GET_IMAGE_DEPTH(src)  > 1) { r.z = 2; }
@@ -39,27 +39,23 @@ __kernel void sobel(
     }
   }
 
-  float norm = 0;
   float sum_x=0, sum_y=0, sum_z=0;
   for(int m=0; m<=r.x; ++m) {
       for(int n=0; n<=r.y; ++n) {
           for(int k=0; k<=r.z; ++k) {
               if (GET_IMAGE_WIDTH(src)  > 1) { 
                 sum_x += gx[m][n][k] * (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(m-1,n-1,k-1,0)).x;
-                norm += abs(gx[m][n][k]);
               }
               if (GET_IMAGE_HEIGHT(src) > 1) { 
                 sum_y += gy[m][n][k] * (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(m-1,n-1,k-1,0)).x;
-                norm += abs(gy[m][n][k]);
               }
               if (GET_IMAGE_DEPTH(src)  > 1) { 
                 sum_z += gz[m][n][k] * (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(m-1,n-1,k-1,0)).x;
-                norm += abs(gz[m][n][k]);
               }
           }
       }
   }
-  const float result = sqrt(sum_x * sum_x + sum_y * sum_y + sum_z * sum_z) / norm;
+  const float result = sqrt(sum_x * sum_x + sum_y * sum_y + sum_z * sum_z);
   
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(result));
 }

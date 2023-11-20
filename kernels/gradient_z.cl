@@ -12,5 +12,5 @@ __kernel void gradient_z(
   const float valueA = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z-1,0)).x;
   const float valueB = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z+1,0)).x;
 
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(valueB - valueA));
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(valueA - valueB));
 }

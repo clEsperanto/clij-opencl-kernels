@@ -55,7 +55,7 @@ __kernel void sobel(
           }
       }
   }
-  const float result = sqrt(sum_x * sum_x + sum_y * sum_y + sum_z * sum_z) / 8;
+  const float result = sqrt(sum_x * sum_x + sum_y * sum_y + sum_z * sum_z);
   
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(result));
 }

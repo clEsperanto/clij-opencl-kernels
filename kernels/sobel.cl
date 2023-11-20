@@ -24,9 +24,9 @@ __kernel void sobel(
   if (GET_IMAGE_HEIGHT(src) > 1) { r.y = 2; }
   if (GET_IMAGE_WIDTH(src)  > 1) { r.x = 2; }
 
-  int gy[3][3][3];
-  int gx[3][3][3];
-  int gz[3][3][3];
+  float gy[3][3][3];
+  float gx[3][3][3];
+  float gz[3][3][3];
 
   /*build the kernels i.e. h'_x(x,y,z)=h'(x)h(y)h(z)=gx(x,y,z)*/
   for(int m=0; m<=r.x; ++m) {

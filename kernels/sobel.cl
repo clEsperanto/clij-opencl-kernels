@@ -39,23 +39,27 @@ __kernel void sobel(
     }
   }
 
+  float norm = 0;
   float sum_x=0, sum_y=0, sum_z=0;
   for(int m=0; m<=r.x; ++m) {
       for(int n=0; n<=r.y; ++n) {
           for(int k=0; k<=r.z; ++k) {
               if (GET_IMAGE_WIDTH(src)  > 1) { 
                 sum_x += gx[m][n][k] * (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(m-1,n-1,k-1,0)).x;
+                norm += abs(gx[m][n][k]);
               }
               if (GET_IMAGE_HEIGHT(src) > 1) { 
                 sum_y += gy[m][n][k] * (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(m-1,n-1,k-1,0)).x;
+                norm += abs(gy[m][n][k]);
               }
               if (GET_IMAGE_DEPTH(src)  > 1) { 
                 sum_z += gz[m][n][k] * (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(m-1,n-1,k-1,0)).x;
+                norm += abs(gz[m][n][k]);
               }
           }
       }
   }
-  const float result = sqrt(sum_x * sum_x + sum_y * sum_y + sum_z * sum_z);
+  const float result = sqrt(sum_x * sum_x + sum_y * sum_y + sum_z * sum_z) / norm;
   
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(result));
 }

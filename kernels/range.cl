@@ -4,10 +4,10 @@ __kernel void range(
     IMAGE_src_TYPE  src,
     IMAGE_dst_TYPE  dst,
     const int       start_x,
-    const int       start_y,    
-    const int       start_z,
     const int       step_x,
+    const int       start_y,    
     const int       step_y,
+    const int       start_z,
     const int       step_z
 ) 
 {

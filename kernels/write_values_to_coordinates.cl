@@ -5,13 +5,12 @@ __kernel void write_values_to_coordinates(
     IMAGE_dst_TYPE  dst
 )
 {
-  const int i = get_global_id(0);
-  const POS_src_TYPE pos = POS_src_INSTANCE(i,0,0,0);
+  const int index = get_global_id(1);
 
-  const int x = (int) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,0,0,0)).x;
-  const int y = (int) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,1,0,0)).x;
-  const int z = (int) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,2,0,0)).x;
-  const IMAGE_src_PIXEL_TYPE value= READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(0,3,0,0)).x;
+  const int x = (int) READ_IMAGE(src, sampler, POS_src_INSTANCE(0,index,0,0)).x;
+  const int y = (int) READ_IMAGE(src, sampler, POS_src_INSTANCE(1,index,0,0)).x;
+  const int z = (int) READ_IMAGE(src, sampler, POS_src_INSTANCE(2,index,0,0)).x;
+  const IMAGE_src_PIXEL_TYPE value= READ_IMAGE(src, sampler, POS_src_INSTANCE(3,index,0,0)).x;
 
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
 }

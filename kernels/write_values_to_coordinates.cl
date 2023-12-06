@@ -5,7 +5,7 @@ __kernel void write_values_to_coordinates(
     IMAGE_dst_TYPE  dst
 )
 {
-  const int index = get_global_id(1);
+  const int index = get_global_id(0);
 
   const int x = (int) READ_IMAGE(src, sampler, POS_src_INSTANCE(0,index,0,0)).x;
   const int y = (int) READ_IMAGE(src, sampler, POS_src_INSTANCE(1,index,0,0)).x;

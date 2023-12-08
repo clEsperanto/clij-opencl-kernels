@@ -2,19 +2,19 @@ const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDG
 
 // Convert 3D coordinate to linear index
 inline void xyz_to_linear(int x, int y, int z, int width, int height, int depth, int &index) {
-    return (z * width * height) + (y * width) + x;
+    index = (z * width * height) + (y * width) + x;
 }
 
 // Convert linear index to 3D coordinate
-inline void linear_to_xyz(int index, int width, int height, int depth, int &x, int &y, int &z) {
-    z = index / (width * height);
-    index -= z * width * height;
-    y = index / width;
-    x = index % width;
+inline void linear_to_xyz(int index, int width, int height, int depth, int &sx, int &sy, int &sz) {
+    sz = index / (width * height);
+    index -= sz * width * height;
+    sy = index / width;
+    sx = index % width;
 }
 
 __kernel void reshape(
-    IMAGE_src0_TYPE  src,
+    IMAGE_src_TYPE  src,
     IMAGE_dst_TYPE   dst
 )
 {

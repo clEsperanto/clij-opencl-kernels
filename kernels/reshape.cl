@@ -1,16 +1,18 @@
 const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 // Convert 3D coordinate to linear index
-inline void xyz_to_linear(int x, int y, int z, int width, int height, int depth, int &index) {
-    index = (z * width * height) + (y * width) + x;
+inline int xyz_to_linear(int4 coord, int width, int height, int depth) {
+    return (coord.z * width * height) + (coord.y * width) + coord.x;
 }
 
 // Convert linear index to 3D coordinate
-inline void linear_to_xyz(int index, int width, int height, int depth, int &sx, int &sy, int &sz) {
-    sz = index / (width * height);
-    index -= sz * width * height;
-    sy = index / width;
-    sx = index % width;
+inline int4 linear_to_xyz(int index, int width, int height, int depth) {
+    int4 res = (int4)(0, 0, 0, 0);
+    res.z = index / (width * height);
+    index -= res.z * width * height;
+    res.y = index / width;
+    res.x = index % width;
+    return res;
 }
 
 __kernel void reshape(
@@ -18,10 +20,6 @@ __kernel void reshape(
     IMAGE_dst_TYPE   dst
 )
 {
-  const int x = get_global_id(0);
-  const int y = get_global_id(1);
-  const int z = get_global_id(2);
-
   const int dw = GET_IMAGE_WIDTH(dst);
   const int dh = GET_IMAGE_HEIGHT(dst);
   const int dd = GET_IMAGE_DEPTH(dst);
@@ -30,14 +28,10 @@ __kernel void reshape(
   const int sh = GET_IMAGE_HEIGHT(src);
   const int sd = GET_IMAGE_DEPTH(src);
 
-  int sx = 0;
-  int sy = 0;
-  int sz = 0;
+  const int4 coord_dst = (int4)(get_global_id(0), get_global_id(1), get_global_id(2), 0);
+  const int linear_index = xyz_to_linear(coord_dst, dw, dh, dd);
+  const int4 coord_src = linear_to_xyz(linear_index, sw, sh, sd);
 
-  int linear_index = 0;
-  xyz_to_linear(x, y, z, dw, dh, dd, linear_index);
-  linear_to_xyz(linear_index, sw, sh, sd, sx, sy, sz);
-
-  const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(sx,sy,sz,0)).x;
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
+  const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(coord_src.x,coord_src.y,coord_src.z,0)).x;
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(coord_src.x,coord_src.y,coord_src.z,0), CONVERT_dst_PIXEL_TYPE(value));
 }

@@ -1,6 +1,6 @@
 #pragma OPENCL EXTENSION cl_khr_3d_image_writes : enable
 
-#pragma OPENCL EXTENSION cl_amd_printf : enable
+// #pragma OPENCL EXTENSION cl_amd_printf : enable
 
 #pragma OPENCL EXTENSION cl_khr_byte_addressable_store : enable
 
@@ -770,7 +770,7 @@ inline int clij_convert_int_sat(float value) {
     return (int)value;
 }
 
-inline uint clij_convert_ulong_sat(float value) {
+inline ulong clij_convert_ulong_sat(float value) {
     if (value > 18446744073709551615) {
         return 18446744073709551615;
     }
@@ -780,7 +780,7 @@ inline uint clij_convert_ulong_sat(float value) {
     return (ulong)value;
 }
 
-inline int clij_convert_long_sat(float value) {
+inline long clij_convert_long_sat(float value) {
     if (value > 9223372036854775807) {
         return 9223372036854775807;
     }

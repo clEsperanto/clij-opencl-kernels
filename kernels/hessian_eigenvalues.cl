@@ -114,50 +114,50 @@ inline void solve_cubic_equation(DOUBLE_TYPE b0, DOUBLE_TYPE b1, DOUBLE_TYPE b2,
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 inline void compute_hessian_2D(IMAGE_src_TYPE src, const int x, const int y, DOUBLE_TYPE hessian[]){
-    DOUBLE_TYPE a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y+1, 0, 0)).x;
-    DOUBLE_TYPE b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y-1, 0, 0)).x;
-    DOUBLE_TYPE c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y+1, 0, 0)).x;
-    DOUBLE_TYPE d = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y-1, 0, 0)).x;
+    DOUBLE_TYPE a = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y+1, 0, 0)).x;
+    DOUBLE_TYPE b = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y-1, 0, 0)).x;
+    DOUBLE_TYPE c = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y+1, 0, 0)).x;
+    DOUBLE_TYPE d = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y-1, 0, 0)).x;
     const DOUBLE_TYPE dxy = (a - b - c + d)* 0.25;
     hessian[1] = (a - b - c + d)/4; //xy
-    a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y, 0, 0)).x;
-    b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, 0, 0)).x;
-    c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y, 0, 0)).x;
+    a = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y, 0, 0)).x;
+    b = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, 0, 0)).x;
+    c = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y, 0, 0)).x;
     hessian[0] = a - 2 * b + c;  //xx
-    a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y+1, 0, 0)).x;
-    b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, 0, 0)).x;
-    c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y-1, 0, 0)).x;
+    a = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y+1, 0, 0)).x;
+    b = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, 0, 0)).x;
+    c = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y-1, 0, 0)).x;
     hessian[3] = a - 2 * b + c;  //yy
     // hessian [xx, xy, 0, yy, 0, zz]
 }
 
 inline void compute_hessian_3D(IMAGE_src_TYPE src, const int x, const int y, const int z, DOUBLE_TYPE hessian[]){
-    DOUBLE_TYPE a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y+1, z, 0)).x;
-    DOUBLE_TYPE b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y-1, z, 0)).x;
-    DOUBLE_TYPE c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y+1, z, 0)).x;
-    DOUBLE_TYPE d = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y-1, z, 0)).x;
+    DOUBLE_TYPE a = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y+1, z, 0)).x;
+    DOUBLE_TYPE b = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y-1, z, 0)).x;
+    DOUBLE_TYPE c = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y+1, z, 0)).x;
+    DOUBLE_TYPE d = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y-1, z, 0)).x;
     hessian[1]  = (a - b - c + d)* 0.25; //xy
-    a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y, z+1, 0)).x;
-    b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y, z-1, 0)).x;
-    c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y, z+1, 0)).x;
-    d = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y, z-1, 0)).x;
+    a = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y, z+1, 0)).x;
+    b = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x+1, y, z-1, 0)).x;
+    c = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y, z+1, 0)).x;
+    d = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y, z-1, 0)).x;
     hessian[2] = (a - b - c + d)* 0.25; //xz
-    a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y+1, z+1, 0)).x;
-    b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y+1, z-1, 0)).x;
-    c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y-1, z+1, 0)).x;
-    d = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y-1, z-1, 0)).x;
+    a = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y+1, z+1, 0)).x;
+    b = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y+1, z-1, 0)).x;
+    c = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y-1, z+1, 0)).x;
+    d = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y-1, z-1, 0)).x;
     hessian[4]  = (a - b - c + d)* 0.25; //yz
-    a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y, z, 0)).x;
-    b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;
-    c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y, z, 0)).x;
+    a = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y, z, 0)).x;
+    b = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;
+    c = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x-1, y, z, 0)).x;
     hessian[0] = a - 2 * b + c; //xx
-    a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y+1, z, 0)).x;
-    b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;
-    c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y-1, z, 0)).x;
+    a = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y+1, z, 0)).x;
+    b = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;
+    c = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y-1, z, 0)).x;
     hessian[3] = a - 2 * b + c; //yy
-    a = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z+1, 0)).x;
-    b = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;
-    c = (DOUBLE_TYPE) READ_src_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z-1, 0)).x;
+    a = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z+1, 0)).x;
+    b = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;
+    c = (DOUBLE_TYPE) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z-1, 0)).x;
     hessian[5] = a - 2 * b + c; //zz
     // hessian [xx, xy, xz, yy, yz, zz]
 }

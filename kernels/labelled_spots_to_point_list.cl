@@ -23,7 +23,7 @@ __kernel void labelled_spots_to_point_list(
     if (h > 1) {
       WRITE_IMAGE(dst, POS_dst_INSTANCE(index,1,0,0), CONVERT_dst_PIXEL_TYPE(y));
     }
-    if (z > 1) {
+    if (d > 1) {
       WRITE_IMAGE(dst, POS_dst_INSTANCE(index,2,0,0), CONVERT_dst_PIXEL_TYPE(z));
     }
   }

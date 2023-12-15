@@ -1,6 +1,6 @@
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
-__kernel void read_values_from_coordinates(
+__kernel void read_values_from_positions(
     IMAGE_src0_TYPE  src0,
     IMAGE_src1_TYPE  src1,
     IMAGE_dst_TYPE   dst

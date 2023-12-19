@@ -60,11 +60,11 @@ __kernel void affine_transform_interpolate(
   float y2 = mat[4] * x + mat[5] * y + mat[6]  * z + mat[7] ;
   float z2 = mat[8] * x + mat[9] * y + mat[10] * z + mat[11];
 
-  // const POS_src_TYPE coord_read = POS_src_INSTANCE(x2/Nx, y2/Ny, z2/Nz, 0);
-  // const POS_dst_TYPE coord_write = POS_dst_INSTANCE(i, j, k, 0);
+  const POS_src_TYPE coord_read = POS_src_INSTANCE(x2/Nx, y2/Ny, z2/Nz, 0);
+  const POS_dst_TYPE coord_write = POS_dst_INSTANCE(i, j, k, 0);
 
-  const float4 coord_read = (float4)(x2/Nx, y2/Ny, z2/Nz, 0);
-  const float4 coord_write = (float4)(i, j, k, 0);
+  // const float4 coord_read = (float4)(x2/Nx, y2/Ny, z2/Nz, 0);
+  // const float4 coord_write = (float4)(i, j, k, 0);
 
   float pix = (float) READ_IMAGE(src, sampler, coord_read).x;
   WRITE_IMAGE(dst, coord_write, CONVERT_dst_PIXEL_TYPE(pix));

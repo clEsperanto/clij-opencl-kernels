@@ -52,30 +52,21 @@ __kernel void affine_transform(
   const uint Ny = GET_IMAGE_HEIGHT(src);
   const uint Nz = GET_IMAGE_DEPTH(src);
 
-  const int mat_nb_element = GET_IMAGE_WIDTH(mat) * GET_IMAGE_HEIGHT(mat) * GET_IMAGE_DEPTH(mat);
-
   const float x = i + 0.5f;
   const float y = j + 0.5f;
   const float z = k + 0.5f;
+  
+  const float x2 =  mat[0] * x + mat[1] * y + mat[2]  * z + mat[3] ;
+  const float y2 =  mat[4] * x + mat[5] * y + mat[6]  * z + mat[7] ;
+  const float z2 =  mat[8] * x + mat[9] * y + mat[10] * z + mat[11];
 
-  float z2;
-  float y2;
-  float x2;
-  if (mat_nb_element > 9) {
-    float z2 = ( mat[8] * x+mat[9] * y+mat[10] * z+mat[11] );
-    float y2 = ( mat[4] * x+mat[5] * y+mat[6]  * z+mat[7]  );
-    float x2 = ( mat[0] * x+mat[1] * y+mat[2]  * z+mat[3]  );
-  }
-  else {
-    float z2 = ( 0);
-    float y2 = ( mat[3] * x+mat[4] * y+mat[5] );
-    float x2 = ( mat[0] * x+mat[1] * y+mat[2] );
-  }
+  const POS_src_TYPE coord_read = POS_src_INSTANCE(x2, y2, z2, 0);
+  const POS_dst_TYPE coord_write = POS_dst_INSTANCE(i, j, k, 0);
 
   float pix = 0;
   if (x2 >= 0 && y2 >= 0 && z2 >= 0 && x2 < Nx && y2 < Ny && z2 < Nz) {
-    pix = (float) (READ_IMAGE(src, sampler, POS_src_INSTANCE(x2, y2, z2, 0)).x);
+    pix = (float) READ_IMAGE(src, sampler, coord_read).x;
   }
 
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(i, j, k, 0), CONVERT_dst_PIXEL_TYPE(pix));
+  WRITE_IMAGE(dst, coord_write, CONVERT_dst_PIXEL_TYPE(pix));
 }

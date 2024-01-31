@@ -1,7 +1,7 @@
 
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
-__kernel void divide_image_and_scalar(
+__kernel void divide_scalar_by_image(
     IMAGE_src_TYPE  src,
     IMAGE_dst_TYPE  dst,
     const float     scalar
@@ -12,5 +12,5 @@ __kernel void divide_image_and_scalar(
   const int z = get_global_id(2);
 
   const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value / scalar));
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(scalar / value));
 }

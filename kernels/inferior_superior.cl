@@ -47,7 +47,6 @@ inline void inferior_superior_3d (
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
         value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int4){i, j, 0, 0})).x;
-        // printf("value %i\n", value);
         if (value != 0) {
           break;
         }

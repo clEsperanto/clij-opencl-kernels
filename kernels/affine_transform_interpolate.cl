@@ -63,6 +63,6 @@ __kernel void affine_transform_interpolate(
   const float4 read_coord = (float4) {x2/Nx, y2/Ny, z2/Nz, 0.f};
   const int4 write_coord = (int4) {i, j, k, 0};
 
-  const float pix = (float) READ_IMAGE(input, sampler, coord_norm).x;
-  WRITE_IMAGE(output, pos, CONVERT_output_PIXEL_TYPE(pix));
+  const float pix = (float) READ_IMAGE(src, sampler, coord_norm).x;
+  WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(pix));
 }

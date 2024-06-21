@@ -60,9 +60,20 @@ __kernel void affine_transform_interpolate(
   const float y2 = mat[4] * x + mat[5] * y + mat[6]  * z + mat[7] ;
   const float z2 = mat[8] * x + mat[9] * y + mat[10] * z + mat[11];
 
+  if (Nz > 1)
+  {
   const float4 read_coord = (float4) {x2/Nx, y2/Ny, z2/Nz, 0.f};
   const int4 write_coord = (int4) {i, j, k, 0};
 
   const float pix = (float) READ_IMAGE(src, sampler, read_coord).x;
   WRITE_IMAGE(dst, write_coord, CONVERT_dst_PIXEL_TYPE(pix));
+  }
+  else
+  {
+  const float2 read_coord = (float2) {x2/Nx, y2/Ny};
+  const int2 write_coord = (int2) {i, j};
+
+  const float pix = (float) READ_IMAGE(src, sampler, read_coord).x;
+  WRITE_IMAGE(dst, write_coord, CONVERT_dst_PIXEL_TYPE(pix));
+  }
 }

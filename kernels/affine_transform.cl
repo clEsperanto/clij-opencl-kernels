@@ -60,16 +60,13 @@ __kernel void affine_transform(
   const float y2 =  mat[4] * x + mat[5] * y + mat[6]  * z + mat[7] ;
   const float z2 =  mat[8] * x + mat[9] * y + mat[10] * z + mat[11];
 
-  const POS_src_TYPE coord_read = POS_src_INSTANCE(x2, y2, z2, 0);
-  const POS_dst_TYPE coord_write = POS_dst_INSTANCE(i, j, k, 0);
-
-  // const int4 coord_read = (int4)(x2, y2, z2, 0);
-  // const int4 coord_write = (int4)(i, j, k, 0);
+  const int4 read_coord = (int4) {x2, y2, z2, 0.f};
+  const int4 write_coord = (int4) {i, j, k, 0};
 
   float pix = 0;
   if (x2 >= 0 && y2 >= 0 && z2 >= 0 && x2 < Nx && y2 < Ny && z2 < Nz) {
-    pix = (float) READ_IMAGE(src, sampler, coord_read).x;
+    pix = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(read_coord)).x;
   }
 
-  WRITE_IMAGE(dst, coord_write, CONVERT_dst_PIXEL_TYPE(pix));
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(coord_write), CONVERT_dst_PIXEL_TYPE(pix));
 }

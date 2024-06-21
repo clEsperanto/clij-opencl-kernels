@@ -56,16 +56,13 @@ __kernel void affine_transform_interpolate(
   const float y = j + 0.5f;
   const float z = k + 0.5f;
 
-  float x2 = mat[0] * x + mat[1] * y + mat[2]  * z + mat[3] ;
-  float y2 = mat[4] * x + mat[5] * y + mat[6]  * z + mat[7] ;
-  float z2 = mat[8] * x + mat[9] * y + mat[10] * z + mat[11];
+  const float x2 = mat[0] * x + mat[1] * y + mat[2]  * z + mat[3] ;
+  const float y2 = mat[4] * x + mat[5] * y + mat[6]  * z + mat[7] ;
+  const float z2 = mat[8] * x + mat[9] * y + mat[10] * z + mat[11];
 
-  const POS_src_TYPE coord_read = POS_src_INSTANCE(x2/Nx, y2/Ny, z2/Nz, 0);
-  const POS_dst_TYPE coord_write = POS_dst_INSTANCE(i, j, k, 0);
+  const float4 read_coord = (float4) {x2/Nx, y2/Ny, z2/Nz, 0.f};
+  const int4 write_coord = (int4) {i, j, k, 0};
 
-  // const float4 coord_read = (float4)(x2/Nx, y2/Ny, z2/Nz, 0);
-  // const float4 coord_write = (float4)(i, j, k, 0);
-
-  float pix = (float) READ_IMAGE(src, sampler, coord_read).x;
-  WRITE_IMAGE(dst, coord_write, CONVERT_dst_PIXEL_TYPE(pix));
+  const float pix = (float) READ_IMAGE(input, sampler, coord_norm).x;
+  WRITE_IMAGE(output, pos, CONVERT_output_PIXEL_TYPE(pix));
 }

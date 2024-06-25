@@ -34,7 +34,7 @@ inline void inferior_superior_3d (
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  const POS_src_TYPE pos = POS_src_INSTANCE(x, y, z);
+  const POS_src_TYPE pos = POS_src_INSTANCE(x, y, z, 0);
 
   // if value is already 0, erode will return 0
   float value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, pos).x;
@@ -209,7 +209,7 @@ inline void inferior_superior_2d (
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  const POS_src_TYPE pos = POS_src_INSTANCE(x, y, z);
+  const POS_src_TYPE pos = POS_src_INSTANCE(x, y, z, 0);
 
 
   // if value is already 1, dilate will return 1

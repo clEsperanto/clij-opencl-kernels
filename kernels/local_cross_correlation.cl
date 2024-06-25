@@ -21,9 +21,9 @@ __kernel void local_cross_correlation(
   float sum2 = 0;
   float sum3 = 0;
 
-  for (int dx = -center.x; dx <= center.x; ++dx) {
-    for (int dy = -center.y; dy <= center.y; ++dy) {
       for (int dz = -center.z; dz <= center.z; ++dz) {
+    for (int dy = -center.y; dy <= center.y; ++dy) {
+  for (int dx = -center.x; dx <= center.x; ++dx) {
 
         const POS_src1_TYPE coord_kernel = POS_src1_INSTANCE(dx + center.x, dy + center.y, dz + center.z, 0);
         const POS_src0_TYPE coord_image = coord + POS_src0_INSTANCE(dx, dy, dz, 0);

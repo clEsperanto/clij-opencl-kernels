@@ -20,9 +20,9 @@ __kernel void onlyzero_overwrite_maximum_box(
   const IMAGE_src_PIXEL_TYPE originalValue = READ_IMAGE(src, sampler, pos).x;
   IMAGE_src_PIXEL_TYPE foundMaximum = originalValue;
   if (foundMaximum == 0) {
-    for (int dx = -radius.x; dx <= radius.x; ++dx) {
-      for (int dy = -radius.y; dy <= radius.y; ++dy) {
         for (int dz = -radius.z; dz <= radius.z; ++dz) {
+      for (int dy = -radius.y; dy <= radius.y; ++dy) {
+    for (int dx = -radius.x; dx <= radius.x; ++dx) {
           const POS_src_TYPE current_pos = pos + POS_src_INSTANCE(dx, dy, dz, 0);
           const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, current_pos).x;
           if (value > foundMaximum) {

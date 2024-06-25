@@ -18,9 +18,9 @@ __kernel void detect_minima(
   float localMin = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
   const int4 pos = (int4){x,y,z,0};
 
-  for (int dx = -radius.x; dx <= radius.x; ++dx) {
-      for (int dy = -radius.y; dy <= radius.y; ++dy) {
           for (int dz = -radius.z; dz <= radius.z; ++dz) {
+      for (int dy = -radius.y; dy <= radius.y; ++dy) {
+  for (int dx = -radius.x; dx <= radius.x; ++dx) {
               int4 localPos = pos + (int4){dx,dy,dz,0};
               if( localPos.x == pos.x && localPos.y == pos.y && localPos.z == pos.z) {
                 continue;

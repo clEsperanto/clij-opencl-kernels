@@ -17,9 +17,9 @@ __kernel void maximum_octagon_box(
   if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = 1; }
 
   IMAGE_src_PIXEL_TYPE maximum = READ_IMAGE(src, sampler, pos).x;
-  for (int dx = -radius.x; dx <= radius.x; ++dx) {
-    for (int dy = -radius.y; dy <= radius.y; ++dy) {
       for (int dz = -radius.z; dz <= radius.z; ++dz) {
+    for (int dy = -radius.y; dy <= radius.y; ++dy) {
+  for (int dx = -radius.x; dx <= radius.x; ++dx) {
         IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(dx,dy,dz,0))).x;
         if (maximum < value) {
           maximum = value;

@@ -17,9 +17,9 @@ __kernel void dilate_box(
 
   float value = READ_IMAGE(src, sampler, pos).x;
   if (value < 1) {
-    for (int dx = -r.x; dx <= r.x; ++dx) {
-      for (int dy = -r.y; dy <= r.y; ++dy) {
         for (int dz = -r.z; dz <= r.z; ++dz) {
+      for (int dy = -r.y; dy <= r.y; ++dy) {
+    for (int dx = -r.x; dx <= r.x; ++dx) {
           value = READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(dx,dy,dz,0)).x;
           if (value != 0) {
             break;

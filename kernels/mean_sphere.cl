@@ -21,12 +21,12 @@ __kernel void mean_sphere(
 
   int count = 0;
   float sum = 0;
-  for (int dx = -radius.x; dx <= radius.x; ++dx) {
-    const float xSquared = dx * dx;
-    for (int dy = -radius.y; dy <= radius.y; ++dy) {
-      const float ySquared = dy * dy;
       for (int dz = -radius.z; dz <= radius.z; ++dz) {
         const float zSquared = dz * dz;
+    for (int dy = -radius.y; dy <= radius.y; ++dy) {
+      const float ySquared = dy * dy;
+  for (int dx = -radius.x; dx <= radius.x; ++dx) {
+    const float xSquared = dx * dx;
         if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
           sum += (float) READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(dx,dy,dz,0)).x;
           count++;

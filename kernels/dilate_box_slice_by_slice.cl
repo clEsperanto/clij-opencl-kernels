@@ -12,8 +12,8 @@ __kernel void dilate_box_slice_by_slice(
   const int radius = 1;
   IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
   if (value == 0) {
-    for (int dx = -radius; dx <= radius; ++dx) {
       for (int dy = -radius; dy <= radius; ++dy) {
+    for (int dx = -radius; dx <= radius; ++dx) {
         value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0) + POS_src_INSTANCE(dx,dy,0,0)).x;
         if (value != 0) {
           break;

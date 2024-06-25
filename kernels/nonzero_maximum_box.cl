@@ -19,9 +19,9 @@ __kernel void nonzero_maximum_box(
   IMAGE_src_PIXEL_TYPE foundMaximum = READ_IMAGE(src, sampler, coord).x;
   if (foundMaximum != 0) {
       IMAGE_src_PIXEL_TYPE originalValue = foundMaximum;
-      for (int dx = -r.x; dx <= r.x; ++dx) {
-        for (int dy = -r.y; dy <= r.y; ++dy) {
           for (int dz = -r.z; dz <= r.z; ++dz) {
+        for (int dy = -r.y; dy <= r.y; ++dy) {
+      for (int dx = -r.x; dx <= r.x; ++dx) {
             IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(dx,dy,dz,0)).x;
             if ( value > foundMaximum && value > 0) {
               foundMaximum = value;

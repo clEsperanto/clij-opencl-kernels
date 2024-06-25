@@ -24,9 +24,9 @@ __kernel void mode_box
     histogram[h]=0;
   }
 
-  for (int dx = -radius.x; dx <= radius.x; ++dx) {
-    for (int dy = -radius.y; dy <= radius.y; ++dy) {
       for (int dz = -radius.z; dz <= radius.z; ++dz) {
+    for (int dy = -radius.y; dy <= radius.y; ++dy) {
+  for (int dx = -radius.x; dx <= radius.x; ++dx) {
          const int x1 = coord.x + dx;
          const int x2 = coord.y + dy;
          const int x3 = coord.z + dz;

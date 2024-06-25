@@ -43,9 +43,9 @@ __kernel void median_box(
   IMAGE_dst_PIXEL_TYPE array[MAX_ARRAY_SIZE];
 
   int count = 0;
-  for (int dx = -radius.x; dx <= radius.x; dx++) {
+  for (int dz = -radius.z; dz <= radius.z; dz++) {
     for (int dy = -radius.y; dy <= radius.y; dy++) {
-      for (int dz = -radius.z; dz <= radius.z; dz++) {
+      for (int dx = -radius.x; dx <= radius.x; dx++) {
         const POS_src_TYPE pos = POS_src_INSTANCE(dx, dy, dz, 0);
         IMAGE_src_PIXEL_TYPE value_res = READ_IMAGE(src, sampler, coord + pos).x;
         array[count] = CONVERT_dst_PIXEL_TYPE(value_res);

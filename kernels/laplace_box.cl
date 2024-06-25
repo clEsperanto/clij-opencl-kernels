@@ -18,9 +18,9 @@ __kernel void laplace_box(
   const float norm = pow(3.0f, (int)(r.x + r.y + r.z)) - 1;
 
   float result = 0;
-  for (int dx = -r.x; dx <= r.x; ++dx) {
-    for (int dy = -r.y; dy <= r.y; ++dy) {
       for (int dz = -r.z; dz <= r.z; ++dz) {
+    for (int dy = -r.y; dy <= r.y; ++dy) {
+  for (int dx = -r.x; dx <= r.x; ++dx) {
         if (dx == 0 && dy == 0 && dz == 0) {
           result += (float) READ_IMAGE(src, sampler, pos).x * norm;
         } else {

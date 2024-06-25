@@ -13,8 +13,8 @@ __kernel void detect_maxima_slice_by_slice(
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
   POS_src_TYPE localMaxPos = POS_src_INSTANCE(x,y,z,0);
   float localMax = (float) READ_IMAGE(src, sampler, pos).x - 1;
-  for (int dx = -radius; dx <= radius; ++dx) {
-      for (int dy = -radius; dy <= radius; ++dy) {
+  for (int dy = -radius; dy <= radius; ++dy) {
+      for (int dx = -radius; dx <= radius; ++dx) {
           const POS_src_TYPE localPos = pos + POS_src_TYPE(dx,dy,0,0);
           if( all(localPos >= 0) && any(localPos != pos) ) {
             const float value = READ_IMAGE(src, sampler, localPos).x;

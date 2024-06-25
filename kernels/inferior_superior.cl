@@ -34,12 +34,12 @@ inline void inferior_superior_3d (
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  const int4 pos = (int4){x, y, z, 0};
+  const POS_src_TYPE pos = POS_src_INSTANCE(x, y, z);
 
   // if value is already 0, erode will return 0
   float value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, pos).x;
   if (value != 0) {
-    WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
+    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
     return;
   }
 
@@ -56,7 +56,7 @@ inline void inferior_superior_3d (
       }
     }
   if (value == 0) {
-    WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
     return;
   }
 
@@ -73,7 +73,7 @@ inline void inferior_superior_3d (
       }
     }
   if (value == 0) {
-    WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
     return;
   }
 
@@ -90,7 +90,7 @@ inline void inferior_superior_3d (
       }
     }
   if (value == 0) {
-    WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
     return;
   }
 
@@ -107,7 +107,7 @@ inline void inferior_superior_3d (
       }
     }
   if (value == 0) {
-    WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
     return;
   }
 
@@ -124,7 +124,7 @@ inline void inferior_superior_3d (
       }
     }
   if (value == 0) {
-    WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
     return;
   }
 
@@ -141,7 +141,7 @@ inline void inferior_superior_3d (
       }
     }
   if (value == 0) {
-    WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
     return;
   }
 
@@ -158,7 +158,7 @@ inline void inferior_superior_3d (
       }
     }
   if (value == 0) {
-    WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
     return;
   }
 
@@ -175,7 +175,7 @@ inline void inferior_superior_3d (
       }
     }
   if (value == 0) {
-    WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
     return;
   }
 
@@ -192,7 +192,7 @@ inline void inferior_superior_3d (
       }
     }
   if (value == 0) {
-    WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
     return;
   }
 
@@ -207,13 +207,15 @@ inline void inferior_superior_2d (
 {
   const int x = get_global_id(0);
   const int y = get_global_id(1);
+  const int z = get_global_id(2);
 
-  const int2 pos = (int2){x,y};
+  const POS_src_TYPE pos = POS_src_INSTANCE(x, y, z);
+
 
   // if value is already 1, dilate will return 1
   float value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, pos).x;
   if (value == 1) {
-    WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
+    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
     return;
   }
 
@@ -224,7 +226,7 @@ inline void inferior_superior_2d (
   if (value == 0) {
     value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int2){-1, -1})).x;
     if (value == 0) {
-      WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+      WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
       return;
     }
   }
@@ -236,7 +238,7 @@ inline void inferior_superior_2d (
     if (value == 0) {
       value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int2){0, -1})).x;
       if (value == 0) {
-        WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+        WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
         return;
       }
     }
@@ -248,7 +250,7 @@ inline void inferior_superior_2d (
     if (value == 0) {
       value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int2){1, -1})).x;
       if (value == 0) {
-        WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+        WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
         return;
       }
     }
@@ -260,13 +262,13 @@ inline void inferior_superior_2d (
     if (value == 0) {
       value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int2){-1, 0})).x;
       if (value == 0) {
-        WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+        WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
         return;
       }
     }
 
   // If all dilates are 1 then return 1
-  WRITE_dst_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
+  WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
 }
 
 __kernel void inferior_superior(

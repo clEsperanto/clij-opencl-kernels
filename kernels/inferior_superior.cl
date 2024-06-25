@@ -46,7 +46,7 @@ inline void inferior_superior_3d (
   // P0
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int4){i, j, 0, 0})).x;
+        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(i, j, 0, 0))).x;
         if (value != 0) {
           break;
         }
@@ -63,7 +63,7 @@ inline void inferior_superior_3d (
   // P1
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int4){i, 0, j, 0})).x;
+        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(i, 0, j, 0))).x;
         if (value != 0) {
           break;
         }
@@ -80,7 +80,7 @@ inline void inferior_superior_3d (
   // P2
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int4){0, i, j, 0})).x;
+        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(0, i, j, 0))).x;
         if (value != 0) {
           break;
         }
@@ -97,7 +97,7 @@ inline void inferior_superior_3d (
   // P3
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int4){i, j, j, 0})).x;
+        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(i, j, j, 0))).x;
         if (value != 0) {
           break;
         }
@@ -114,7 +114,7 @@ inline void inferior_superior_3d (
   // P4
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int4){j, i, -i, 0})).x;
+        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(j, i, -i, 0))).x;
         if (value != 0) {
           break;
         }
@@ -131,7 +131,7 @@ inline void inferior_superior_3d (
   // P5
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int4){i, j, i, 0})).x;
+        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(i, j, i, 0))).x;
         if (value != 0) {
           break;
         }
@@ -148,7 +148,7 @@ inline void inferior_superior_3d (
   // P6
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int4){i, j, -i, 0})).x;
+        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(i, j, -i, 0))).x;
         if (value != 0) {
           break;
         }
@@ -165,7 +165,7 @@ inline void inferior_superior_3d (
   // P7
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int4){i, i, j, 0})).x;
+        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(i, i, j, 0))).x;
         if (value != 0) {
           break;
         }
@@ -182,7 +182,7 @@ inline void inferior_superior_3d (
   // P8
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int4){i, -i, j, 0})).x;
+        value = READ_3DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(i, -i, j, 0))).x;
         if (value != 0) {
           break;
         }
@@ -222,9 +222,9 @@ inline void inferior_superior_2d (
   /* Dilate with kernel [[1, 0, 0], 
                          [0, 1, 0], 
                          [0, 0, 1]] */
-  value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int2){1, 1})).x;
+  value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, 1, 0, 0))).x;
   if (value == 0) {
-    value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int2){-1, -1})).x;
+    value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, -1, 0, 0))).x;
     if (value == 0) {
       WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
       return;
@@ -234,9 +234,9 @@ inline void inferior_superior_2d (
   /* Dilate with kernel [[0, 1, 0], 
                          [0, 1, 0], 
                          [0, 1, 0]] */
-  value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int2){0, 1})).x;
+  value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(0, 1, 0, 0))).x;
     if (value == 0) {
-      value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int2){0, -1})).x;
+      value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(0, -1, 0, 0))).x;
       if (value == 0) {
         WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
         return;
@@ -246,9 +246,9 @@ inline void inferior_superior_2d (
   /* Dilate with kernel [[0, 0, 1], 
                          [0, 1, 0], 
                          [1, 0, 0]] */
-  value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int2){-1, 1})).x;
+  value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, 1, 0, 0))).x;
     if (value == 0) {
-      value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int2){1, -1})).x;
+      value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, -1, 0, 0))).x;
       if (value == 0) {
         WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
         return;
@@ -258,9 +258,9 @@ inline void inferior_superior_2d (
   /* Dilate with kernel [[0, 0, 0], 
                          [1, 1, 1], 
                          [0, 0, 0]] */
-  value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int2){1, 0})).x;
+  value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, 0, 0, 0))).x;
     if (value == 0) {
-      value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + (int2){-1, 0})).x;
+      value = READ_2DIMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, 0, 0, 0))).x;
       if (value == 0) {
         WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
         return;

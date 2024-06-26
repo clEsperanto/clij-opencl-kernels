@@ -5,14 +5,13 @@ __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_T
 
 inline uchar2 read_buffer3duc_zero_outside(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global uchar * buffer_var, sampler_t sampler, int4 position )
 {
-    int4 pos = POS_src_INSTANCE(position.x, position.y, position.), 0};
+    int4 pos = (int4){position.x, position.y, position.z, 0};
     int pos_in_buffer = pos.x + pos.y * read_buffer_width + pos.z * read_buffer_width * read_buffer_height;
     if (pos.x < 0 || pos.x >= read_buffer_width || pos.y < 0 || pos.y >= read_buffer_height || pos.z < 0 || pos.z >= read_buffer_depth) {
         return (uchar2){0, 0};
     }
     return (uchar2){buffer_var[pos_in_buffer],0};
 }
-
 
 __kernel void superior_inferior(
     IMAGE_src_TYPE  src,

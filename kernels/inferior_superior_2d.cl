@@ -26,7 +26,7 @@ __kernel void inferior_superior(
 
   // if value is already 1, dilate will return 1
   float value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, pos).x;
-  if (value == 1) {
+  if (value != 0) {
     WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
     return;
   }

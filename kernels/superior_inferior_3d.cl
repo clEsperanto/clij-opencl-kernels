@@ -26,7 +26,7 @@ __kernel void superior_inferior(
 
   // if value is already 0, erode will return 0
   float value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, pos).x;
-  if (value != 0) {
+  if (value == 0) {
     WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
     return;
   }

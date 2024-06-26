@@ -14,7 +14,7 @@ inline uchar2 read_buffer2duc_zero_outside(int read_buffer_width, int read_buffe
 }
 
 
-__kernel void inferior_superior(
+__kernel void superior_inferior(
     IMAGE_src_TYPE  src,
     IMAGE_dst_TYPE  dst
 )

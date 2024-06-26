@@ -68,7 +68,7 @@ __kernel void inferior_superior(
   // P2
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(0, i, j, 0))).x;
+        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(0, i, j, 0))).x;
         if (value != 0) {
           break;
         }
@@ -85,7 +85,7 @@ __kernel void inferior_superior(
   // P3
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(i, j, j, 0))).x;
+        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(i, j, j, 0))).x;
         if (value != 0) {
           break;
         }
@@ -102,7 +102,7 @@ __kernel void inferior_superior(
   // P4
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(j, i, -i, 0))).x;
+        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(j, i, -i, 0))).x;
         if (value != 0) {
           break;
         }
@@ -119,7 +119,7 @@ __kernel void inferior_superior(
   // P5
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(i, j, i, 0))).x;
+        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(i, j, i, 0))).x;
         if (value != 0) {
           break;
         }
@@ -136,7 +136,7 @@ __kernel void inferior_superior(
   // P6
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(i, j, -i, 0))).x;
+        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(i, j, -i, 0))).x;
         if (value != 0) {
           break;
         }
@@ -153,7 +153,7 @@ __kernel void inferior_superior(
   // P7
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(i, i, j, 0))).x;
+        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(i, i, j, 0))).x;
         if (value != 0) {
           break;
         }
@@ -170,7 +170,7 @@ __kernel void inferior_superior(
   // P8
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(i, -i, j, 0))).x;
+        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(i, -i, j, 0))).x;
         if (value != 0) {
           break;
         }

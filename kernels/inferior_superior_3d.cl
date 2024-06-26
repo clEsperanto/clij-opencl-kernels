@@ -34,7 +34,7 @@ __kernel void inferior_superior(
   // P0
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(i, j, 0, 0))).x;
+        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(i, j, 0, 0))).x;
         if (value != 0) {
           break;
         }
@@ -51,7 +51,7 @@ __kernel void inferior_superior(
   // P1
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
-        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + Pos_src_INSTANCE(i, 0, j, 0))).x;
+        value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(i, 0, j, 0))).x;
         if (value != 0) {
           break;
         }

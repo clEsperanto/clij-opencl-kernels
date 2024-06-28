@@ -419,86 +419,86 @@ inline float2 read_buffer2df(int read_buffer_width, int read_buffer_height, int 
     return (float2){buffer_var[pos_in_buffer],0};
 }
 
-inline void write_buffer2dc(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global char * buffer_var, int2 pos, char value )
-{
-    int pos_in_buffer = pos.x + pos.y * write_buffer_width;
-    if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
+// inline void write_buffer2dc(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global char * buffer_var, int2 pos, char value )
+// {
+//     int pos_in_buffer = pos.x + pos.y * write_buffer_width;
+//     if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
 
-inline void write_buffer2duc(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global uchar * buffer_var, int2 pos, uchar value )
-{
-    int pos_in_buffer = pos.x + pos.y * write_buffer_width;
-    if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
+// inline void write_buffer2duc(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global uchar * buffer_var, int2 pos, uchar value )
+// {
+//     int pos_in_buffer = pos.x + pos.y * write_buffer_width;
+//     if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
 
-inline void write_buffer2ds(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global short * buffer_var, int2 pos, short value )
-{
-    int pos_in_buffer = pos.x + pos.y * write_buffer_width;
-    if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
+// inline void write_buffer2ds(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global short * buffer_var, int2 pos, short value )
+// {
+//     int pos_in_buffer = pos.x + pos.y * write_buffer_width;
+//     if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
 
-inline void write_buffer2dus(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global ushort * buffer_var, int2 pos, ushort value )
-{
-    int pos_in_buffer = pos.x + pos.y * write_buffer_width;
-    if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
+// inline void write_buffer2dus(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global ushort * buffer_var, int2 pos, ushort value )
+// {
+//     int pos_in_buffer = pos.x + pos.y * write_buffer_width;
+//     if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
 
-inline void write_buffer2di(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global int * buffer_var, int2 pos, int value )
-{
-    int pos_in_buffer = pos.x + pos.y * write_buffer_width;
-    if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
+// inline void write_buffer2di(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global int * buffer_var, int2 pos, int value )
+// {
+//     int pos_in_buffer = pos.x + pos.y * write_buffer_width;
+//     if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
 
-inline void write_buffer2dui(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global uint * buffer_var, int2 pos, uint value )
-{
-    int pos_in_buffer = pos.x + pos.y * write_buffer_width;
-    if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
+// inline void write_buffer2dui(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global uint * buffer_var, int2 pos, uint value )
+// {
+//     int pos_in_buffer = pos.x + pos.y * write_buffer_width;
+//     if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
 
-inline void write_buffer2dl(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global long * buffer_var, int2 pos, long value )
-{
-    int pos_in_buffer = pos.x + pos.y * write_buffer_width;
-    if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
+// inline void write_buffer2dl(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global long * buffer_var, int2 pos, long value )
+// {
+//     int pos_in_buffer = pos.x + pos.y * write_buffer_width;
+//     if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
 
-inline void write_buffer2dul(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global ulong * buffer_var, int2 pos, ulong value )
-{
-    int pos_in_buffer = pos.x + pos.y * write_buffer_width;
-    if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
+// inline void write_buffer2dul(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global ulong * buffer_var, int2 pos, ulong value )
+// {
+//     int pos_in_buffer = pos.x + pos.y * write_buffer_width;
+//     if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
 
-inline void write_buffer2df(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global float* buffer_var, int2 pos, float value )
-{
-    int pos_in_buffer = pos.x + pos.y * write_buffer_width;
-    if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
+// inline void write_buffer2df(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global float* buffer_var, int2 pos, float value )
+// {
+//     int pos_in_buffer = pos.x + pos.y * write_buffer_width;
+//     if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
 
 inline char2 read_buffer1dc(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global char * buffer_var, sampler_t sampler, int position )
 {
@@ -626,86 +626,138 @@ inline float2 read_buffer1df(int read_buffer_width, int read_buffer_height, int 
     return (float2){buffer_var[pos_in_buffer],0};
 }
 
-inline void write_buffer1dc(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global char * buffer_var, int pos, char value )
-{
-    int pos_in_buffer = pos;
-    if (pos < 0 || pos >= write_buffer_width) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
+// inline void write_buffer1dc(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global char * buffer_var, int pos, char value )
+// {
+//     int pos_in_buffer = pos;
+//     if (pos < 0 || pos >= write_buffer_width) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
+
+// inline void write_buffer1duc(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global uchar * buffer_var, int pos, uchar value )
+// {
+//     int pos_in_buffer = pos;
+//     if (pos < 0 || pos >= write_buffer_width) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
+
+// inline void write_buffer1di(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global int * buffer_var, int pos, int value )
+// {
+//     int pos_in_buffer = pos;
+//     if (pos < 0 || pos >= write_buffer_width) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
+
+// inline void write_buffer1dus(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global ushort * buffer_var, int pos, ushort value )
+// {
+//     int pos_in_buffer = pos;
+//     if (pos < 0 || pos >= write_buffer_width) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
+
+// inline void write_buffer1ds(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global short * buffer_var, int pos, short value )
+// {
+//     int pos_in_buffer = pos;
+//     if (pos < 0 || pos >= write_buffer_width) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
+
+// inline void write_buffer1dui(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global uint * buffer_var, int pos, uint value )
+// {
+//     int pos_in_buffer = pos;
+//     if (pos < 0 || pos >= write_buffer_width) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
+
+// inline void write_buffer1dl(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global long * buffer_var, int pos, long value )
+// {
+//     int pos_in_buffer = pos;
+//     if (pos < 0 || pos >= write_buffer_width) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
+
+// inline void write_buffer1dul(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global ulong * buffer_var, int pos, ulong value )
+// {
+//     int pos_in_buffer = pos;
+//     if (pos < 0 || pos >= write_buffer_width) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
+
+// inline void write_buffer1df(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global float * buffer_var, int pos, float value )
+// {
+//     int pos_in_buffer = pos;
+//     if (pos < 0 || pos >= write_buffer_width) {
+//         return;
+//     }
+//     buffer_var[pos_in_buffer] = value;
+// }
+
+#define WRITE_BUFFER2D(TYPE, TYPE_SUFFIX) \
+inline void write_buffer2d##TYPE_SUFFIX(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global TYPE * buffer_var, int2 pos, TYPE value ) \
+{ \
+    int pos_in_buffer = pos.x + pos.y * write_buffer_width; \
+    if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) { \
+        return; \
+    } \
+    buffer_var[pos_in_buffer] = value; \
 }
 
-inline void write_buffer1duc(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global uchar * buffer_var, int pos, uchar value )
-{
-    int pos_in_buffer = pos;
-    if (pos < 0 || pos >= write_buffer_width) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
+// Generate functions for each type
+WRITE_BUFFER2D(char, c)
+WRITE_BUFFER2D(uchar, uc)
+WRITE_BUFFER2D(short, s)
+WRITE_BUFFER2D(ushort, us)
+WRITE_BUFFER2D(int, i)
+WRITE_BUFFER2D(uint, ui)
+WRITE_BUFFER2D(long, l)
+WRITE_BUFFER2D(ulong, ul)
+WRITE_BUFFER2D(float, f)
+
+#define WRITE_BUFFER1D(TYPE, TYPE_SUFFIX) \
+inline void write_buffer1d##TYPE_SUFFIX(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global TYPE * buffer_var, int pos, TYPE value ) \
+{ \
+    int pos_in_buffer = pos; \
+    if (pos < 0 || pos >= write_buffer_width) { \
+        return; \
+    } \
+    buffer_var[pos_in_buffer] = value; \
 }
 
-inline void write_buffer1di(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global int * buffer_var, int pos, int value )
-{
-    int pos_in_buffer = pos;
-    if (pos < 0 || pos >= write_buffer_width) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
+// Generate functions for each type
+WRITE_BUFFER1D(char, c)
+WRITE_BUFFER1D(uchar, uc)
+WRITE_BUFFER1D(int, i)
+WRITE_BUFFER1D(ushort, us)
+WRITE_BUFFER1D(short, s)
+WRITE_BUFFER1D(uint, ui)
+WRITE_BUFFER1D(long, l)
+WRITE_BUFFER1D(ulong, ul)
+WRITE_BUFFER1D(float, f)
 
-inline void write_buffer1dus(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global ushort * buffer_var, int pos, ushort value )
-{
-    int pos_in_buffer = pos;
-    if (pos < 0 || pos >= write_buffer_width) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
 
-inline void write_buffer1ds(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global short * buffer_var, int pos, short value )
-{
-    int pos_in_buffer = pos;
-    if (pos < 0 || pos >= write_buffer_width) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
 
-inline void write_buffer1dui(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global uint * buffer_var, int pos, uint value )
-{
-    int pos_in_buffer = pos;
-    if (pos < 0 || pos >= write_buffer_width) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
 
-inline void write_buffer1dl(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global long * buffer_var, int pos, long value )
-{
-    int pos_in_buffer = pos;
-    if (pos < 0 || pos >= write_buffer_width) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
 
-inline void write_buffer1dul(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global ulong * buffer_var, int pos, ulong value )
-{
-    int pos_in_buffer = pos;
-    if (pos < 0 || pos >= write_buffer_width) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
 
-inline void write_buffer1df(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global float * buffer_var, int pos, float value )
-{
-    int pos_in_buffer = pos;
-    if (pos < 0 || pos >= write_buffer_width) {
-        return;
-    }
-    buffer_var[pos_in_buffer] = value;
-}
+
+
+
+
 
 inline uchar clij_convert_uchar_sat(float value) {
     if (value > 255) {

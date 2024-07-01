@@ -26,10 +26,10 @@ __kernel void superior_inferior(
 
   // if value is already 1, dilate will return 1
   float value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, pos).x;
-  if (value != 0) {
-    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
-    return;
-  }
+  // if (value != 0) {
+  //   WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
+  //   return;
+  // }
 
   /* Dilate with kernel [[1, 0, 0], 
                          [0, 1, 0], 

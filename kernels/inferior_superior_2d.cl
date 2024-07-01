@@ -21,15 +21,16 @@ __kernel void inferior_superior(
 {
   const int x = get_global_id(0);
   const int y = get_global_id(1);
+  const int z = get_global_id(2);
 
-  const int2 pos = POS_src_INSTANCE(x,y,0,0);
+  const int2 pos = POS_src_INSTANCE(x,y,z,0);
 
   // if value is already 1, dilate will return 1
   float value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, pos).x;
-  if (value == 0) {
-    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
-    return;
-  }
+  // if (value == 0) {
+  //   WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+  //   return;
+  // }
 
   /* Dilate with kernel [[1, 0, 0], 
                          [0, 1, 0], 

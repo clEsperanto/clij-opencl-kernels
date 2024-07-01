@@ -26,10 +26,10 @@ __kernel void inferior_superior(
 
   // if value is already 0, erode will return 0
   float value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, pos).x;
-  if (value == 0) {
-    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
-    return;
-  }
+  // if (value == 0) {
+  //   WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+  //   return;
+  // }
 
   // P0
   for (int i = -1; i <= 1; i++) {

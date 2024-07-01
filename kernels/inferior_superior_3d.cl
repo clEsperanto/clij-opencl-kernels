@@ -30,14 +30,10 @@ __kernel void inferior_superior(
     return;
   }
 
-  // printf("pixel at coord x%i y%i z%i\n", x, y, z);
-
-
   // P0
   for (int i = -1; i <= 1; i++) {
       for (int j = -1; j <= 1; j++) {
         value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(i, j, 0, 0))).x;
-        // printf("value %i\n", value);
         if (value != 0) {
           break;
         }

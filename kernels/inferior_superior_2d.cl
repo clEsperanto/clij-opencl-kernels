@@ -35,9 +35,9 @@ __kernel void inferior_superior(
   /* Dilate with kernel [[1, 0, 0], 
                          [0, 1, 0], 
                          [0, 0, 1]] */
-  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, 1,0,0)).x;
+  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, 1,0,0))).x;
   if (value == 0) {
-    value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, -1,0,0)).x;
+    value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, -1,0,0))).x;
     if (value == 0) {
       WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
       return;
@@ -47,9 +47,9 @@ __kernel void inferior_superior(
   /* Dilate with kernel [[0, 1, 0], 
                          [0, 1, 0], 
                          [0, 1, 0]] */
-  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(0, 1,0,0)).x;
+  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(0, 1,0,0))).x;
     if (value == 0) {
-      value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(0, -1,0,0)).x;
+      value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(0, -1,0,0))).x;
       if (value == 0) {
         WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
         return;
@@ -59,9 +59,9 @@ __kernel void inferior_superior(
   /* Dilate with kernel [[0, 0, 1], 
                          [0, 1, 0], 
                          [1, 0, 0]] */
-  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, 1,0,0)).x;
+  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, 1,0,0))).x;
     if (value == 0) {
-      value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, -1,0,0)).x;
+      value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, -1,0,0))).x;
       if (value == 0) {
         WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
         return;
@@ -71,9 +71,9 @@ __kernel void inferior_superior(
   /* Dilate with kernel [[0, 0, 0], 
                          [1, 1, 1], 
                          [0, 0, 0]] */
-  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, 0,0,0)).x;
+  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, 0,0,0))).x;
     if (value == 0) {
-      value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, 0,0,0)).x;
+      value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, 0,0,0))).x;
       if (value == 0) {
         WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
         return;

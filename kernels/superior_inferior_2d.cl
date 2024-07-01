@@ -24,61 +24,60 @@ __kernel void superior_inferior(
 
   const POS_src_TYPE pos = POS_src_INSTANCE(x, y, z, 0);
 
-  // if value is already 1, dilate will return 1
-  float value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, pos).x;
-  if (value != 0) {
-    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
+    // if value is already 0, erode will return 0
+  if (value == 0) {
+    WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
     return;
   }
 
-  /* Dilate with kernel [[1, 0, 0], 
-                         [0, 1, 0], 
-                         [0, 0, 1]] */
-  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, 1, 0, 0))).x;
-  if (value == 0) {
-    value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, -1, 0, 0))).x;
-    if (value == 0) {
-      WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+    /* Erode with kernel [[1, 0, 0], 
+                          [0, 1, 0], 
+                          [0, 0, 1]] */
+  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, 1,0,0))).x;
+  if (value != 0) {
+    value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, -1,0,0))).x;
+    if (value != 0) {
+      WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
       return;
     }
   }
 
-  /* Dilate with kernel [[0, 1, 0], 
-                         [0, 1, 0], 
-                         [0, 1, 0]] */
-  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(0, 1, 0, 0))).x;
-    if (value == 0) {
-      value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(0, -1, 0, 0))).x;
-      if (value == 0) {
-        WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+  /* Erode with kernel [[0, 1, 0], 
+                        [0, 1, 0], 
+                        [0, 1, 0]] */
+  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(0, 1,0,0))).x;
+    if (value != 0) {
+      value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(0, -1,0,0))).x;
+      if (value != 0) {
+        WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
         return;
       }
     }
 
-  /* Dilate with kernel [[0, 0, 1], 
-                         [0, 1, 0], 
-                         [1, 0, 0]] */
-  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, 1, 0, 0))).x;
-    if (value == 0) {
-      value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, -1, 0, 0))).x;
-      if (value == 0) {
-        WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+  /* Erode with kernel [[0, 0, 1], 
+                        [0, 1, 0], 
+                        [1, 0, 0]] */
+  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, 1,0,0))).x;
+    if (value != 0) {
+      value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, -1,0,0))).x;
+      if (value != 0) {
+        WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
         return;
       }
     }
 
-  /* Dilate with kernel [[0, 0, 0], 
-                         [1, 1, 1], 
-                         [0, 0, 0]] */
-  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, 0, 0, 0))).x;
-    if (value == 0) {
-      value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, 0, 0, 0))).x;
-      if (value == 0) {
-        WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
+  /* Erode with kernel [[0, 0, 0], 
+                        [1, 1, 1], 
+                        [0, 0, 0]] */
+  value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(1, 0,0,0))).x;
+    if (value != 0) {
+      value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, (pos + POS_src_INSTANCE(-1, 0,0,0))).x;
+      if (value != 0) {
+        WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
         return;
       }
     }
 
-  // If all dilates are 1 then return 1
-  WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
+  // If all erodes are 0 then return 0
+  WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(0));
 }

@@ -26,6 +26,7 @@ __kernel void inferior_superior(
   const int2 pos = POS_src_INSTANCE(x,y,z,0);
 
   // if value is already 1, dilate will return 1
+    float value = READ_IMAGE_ZERO_OUTSIDE(src, sampler, pos).x;
   if (value == 1) {
     WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(1));
     return;

@@ -63,5 +63,11 @@ __kernel void affine_transform_interpolate(
   const POS_src_TYPE coord_read = POS_src_INSTANCE(x2/Nx, y2/Ny, z2/Nz, 0);
   const POS_dst_TYPE coord_write = POS_dst_INSTANCE(i,j,k, 0);
   float pix = (float) READ_IMAGE(src, sampler, coord_read).x;
+
+  if(pix > 0)
+  {
+    printf("pix: %f\n", pix);
+  }
+
   WRITE_IMAGE(dst, coord_write, CONVERT_dst_PIXEL_TYPE(pix));
 }

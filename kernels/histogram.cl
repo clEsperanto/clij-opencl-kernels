@@ -40,7 +40,7 @@ __kernel void histogram(
     for (int z = 0; z < image_depth; z += step_size_z) {
         for (int x = 0; x < image_width; x += step_size_x) {
             const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
-            const uint indx_x = convert_uint_sat(( (value - minimum) * (float)(hist_width - 1) ) / range );
+            const uint indx_x = convert_uint_sat(( (value - minimum) * (float)(hist_width - 1) ) / range + 0.5 );
             tmp_histogram[indx_x]++;
         }  
     }

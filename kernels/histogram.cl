@@ -30,7 +30,7 @@ __kernel void histogram(
     const int image_depth = GET_IMAGE_DEPTH(src);
     const int y = get_global_id(0) * step_size_y;
 
-    const float range = (maximum - minimum);
+    const float range = maximum - minimum;
 
     uint tmp_histogram[NUMBER_OF_HISTOGRAM_BINS];
     for (int i = 0; i < NUMBER_OF_HISTOGRAM_BINS; ++i) {
@@ -39,8 +39,8 @@ __kernel void histogram(
 
     for (int z = 0; z < image_depth; z += step_size_z) {
         for (int x = 0; x < image_width; x += step_size_x) {
-            const float value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
-            const uint indx_x = convert_uint_sat(((value - minimum) * hist_width-1 ) / range);
+            const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
+            const uint indx_x = convert_uint_sat(( (value - minimum) * (float)(hist_width - 1) ) / range );
             tmp_histogram[indx_x]++;
         }  
     }

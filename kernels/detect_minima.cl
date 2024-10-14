@@ -18,26 +18,31 @@ __kernel void detect_minima(
   float localMin = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
   const int4 pos = (int4){x,y,z,0};
 
-          for (int dz = -radius.z; dz <= radius.z; ++dz) {
-      for (int dy = -radius.y; dy <= radius.y; ++dy) {
-  for (int dx = -radius.x; dx <= radius.x; ++dx) {
-              int4 localPos = pos + (int4){dx,dy,dz,0};
-              if( localPos.x == pos.x && localPos.y == pos.y && localPos.z == pos.z) {
-                continue;
-              }
-              if( localPos.x >= 0 && localPos.y >= 0 && localPos.z >= 0 ) {
-                const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(localPos.x,localPos.y,localPos.z,0)).x;
-                if (value <= localMin) {
-                    isMin = false;
-                }
-              }
-          }
+  for (int dz = -radius.z; dz <= radius.z; ++dz) {
+    for (int dy = -radius.y; dy <= radius.y; ++dy) {
+      for (int dx = -radius.x; dx <= radius.x; ++dx) {
+        int4 localPos = pos + (int4){dx,dy,dz,0};
+        if( localPos.x == pos.x && localPos.y == pos.y && localPos.z == pos.z) {
+          continue;
+        }
+        if( localPos.x < 0 || localPos.y < 0 || localPos.z < 0 || localPos.x >= GET_IMAGE_WIDTH(src) || localPos.y >= GET_IMAGE_HEIGHT(src) || localPos.z >= GET_IMAGE_DEPTH(src) ) {
+          continue;
+        }
+        const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(localPos.x,localPos.y,localPos.z,0)).x;
+        if (value <= localMin) {
+            isMin = false;
+            break;
+        }
       }
+      if (!isMin) {
+        break;
+      }
+    }
+    if (!isMin) {
+      break;
+    }
   }
 
-  IMAGE_dst_PIXEL_TYPE result = 0;
-  if (isMin) {
-      result = 1;
-  }
+  IMAGE_dst_PIXEL_TYPE result = (isMin) ? 1 : 0;
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), result);
 }

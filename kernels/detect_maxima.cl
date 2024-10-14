@@ -30,7 +30,7 @@ __kernel void detect_maxima(
         }
 
         // if pixel is outside the image, we don't want to compare it
-        if( (localPos.x < 0 || localPos.y < 0 || localPos.z < 0) && (localPos.x > GET_IMAGE_WIDTH(src) || localPos.y > GET_IMAGE_HEIGHT(src) || localPos.z > GET_IMAGE_DEPTH(src)) ) {
+        if( localPos.x < 0 || localPos.y < 0 || localPos.z < 0 || localPos.x >= GET_IMAGE_WIDTH(src) || localPos.y >= GET_IMAGE_HEIGHT(src) || localPos.z >= GET_IMAGE_DEPTH(src) ) {
           continue;
         }
 
@@ -38,9 +38,16 @@ __kernel void detect_maxima(
         const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(localPos.x,localPos.y,localPos.z,0)).x;
         if (value >= localMax) {
             isMax = false;
+            break;
         }
         
       }
+      if (!isMax) {
+        break;
+      }
+    }
+    if (!isMax) {
+      break;
     }
   }
 

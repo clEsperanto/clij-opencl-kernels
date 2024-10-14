@@ -51,6 +51,9 @@ __kernel void detect_maxima(
     }
   }
 
-  IMAGE_dst_PIXEL_TYPE result = (isMax) ? 1 : 0;
+  IMAGE_dst_PIXEL_TYPE result = 0;
+  if (isMax) {
+    result = 1;
+  }
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), result);
 }

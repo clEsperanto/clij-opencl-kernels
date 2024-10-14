@@ -43,6 +43,9 @@ __kernel void detect_minima(
     }
   }
 
-  IMAGE_dst_PIXEL_TYPE result = (isMin) ? 1 : 0;
+  IMAGE_dst_PIXEL_TYPE result = 0;
+  if (isMin) {
+    result = 1;
+  }
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), result);
 }

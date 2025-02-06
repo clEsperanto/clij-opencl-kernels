@@ -20,12 +20,12 @@ add_custom_target(generate_headers ALL DEPENDS ${KERNELS_HEADER_FILE})
 file(GLOB KERNEL_HEADERS "${KERNELS_HEADER_DIR}/*.h")
 
 add_library(${PROJECT_NAME} INTERFACE)
+add_library(cleKernels::cleKernels ALIAS cleKernels)
 add_dependencies(${PROJECT_NAME} generate_headers)
 target_include_directories(${PROJECT_NAME} INTERFACE 
     $<BUILD_INTERFACE:${PROJECT_BUILD_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
-
 
 install(TARGETS ${PROJECT_NAME}
         EXPORT ${PROJECT_NAME}Targets

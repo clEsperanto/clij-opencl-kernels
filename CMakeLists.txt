@@ -15,6 +15,7 @@ add_custom_command(
     COMMENT "Generating headers from ocl kernels files."
     DEPENDS ${KERNELS_FILES}
 )
+
 add_custom_target(generate_headers ALL DEPENDS ${KERNELS_HEADER_FILE})
 
 file(GLOB KERNEL_HEADERS "${KERNELS_HEADER_DIR}/*.h")

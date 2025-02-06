@@ -49,8 +49,14 @@ install(
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/cmake/${PROJECT_NAME}
 )
 
-install(DIRECTORY ${KERNELS_HEADER_DIR}/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
+# Ensure cleKernels target is included in the export set
+export(
+    TARGETS ${PROJECT_NAME}
+    NAMESPACE ${PROJECT_NAME}::
+    FILE ${CMAKE_INSTALL_DATAROOTDIR}/cmake/${PROJECT_NAME}/${PROJECT_NAME}Targets.cmake
+)
 
+install(DIRECTORY ${KERNELS_HEADER_DIR}/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
 
 include(CMakePackageConfigHelpers)
 
@@ -59,6 +65,7 @@ write_basic_package_version_file(
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
 )
+
 configure_package_config_file(
     "${PROJECT_SOURCE_DIR}/${PROJECT_NAME}Config.cmake.in"
     "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
@@ -66,5 +73,6 @@ configure_package_config_file(
 )
 
 install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-              "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-        DESTINATION lib/cmake/${PROJECT_NAME})
+    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/cmake/${PROJECT_NAME}
+)

@@ -21,7 +21,7 @@ add_custom_target(generate_headers ALL DEPENDS ${KERNELS_HEADER_FILE})
 file(GLOB KERNEL_HEADERS "${KERNELS_HEADER_DIR}/*.h")
 
 add_library(${PROJECT_NAME} INTERFACE)
-add_library(cleKernels::cleKernels ALIAS ${PROJECT_NAME})
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 add_dependencies(${PROJECT_NAME} generate_headers)
 
 target_include_directories(${PROJECT_NAME} INTERFACE 
@@ -29,18 +29,28 @@ target_include_directories(${PROJECT_NAME} INTERFACE
     $<INSTALL_INTERFACE:include>
 )
 
-install(TARGETS ${PROJECT_NAME}
-        EXPORT ${PROJECT_NAME}Targets
-        INCLUDES DESTINATION include
+include(GNUInstallDirs)
+
+# Export the cleKernels target
+install(
+    TARGETS ${PROJECT_NAME}
+    EXPORT ${PROJECT_NAME}Targets
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-install(DIRECTORY ${KERNELS_HEADER_DIR}/ DESTINATION include)
-
-install(EXPORT ${PROJECT_NAME}Targets
+# Export the cleKernelsTargets export set
+install(
+    EXPORT ${PROJECT_NAME}Targets
     FILE ${PROJECT_NAME}Targets.cmake
-    NAMESPACE cleKernels::
-    DESTINATION lib/cmake/${PROJECT_NAME}
+    NAMESPACE ${PROJECT_NAME}::
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/cmake/${PROJECT_NAME}
 )
+
+install(DIRECTORY ${KERNELS_HEADER_DIR}/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
 
 include(CMakePackageConfigHelpers)
 
@@ -49,7 +59,6 @@ write_basic_package_version_file(
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY AnyNewerVersion
 )
-
 configure_package_config_file(
     "${PROJECT_SOURCE_DIR}/${PROJECT_NAME}Config.cmake.in"
     "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"

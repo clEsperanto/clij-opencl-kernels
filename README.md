@@ -172,3 +172,6 @@ Note, that `_dst_` is used here. This allows that `src` and `dst` have different
 ## Known issues
 * Image dimensionality is limited to three dimensions.
 
+## Stringify and CMake integration
+
+Since v3, the kernels are mainly used in the clEsperanto project. For simple integration in C/C++ project, the repo provide a CMakeLists file and, on build, stringify the OpenCL kernel into header file.

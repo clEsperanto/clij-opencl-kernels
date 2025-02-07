@@ -1,0 +1,19 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/cleKernelsTargets.cmake")
+
+# Ensure that the required components are available
+check_required_components(@PROJECT_NAME@)
+
+# Add the include directory for the header-only library
+set(CLEKERNELS_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/../../../include")
+set(CLEKERNELS_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}/../../../include")
+
+# Provide the include directories to the caller
+set(CLEKERNELS_INCLUDE_DIRS ${CLEKERNELS_INCLUDE_DIRS} PARENT_SCOPE)
+set(CLEKERNELS_INCLUDE_DIR ${CLEKERNELS_INCLUDE_DIR} PARENT_SCOPE)
+
+# Provide the targets to the caller
+if(NOT TARGET @PROJECT_NAME@::cleKernels)
+    include("${CMAKE_CURRENT_LIST_DIR}/cleKernelsTargets.cmake")
+endif()

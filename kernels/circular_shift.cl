@@ -21,19 +21,28 @@ __kernel void circular_shift(
   int z_shifted = z;
   
   if (width > 1 && index_1 != 0) {
-    x_shifted = (x + index_1) % width;
+    x_shifted = (x + index_1);
+    if (x_shifted >= width) {
+      x_shifted -= width;
+    }
     if (x_shifted < 0) {
       x_shifted += width;
     }
   }
   if (height > 1 && index_2 != 0) {
-    y_shifted = (y + index_2) % height;
+    y_shifted = (y + index_2);
+    if (y_shifted >= height) {
+      y_shifted -= height;
+    }
     if (y_shifted < 0) {
       y_shifted += height;
     }
   }
   if (depth > 1 && index_3 != 0) {
-    z_shifted = (z + index_3) % depth;
+    z_shifted = (z + index_3);
+    if (z_shifted >= depth) {
+      z_shifted -= depth;
+    }
     if (z_shifted < 0) {
       z_shifted += depth;
     }

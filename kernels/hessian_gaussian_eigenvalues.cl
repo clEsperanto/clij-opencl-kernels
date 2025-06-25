@@ -120,7 +120,7 @@ inline void solve_cubic_equation(DOUBLE_TYPE b0, DOUBLE_TYPE b1, DOUBLE_TYPE b2,
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE |
                                CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
-__kernel void compute_gaussian_hessian_2d(
+inline void compute_gaussian_hessian_2d(
     IMAGE_src_TYPE src, // Input 2D image
     IMAGE_gfd_TYPE gfd, // Gaussian first derivative 1d array
     IMAGE_gsd_TYPE gsd, // Gaussian second derivative 1d array
@@ -172,7 +172,7 @@ __kernel void compute_gaussian_hessian_2d(
   hessian[3] = deriv_yy; // yy
 }
 
-__kernel void compute_gaussian_hessian_3d(
+inline void compute_gaussian_hessian_3d(
     IMAGE_src_TYPE src,  // Input 2D image
     IMAGE_gfd_TYPE gfd,  // Gaussian first derivative 1d array (normalized)
     IMAGE_gsd_TYPE gsd,  // Gaussian second derivative 1d array (normalized)

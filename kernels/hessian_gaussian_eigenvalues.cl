@@ -1,6 +1,5 @@
 #define PRECISION ldexp(1.0f, -22)
-#define DOUBLE_TYPE                                                            \
-  float // I did this because double isn't supported on Mac M1 @haesleinhuepf
+#define DOUBLE_TYPE float
 
 // Returns 1 / sqrt(value)
 inline DOUBLE_TYPE precise_rsqrt(DOUBLE_TYPE value) {

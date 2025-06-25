@@ -134,35 +134,36 @@ inline void compute_gaussian_hessian_2d(
 
   const int width = GET_IMAGE_WIDTH(src);
   const int height = GET_IMAGE_HEIGHT(src);
-  const int kernel_size = GET_IMAGE_WIDTH(gfd) - 1;
-  const int half_kernel = kernel_size / 2;
+
+  const int kernel_size = GET_IMAGE_WIDTH(gfd);
+  const int center = kernel_size / 2;
 
   // Compute second derivatives along x and y (Ixx, Iyy)
-  for (int i = 0; i < kernel_size; i++) {
-    int offset_x = x + (i - half_kernel);
-    int offset_y = y + (i - half_kernel);
-
+  for (int i = -center; i <= center; i++) {
     float value_x =
-        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(offset_x, y, 0, 0)).x;
+        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x + i, y, 0, 0)).x;
     float value_y =
-        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x, offset_y, 0, 0)).x;
+        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y + i, 0, 0)).x;
+    float value_kernel =
+        (float)READ_IMAGE(gsd, sampler, POS_gsd_INSTANCE(i + center, 0, 0, 0))
+            .x;
 
-    deriv_xx += value_x * gsd[i];
-    deriv_yy += value_y * gsd[i];
+    deriv_xx += value_x * value_kernel;
+    deriv_yy += value_y * value_kernel;
   }
 
   // Compute mixed derivative (Ixy)
-  for (int i = 0; i < kernel_size; i++) {
-    int offset_x = x + (i - half_kernel);
-    for (int j = 0; j < kernel_size; j++) {
-      int offset_y = y + (j - half_kernel);
-
+  for (int i = -center; i <= center; i++) {
+    for (int j = -center; j <= center; j++) {
       float value_xy =
-          (float)READ_IMAGE(src, sampler,
-                            POS_src_INSTANCE(offset_x, offset_y, 0, 0))
+          (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x + i, y + j, 0, 0))
               .x;
-
-      deriv_xy += value_xy * gfd[i] * gfd[j];
+      deriv_xy +=
+          value_xy *
+          (float)READ_IMAGE(gfd, sampler, POS_gfd_INSTANCE(i + center, 0, 0, 0))
+              .x *
+          (float)READ_IMAGE(gfd, sampler, POS_gfd_INSTANCE(j + center, 0, 0, 0))
+              .x;
     }
   }
 
@@ -189,52 +190,58 @@ inline void compute_gaussian_hessian_3d(
 
   const int width = GET_IMAGE_WIDTH(src);
   const int height = GET_IMAGE_HEIGHT(src);
-  const int depth = GET_IMAGE_DEPTH(src);
-  const int kernel_size = GET_IMAGE_WIDTH(gfd) - 1;
-  const int half_kernel = kernel_size / 2;
+
+  const int kernel_size = GET_IMAGE_WIDTH(gfd);
+  const int center = kernel_size / 2;
 
   // Compute second derivatives along x, y, z (Ixx, Iyy, Izz)
-  for (int i = 0; i < kernel_size; i++) {
-    int offset_x = x + (i - half_kernel);
-    int offset_y = y + (i - half_kernel);
-    int offset_z = z + (i - half_kernel);
-
+  for (int i = -center; i <= center; i++) {
     float value_x =
-        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(offset_x, y, z, 0)).x;
+        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x + i, y, z, 0)).x;
     float value_y =
-        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x, offset_y, z, 0)).x;
+        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y + i, z, 0)).x;
     float value_z =
-        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, offset_z, 0)).x;
+        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z + i, 0)).x;
+    float value_kernel =
+        (float)READ_IMAGE(gsd, sampler, POS_gsd_INSTANCE(i + center, 0, 0, 0))
+            .x;
 
-    deriv_xx += value_x * gsd[i];
-    deriv_yy += value_y * gsd[i];
-    deriv_zz += value_z * gsd[i];
+    deriv_xx += value_x * value_kernel;
+    deriv_yy += value_y * value_kernel;
+    deriv_zz += value_z * value_kernel;
   }
 
   // Compute mixed derivatives (Ixy, Ixz, Iyz)
-  for (int i = 0; i < kernel_size; i++) {
-    int offset_x = x + (i - half_kernel);
+  for (int i = -center; i <= center; i++) {
+    for (int j = -center; j <= center; j++) {
+      for (int k = -center; k <= center; k++) {
+        float value_xy = (float)READ_IMAGE(src, sampler,
+                                           POS_src_INSTANCE(x + i, y + j, z, 0))
+                             .x;
+        float value_xz = (float)READ_IMAGE(src, sampler,
+                                           POS_src_INSTANCE(x + i, y, z + j, 0))
+                             .x;
+        float value_yz = (float)READ_IMAGE(src, sampler,
+                                           POS_src_INSTANCE(x, y + j, z + k, 0))
+                             .x;
 
-    for (int j = 0; j < kernel_size; j++) {
-      int offset_y_j = y + (j - half_kernel);
-      int offset_z_j = z + (j - half_kernel);
+        float value_i_kernel =
+            (float)READ_IMAGE(gfd, sampler,
+                              POS_gfd_INSTANCE(i + center, 0, 0, 0))
+                .x;
+        float value_j_kernel =
+            (float)READ_IMAGE(gfd, sampler,
+                              POS_gfd_INSTANCE(j + center, 0, 0, 0))
+                .x;
+        float value_k_kernel =
+            (float)READ_IMAGE(gfd, sampler,
+                              POS_gfd_INSTANCE(k + center, 0, 0, 0))
+                .x;
 
-      float value_xy =
-          (float)READ_IMAGE(src, sampler,
-                            POS_src_INSTANCE(offset_x, offset_y_j, z, 0))
-              .x;
-      float value_xz =
-          (float)READ_IMAGE(src, sampler,
-                            POS_src_INSTANCE(offset_x, y, offset_z_j, 0))
-              .x;
-      float value_yz =
-          (float)READ_IMAGE(src, sampler,
-                            POS_src_INSTANCE(x, offset_y_j, offset_z_j, 0))
-              .x;
-
-      deriv_xy += value_xy * gfd[i] * gfd[j];
-      deriv_xz += value_xz * gfd[i] * gfd[j];
-      deriv_yz += value_yz * gfd[i] * gfd[j];
+        deriv_xy += value_xy * value_i_kernel * value_j_kernel;
+        deriv_xz += value_xz * value_i_kernel * value_k_kernel;
+        deriv_yz += value_yz * value_j_kernel * value_k_kernel;
+      }
     }
   }
 

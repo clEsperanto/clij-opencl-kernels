@@ -134,7 +134,7 @@ inline void compute_gaussian_hessian_2d(
 
   const int width = GET_IMAGE_WIDTH(src);
   const int height = GET_IMAGE_HEIGHT(src);
-  const int kernel_size = GET_IMAGE_WIDTH(gfd);
+  const int kernel_size = GET_IMAGE_WIDTH(gfd) - 1;
   const int half_kernel = kernel_size / 2;
 
   // Compute second derivatives along x and y (Ixx, Iyy)
@@ -190,7 +190,7 @@ inline void compute_gaussian_hessian_3d(
   const int width = GET_IMAGE_WIDTH(src);
   const int height = GET_IMAGE_HEIGHT(src);
   const int depth = GET_IMAGE_DEPTH(src);
-  const int kernel_size = GET_IMAGE_WIDTH(gfd);
+  const int kernel_size = GET_IMAGE_WIDTH(gfd) - 1;
   const int half_kernel = kernel_size / 2;
 
   // Compute second derivatives along x, y, z (Ixx, Iyy, Izz)

@@ -263,7 +263,7 @@ __kernel void compute_gaussian_hessian_3d(
   0 0     0]
     [-0.25 0  0.25]
 */
-__kernel void gaussian_hessian_eigenvalues(
+__kernel void hessian_gaussian_eigenvalues(
     IMAGE_src_TYPE src, // Input 2D image
     IMAGE_gfd_TYPE gfd, // Gaussian first derivative 1d array
     IMAGE_gsd_TYPE gsd, // Gaussian second derivative 1d array

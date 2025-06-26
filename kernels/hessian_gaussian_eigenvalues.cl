@@ -120,143 +120,104 @@ inline void solve_cubic_equation(DOUBLE_TYPE b0, DOUBLE_TYPE b1, DOUBLE_TYPE b2,
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE |
                                CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
-inline void compute_gaussian_hessian_2d(
-    IMAGE_src_TYPE src, // Input 2D image
-    IMAGE_gfd_TYPE gfd, // Gaussian first derivative 1d array
-    IMAGE_gsd_TYPE gsd, // Gaussian second derivative 1d array
-    int x, int y,       // Coordinates in the image
+inline void compute_gaussian_hessian(
+    IMAGE_src_TYPE src,       // Input 3D image
+    IMAGE_gsd_xx_TYPE gsd_xx, // Gaussian second derivative
+    IMAGE_gsd_xy_TYPE gsd_xy, // Gaussian second derivative mixed
+    int x, int y, int z,      // Coordinates in the image
     DOUBLE_TYPE hessian[]) {
 
   // Temporary variables for derivatives
-  float deriv_xx = 0.0f;
-  float deriv_yy = 0.0f;
-  float deriv_xy = 0.0f;
+  float I_xx = 0.0f;
+  float I_yy = 0.0f;
+  float I_zz = 0.0f;
+  float I_xy = 0.0f;
+  float I_xz = 0.0f;
+  float I_yz = 0.0f;
 
   const int width = GET_IMAGE_WIDTH(src);
   const int height = GET_IMAGE_HEIGHT(src);
+  const int depth = GET_IMAGE_DEPTH(src);
 
-  const int kernel_size = GET_IMAGE_WIDTH(gfd);
-  const int center = kernel_size / 2;
+  const int kernel_width = GET_IMAGE_WIDTH(gsd_xx);
+  const int kernel_height = GET_IMAGE_HEIGHT(gsd_xx);
+  const int kernel_depth = GET_IMAGE_DEPTH(gsd_xx);
 
-  // Compute second derivatives along x and y (Ixx, Iyy)
-  for (int i = -center; i <= center; i++) {
-    float value_x =
-        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x + i, y, 0, 0)).x;
-    float value_y =
-        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y + i, 0, 0)).x;
-    float value_kernel =
-        (float)READ_IMAGE(gsd, sampler, POS_gsd_INSTANCE(i + center, 0, 0, 0))
-            .x;
-
-    deriv_xx += value_x * value_kernel;
-    deriv_yy += value_y * value_kernel;
-  }
-
-  // Compute mixed derivative (Ixy)
-  for (int i = -center; i <= center; i++) {
-    for (int j = -center; j <= center; j++) {
-      float value_xy =
-          (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x + i, y + j, 0, 0))
-              .x;
-      deriv_xy +=
-          value_xy *
-          (float)READ_IMAGE(gfd, sampler, POS_gfd_INSTANCE(i + center, 0, 0, 0))
-              .x *
-          (float)READ_IMAGE(gfd, sampler, POS_gfd_INSTANCE(j + center, 0, 0, 0))
-              .x;
-    }
-  }
-
-  // Store results in the Hessian matrix
-  hessian[0] = deriv_xx; // xx
-  hessian[1] = deriv_xy; // xy
-  hessian[3] = deriv_yy; // yy
-}
-
-inline void compute_gaussian_hessian_3d(
-    IMAGE_src_TYPE src,  // Input 2D image
-    IMAGE_gfd_TYPE gfd,  // Gaussian first derivative 1d array (normalized)
-    IMAGE_gsd_TYPE gsd,  // Gaussian second derivative 1d array (normalized)
-    int x, int y, int z, // Coordinates in the image
-    DOUBLE_TYPE hessian[]) {
-
-  // Temporary variables for derivatives
-  float deriv_xx = 0.0f;
-  float deriv_yy = 0.0f;
-  float deriv_zz = 0.0f;
-  float deriv_xy = 0.0f;
-  float deriv_xz = 0.0f;
-  float deriv_yz = 0.0f;
-
-  const int width = GET_IMAGE_WIDTH(src);
-  const int height = GET_IMAGE_HEIGHT(src);
-
-  const int kernel_size = GET_IMAGE_WIDTH(gfd);
-  const int center = kernel_size / 2;
+  const int center_w = (kernel_width > 1) ? kernel_width / 2 : 0;
+  const int center_h = (kernel_height > 1) ? kernel_height / 2 : 0;
+  const int center_d = (kernel_depth > 1) ? kernel_depth / 2 : 0;
 
   // Compute second derivatives along x, y, z (Ixx, Iyy, Izz)
-  for (int i = -center; i <= center; i++) {
-    float value_x =
-        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x + i, y, z, 0)).x;
-    float value_y =
-        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y + i, z, 0)).x;
-    float value_z =
-        (float)READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z + i, 0)).x;
-    float value_kernel =
-        (float)READ_IMAGE(gsd, sampler, POS_gsd_INSTANCE(i + center, 0, 0, 0))
-            .x;
-
-    deriv_xx += value_x * value_kernel;
-    deriv_yy += value_y * value_kernel;
-    deriv_zz += value_z * value_kernel;
-  }
-
-  // Compute mixed derivatives (Ixy, Ixz, Iyz)
-  for (int i = -center; i <= center; i++) {
-    for (int j = -center; j <= center; j++) {
-      for (int k = -center; k <= center; k++) {
-        float value_xy = (float)READ_IMAGE(src, sampler,
-                                           POS_src_INSTANCE(x + i, y + j, z, 0))
-                             .x;
-        float value_xz = (float)READ_IMAGE(src, sampler,
-                                           POS_src_INSTANCE(x + i, y, z + j, 0))
-                             .x;
-        float value_yz = (float)READ_IMAGE(src, sampler,
-                                           POS_src_INSTANCE(x, y + j, z + k, 0))
-                             .x;
-
-        float value_i_kernel =
-            (float)READ_IMAGE(gfd, sampler,
-                              POS_gfd_INSTANCE(i + center, 0, 0, 0))
-                .x;
-        float value_j_kernel =
-            (float)READ_IMAGE(gfd, sampler,
-                              POS_gfd_INSTANCE(j + center, 0, 0, 0))
-                .x;
-        float value_k_kernel =
-            (float)READ_IMAGE(gfd, sampler,
-                              POS_gfd_INSTANCE(k + center, 0, 0, 0))
+  for (int i = -center_w; i <= center_w; i++) {
+    for (int j = -center_h; j <= center_h; j++) {
+      for (int k = -center_d; k <= center_d; k++) {
+        // Read values from the source image
+        float value =
+            (float)READ_IMAGE(src, sampler,
+                              POS_src_INSTANCE(x + i, y + j, z + k, 0))
                 .x;
 
-        deriv_xy += value_xy * value_i_kernel * value_j_kernel;
-        deriv_xz += value_xz * value_i_kernel * value_k_kernel;
-        deriv_yz += value_yz * value_j_kernel * value_k_kernel;
+        float value_kernel_xx =
+            (float)READ_IMAGE(gsd_xx, sampler,
+                              POS_gsd_xx_INSTANCE(i + center_w, j + center_h,
+                                                  k + center_d, 0))
+                .x;
+        I_xx += value * value_kernel_xx;
+
+        float value_kernel_yy =
+            (float)READ_IMAGE(gsd_xx, sampler,
+                              POS_gsd_xx_INSTANCE(j + center_h, i + center_w,
+                                                  k + center_d, 0))
+                .x;
+        I_yy += value * value_kernel_yy;
+
+        if (depth > 1) {
+          float value_kernel_zz =
+              (float)READ_IMAGE(gsd_xx, sampler,
+                                POS_gsd_xx_INSTANCE(k + center_d, i + center_w,
+                                                    j + center_h, 0))
+                  .x;
+          I_zz += value * value_kernel_zz;
+        }
+
+        float value_xy_kernel =
+            (float)READ_IMAGE(gsd_xy, sampler,
+                              POS_gsd_xy_INSTANCE(i + center_w, j + center_h,
+                                                  k + center_d, 0))
+                .x;
+        I_xy += value * value_xy_kernel;
+
+        if (depth > 1) {
+          float value_xz_kernel =
+              (float)READ_IMAGE(gsd_xy, sampler,
+                                POS_gsd_xy_INSTANCE(i + center_w, k + center_d,
+                                                    j + center_h, 0))
+                  .x;
+          I_xz += value * value_xz_kernel;
+
+          float value_yz_kernel =
+              (float)READ_IMAGE(gsd_xy, sampler,
+                                POS_gsd_xy_INSTANCE(j + center_h, k + center_d,
+                                                    i + center_w, 0))
+                  .x;
+          I_yz += value * value_yz_kernel;
+        }
       }
     }
   }
 
   // Store results in the Hessian matrix
-  hessian[0] = deriv_xx; // xx
-  hessian[1] = deriv_xy; // xy
-  hessian[2] = deriv_xz; // xz
-  hessian[3] = deriv_yy; // yy
-  hessian[4] = deriv_yz; // yz
-  hessian[5] = deriv_zz; // zz
+  hessian[0] = I_xx; // xx
+  hessian[1] = I_xy; // xy
+  hessian[2] = I_xz; // xz
+  hessian[3] = I_yy; // yy
+  hessian[4] = I_yz; // yz
+  hessian[5] = I_zz; // zz
 }
 
 /*
-  This kernel computes the eigenvalues of the hessian matrix of a 3d image using
-  the Gaussian derivative.
+  This kernel computes the eigenvalues of the hessian matrix of a 3d image
+  using the Gaussian derivative.
 
   Hessian matrix:
     [Ixx, Ixy, Ixz]
@@ -264,15 +225,15 @@ inline void compute_gaussian_hessian_3d(
     [Ixz, Iyz, Izz]
   Where Ixx denotes the second derivative in x.
 
-  Ixx and Iyy are calculated by convolving the image with the 1d kernel [1 -2
-  1]. Ixy is calculated by a convolution with the 2d kernel: [ 0.25 0 -0.25] [
-  0 0     0]
+  Ixx and Iyy are calculated by convolving the image with the 1d kernel [1
+  -2 1]. Ixy is calculated by a convolution with the 2d kernel: [ 0.25 0
+  -0.25] [ 0 0     0]
     [-0.25 0  0.25]
 */
 __kernel void hessian_gaussian_eigenvalues(
-    IMAGE_src_TYPE src, // Input 2D image
-    IMAGE_gfd_TYPE gfd, // Gaussian first derivative 1d array
-    IMAGE_gsd_TYPE gsd, // Gaussian second derivative 1d array
+    IMAGE_src_TYPE src,       // Input 2D image
+    IMAGE_gsd_xx_TYPE gsd_xx, // Gaussian second derivative 1d array
+    IMAGE_gsd_xy_TYPE gsd_xy, // Gaussian second derivative mixed 2d array
     IMAGE_small_eigenvalue_TYPE small_eigenvalue,
     IMAGE_middle_eigenvalue_TYPE middle_eigenvalue,
     IMAGE_large_eigenvalue_TYPE large_eigenvalue) {
@@ -285,11 +246,8 @@ __kernel void hessian_gaussian_eigenvalues(
   DOUBLE_TYPE eigenvalues[3] = {0, 0, 0};
   DOUBLE_TYPE hessian[6] = {0, 0, 0, 0, 0, 0};
 
-  if (is_3d) {
-    compute_gaussian_hessian_3d(src, gfd, gsd, x, y, z, hessian);
-  } else {
-    compute_gaussian_hessian_2d(src, gfd, gsd, x, y, hessian);
-  }
+  compute_gaussian_hessian(src, gsd_xx, gsd_xy, x, y, z,
+                           hessian); // Compute the Hessian matrix
 
   DOUBLE_TYPE a, b, c;
   a = (hessian[0] + hessian[3] + hessian[5]); // trace

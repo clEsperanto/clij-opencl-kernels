@@ -10,7 +10,7 @@ __kernel void gradient_z(
     const int z = get_global_id(2);
 
     // Cache image depth to avoid repeated calls
-    const int depth = get_image_depth(src);
+    const int depth = GET_IMAGE_DEPTH(src);
 
     // Read current pixel value
     float centerValue = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;

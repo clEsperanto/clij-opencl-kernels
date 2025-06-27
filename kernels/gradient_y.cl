@@ -10,7 +10,7 @@ __kernel void gradient_y(
     const int z = get_global_id(2);
 
     // Cache image height to avoid repeated calls
-    const int height = get_image_height(src);
+    const int height = GET_IMAGE_HEIGHT(src);
 
     // Read current pixel value
     float centerValue = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;

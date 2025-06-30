@@ -232,8 +232,8 @@ inline void compute_gaussian_hessian(
 */
 __kernel void hessian_gaussian_eigenvalues(
     IMAGE_src_TYPE src,       // Input 2D image
-    IMAGE_gsd_xx_TYPE gsd_xx, // Gaussian second derivative 1d array
-    IMAGE_gsd_xy_TYPE gsd_xy, // Gaussian second derivative mixed 2d array
+    IMAGE_g_xx_TYPE g_xx, // Gaussian second derivative 1d array
+    IMAGE_g_xy_TYPE g_xy, // Gaussian second derivative mixed 2d array
     IMAGE_small_eigenvalue_TYPE small_eigenvalue,
     IMAGE_middle_eigenvalue_TYPE middle_eigenvalue,
     IMAGE_large_eigenvalue_TYPE large_eigenvalue) {
@@ -246,7 +246,7 @@ __kernel void hessian_gaussian_eigenvalues(
   DOUBLE_TYPE eigenvalues[3] = {0, 0, 0};
   DOUBLE_TYPE hessian[6] = {0, 0, 0, 0, 0, 0};
 
-  compute_gaussian_hessian(src, gsd_xx, gsd_xy, x, y, z,
+  compute_gaussian_hessian(src, g_xx, g_xy, x, y, z,
                            hessian); // Compute the Hessian matrix
 
   DOUBLE_TYPE a, b, c;

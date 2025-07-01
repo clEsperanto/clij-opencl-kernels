@@ -38,7 +38,7 @@ __kernel void gaussian_derivative_separable(
         }
 
         res += h * (float)READ_IMAGE(src, sampler, coord + v * dir).x;
-        hsum += h;
+        hsum += fabs(h);
     }
 
     WRITE_IMAGE(dst, POS_dst_INSTANCE(x, y, z, 0), CONVERT_dst_PIXEL_TYPE(res / hsum));

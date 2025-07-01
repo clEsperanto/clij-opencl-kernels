@@ -5,12 +5,26 @@ __kernel void gradient_x(
     IMAGE_dst_TYPE  dst
 )
 {
-  const int x = get_global_id(0);
-  const int y = get_global_id(1);
-  const int z = get_global_id(2);
+    const int x = get_global_id(0);
+    const int y = get_global_id(1);
+    const int z = get_global_id(2);
 
-  const float valueA = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x-1,y,z,0)).x;
-  const float valueB = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x+1,y,z,0)).x;
+    // Cache image width to avoid repeated calls
+    const int width = GET_IMAGE_WIDTH(src);
 
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(valueA - valueB));
+    // Read current pixel value
+    float centerValue = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z, 0)).x;
+
+    // Read neighboring pixel values with boundary checks
+    float valueA = (x < width - 1) ? 
+        (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x + 1, y, z, 0)).x : centerValue;
+    float valueB = (x > 0) ? 
+        (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x - 1, y, z, 0)).x : centerValue;
+
+    // Compute gradient
+    float norm = (x == 0 || x == width - 1) ? 1.0f : 2.0f;
+    float gradient = (valueA - valueB) / norm;
+
+    // Write result to output image
+    WRITE_IMAGE(dst, POS_dst_INSTANCE(x, y, z, 0), CONVERT_dst_PIXEL_TYPE(gradient));
 }

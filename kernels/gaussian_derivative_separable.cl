@@ -6,7 +6,7 @@ __kernel void gaussian_derivative_separable(
     const int       dim, 
     const int       N,
     const float     s,
-    const int       order // Derivative order: 0 (Gaussian), 1 (1st derivative), 2 (2nd derivative)
+    const int       o
 )
 {
     const int x = get_global_id(0);
@@ -29,11 +29,11 @@ __kernel void gaussian_derivative_separable(
 
         // Compute kernel based on the order parameter
         const float exp_term = exp((v * v) / norm); // Precompute exponential term
-        if (order == 0) {
+        if (o == 0) {
             h = exp_term; // Gaussian kernel
-        } else if (order == 1) {
+        } else if (o == 1) {
             h = v * inv_s2 * exp_term; // First derivative of Gaussian
-        } else if (order == 2) {
+        } else if (o == 2) {
             h = (v * v - s * s) * inv_s4 * exp_term; // Second derivative of Gaussian
         }
 

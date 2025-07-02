@@ -5,7 +5,8 @@ __kernel void maximum_separable(
     IMAGE_dst_TYPE  dst,
     const int       dim,
     const int       N,
-    const float     s
+    const float     s,
+    const int       o
 )
 {
   const int x = get_global_id(0);

@@ -22,7 +22,7 @@ __kernel void gradient_z(
         (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y, z - 1, 0)).x : centerValue;
 
     // Compute gradient
-    float norm = (z == 0 || z == depth - 1) ? 1.0f : 2.0f;
+    float norm = (z > 0 && z < depth - 1) ? 2.0f : 1.0f;
     float gradient = (valueA - valueB) / norm;
 
     // Write result to output image

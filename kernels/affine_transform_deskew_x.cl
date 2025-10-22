@@ -45,7 +45,7 @@
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_TRUE| SAMPLER_ADDRESS;
 
 __kernel void
-affine_transform_deskew_x_3d(
+affine_transform_deskew_x(
     IMAGE_src_TYPE  src, 
     IMAGE_dst_TYPE  dst,
     IMAGE_mat_TYPE  mat, 

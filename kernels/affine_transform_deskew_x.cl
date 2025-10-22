@@ -73,8 +73,7 @@ affine_transform_deskew_x_3d(
   float pix = 0;
 
   // ensure within bounds of final image/deskewed image
-  if (x >= 0 && y >= 0 && z >= 0 && 
-      x < GET_IMAGE_WIDTH(dst) && y < GET_IMAGE_HEIGHT(dst) && z < GET_IMAGE_DEPTH(dst)) {
+  if (x >= 0 && y >= 0 && z >= 0 && x < GET_IMAGE_WIDTH(dst) && y < GET_IMAGE_HEIGHT(dst) && z < GET_IMAGE_DEPTH(dst)) {
     float virtual_plane = (x - z / tantheta);
     // get plane before
     long plane_before = floor(virtual_plane / pixel_step);

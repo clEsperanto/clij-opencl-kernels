@@ -56,7 +56,7 @@ affine_transform_deskew_y(
     float           sintheta
 ) 
 {
-  // get id for each pixel
+ // get id for each pixel
   uint x = get_global_id(0);
   uint y = get_global_id(1);
   uint z = get_global_id(2);
@@ -66,15 +66,22 @@ affine_transform_deskew_y(
   uint Ny = GET_IMAGE_HEIGHT(src); // get_global_size(1);
   uint Nz = GET_IMAGE_DEPTH(src);  // get_global_size(2);
 
+  // virtual plane coordinates, deskewed coord
+  //uint x = i;
+  //uint y = j;
+  //uint z = k;
+
   // corresponding coordinates on raw data
   uint z_orig = (mat[8] * x + mat[9] * y + mat[10] * z + mat[11]);
   uint y_orig = (mat[4] * x + mat[5] * y + mat[6] * z + mat[7]);
   uint x_orig = (mat[0] * x + mat[1] * y + mat[2] * z + mat[3]);
 
-  float pix = 0;
+   float pix = 0;
    
   // ensure within bounds of final image/deskewed image
-  if (x >= 0 && y >= 0 && z >= 0 && x < GET_IMAGE_WIDTH(dst) && y < GET_IMAGE_HEIGHT(dst) && z < GET_IMAGE_DEPTH(dst)) {
+
+  if (x >= 0 && y >= 0 && z >= 0 && x < GET_IMAGE_WIDTH(dst) && y < GET_IMAGE_HEIGHT(dst) &&
+      z < GET_IMAGE_DEPTH(dst)) {
     float virtual_plane = (y - z / tantheta);
     // get plane before
     long plane_before = floor(virtual_plane / pixel_step);
@@ -93,7 +100,8 @@ affine_transform_deskew_y(
       long pos_before = floor(virtual_pos_before);
       long pos_after = floor(virtual_pos_after);
 
-      if (pos_before >= 0 && pos_after >= 0 && pos_before < Ny - 1 && pos_after < Ny - 1) {
+      if (pos_before >= 0 && pos_after >= 0 && pos_before < Ny - 1 &&
+          pos_after < Ny - 1) {
         float dz_before = virtual_pos_before - pos_before;
         float dz_after = virtual_pos_after - pos_after;
 
@@ -105,10 +113,23 @@ affine_transform_deskew_y(
         long y_before1 = (pos_before);
 
         // get pixel values at neighbour coordinates
-        float pix_1 =(float)(READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y_after, plane_after, 0)).x);
-        float pix_2 =(float)(READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y_after1, plane_after, 0)).x);
-        float pix_3 =(float)(READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y_before, plane_before, 0)).x);
-        float pix_4 =(float)(READ_IMAGE(src, sampler, POS_src_INSTANCE(x, y_before1, plane_before, 0)).x);
+        float pix_1 =
+            (float)(READ_IMAGE(src, sampler,
+                                     (int4)(x, y_after, plane_after, 0))
+                        .x);
+        float pix_2 =
+            (float)(READ_IMAGE(src, sampler,
+                                     (int4)(x, y_after1, plane_after, 0))
+                        .x);
+
+        float pix_3 =
+            (float)(READ_IMAGE(src, sampler,
+                                     (int4)(x, y_before, plane_before, 0))
+                        .x);
+        float pix_4 =
+            (float)(READ_IMAGE(src, sampler,
+                                     (int4)(x, y_before1, plane_before, 0))
+                        .x);
 
         pix = ((l_before * dz_after * pix_1) +
                (l_before * (1 - dz_after) * pix_2) +
@@ -119,6 +140,6 @@ affine_transform_deskew_y(
     }
   }
 
-  const POS_dst_TYPE output_coord = POS_dst_INSTANCE(x, y, (GET_IMAGE_DEPTH(dst) - 1 - z), 0);
-  WRITE_IMAGE(dst, output_coord, CONVERT_dst_PIXEL_TYPE(pix));
+  int4 pos = (int4){x, y, (GET_IMAGE_DEPTH(dst) - 1 - z), 0};
+  WRITE_IMAGE(dst, pos, CONVERT_dst_PIXEL_TYPE(pix));
 }

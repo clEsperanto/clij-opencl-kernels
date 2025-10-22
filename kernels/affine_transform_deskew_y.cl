@@ -43,7 +43,7 @@
 #define SAMPLER_ADDRESS CLK_ADDRESS_CLAMP
 #endif
 
-__constant sampler_t sampler = CLK_NORMALIZED_COORDS_TRUE| SAMPLER_ADDRESS;
+__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE| SAMPLER_ADDRESS;
 
 __kernel void
 affine_transform_deskew_y(

@@ -66,7 +66,8 @@ __kernel void standard_deviation_touching_neighbors (
     }
   }
 
-  float stdDev = sqrt((float2){sum / (count - 1), 0}).x;
+  // float stdDev = sqrt((float2){sum / (count - 1), 0}).x; // old version (why use float2?)
+  float stdDev = sqrt(sum / (count - 1));  // updated version
   WRITE_IMAGE(dst, POS_dst_INSTANCE(label_id, 0, 0, 0), CONVERT_dst_PIXEL_TYPE(stdDev));
 }
 

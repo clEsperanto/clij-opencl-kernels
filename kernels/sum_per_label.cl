@@ -22,7 +22,6 @@ __kernel void sum_per_label (
     int label = (int)(READ_IMAGE(src,sampler,POS_src_INSTANCE(x,y,z,0)).x);
 
     if (x == width || (label != former_label && former_label >= 0)) {
-
       if (former_label > 0 || sum_background != 0) {
         WRITE_IMAGE(dst,POS_dst_INSTANCE(former_label,y,0,0), CONVERT_dst_PIXEL_TYPE(sum_x));
         WRITE_IMAGE(dst,POS_dst_INSTANCE(former_label,y,1,0), CONVERT_dst_PIXEL_TYPE(sum_y));

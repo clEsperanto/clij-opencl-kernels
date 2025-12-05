@@ -18,6 +18,7 @@ __kernel void variance_sphere(
                              (GET_IMAGE_HEIGHT(src) > 1 && scalar1 > 1) * ((scalar1-1)/2),
                              (GET_IMAGE_DEPTH(src) > 1 && scalar2 > 1) * ((scalar2-1)/2), 
                              0};
+
   const float4 squared = (float4){(radius.x > 0) ? (float)(radius.x*radius.x) : FLT_MIN,
                                   (radius.y > 0) ? (float)(radius.y*radius.y) : FLT_MIN,
                                   (radius.z > 0) ? (float)(radius.z*radius.z) : FLT_MIN,
@@ -39,8 +40,8 @@ __kernel void variance_sphere(
       }
     }
   }
-
   const float mean_intensity = sum / count;
+  
   sum = 0;
   count = 0;
   for (int dz = -radius.z; dz <= radius.z; dz++) {

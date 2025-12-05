@@ -17,7 +17,8 @@ __kernel void minimum_octagon_box(
     for (int dy = -radius.y; dy <= radius.y; ++dy) {
       for (int dz = -radius.z; dz <= radius.z; ++dz) {
         IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(dx,dy,dz,0))).x;
-        minimum = (minimum > value) ? value : minimum;
+        int condition = (value < minimum);
+        minimum = (condition * value) + ((1 - condition) * minimum);
       }
     }
   }

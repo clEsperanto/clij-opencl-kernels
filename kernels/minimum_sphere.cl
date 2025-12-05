@@ -31,7 +31,8 @@ __kernel void minimum_sphere(
         const float xSquared = dx * dx;
         if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
           const IMAGE_src_PIXEL_TYPE value_res = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(dx,dy,dz,0)).x;
-          minimumValue = (value_res < minimumValue) ? value_res : minimumValue;
+          int condition = (value_res < minimumValue);
+          minimumValue = (condition * value_res) + ((1 - condition) * minimumValue);
         }
       }
     }

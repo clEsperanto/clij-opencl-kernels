@@ -15,6 +15,7 @@ __kernel void replace_value(
   const IMAGE_dst_PIXEL_TYPE replacement_value = CONVERT_src_PIXEL_TYPE(scalar1);
   
   const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
-  const IMAGE_dst_PIXEL_TYPE output = (value == target_value) ? replacement_value : CONVERT_dst_PIXEL_TYPE(value);
+  int condition = (value == target_value);
+  const IMAGE_dst_PIXEL_TYPE output = (condition * replacement_value) + ((1 - condition) * CONVERT_dst_PIXEL_TYPE(value));
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), output);
 }

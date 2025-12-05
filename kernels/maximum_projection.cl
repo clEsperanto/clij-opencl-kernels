@@ -43,7 +43,7 @@ __kernel void maximum_projection(
   const int IDX0_COORD = get_global_id(0);
   const int IDX1_COORD = get_global_id(1);
   
-  IMAGE_src_PIXEL_TYPE maximum = READ_IMAGE(src, sampler, INITIAL_POS);
+  IMAGE_src_PIXEL_TYPE maximum = READ_IMAGE(src, sampler, INITIAL_POS).x;
   for (int LOOP_COORD = 1; LOOP_COORD < AXIS_SIZE(src); ++LOOP_COORD) {
     const IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, LOOP_POS).x;
     maximum = (maximum > value) ? maximum : value;

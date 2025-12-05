@@ -38,16 +38,6 @@
         return (TYPE##2){buffer_var[pos_in_buffer], 0}; \
     }
 
-DEFINE_READ_BUFFER3D(c, char)
-DEFINE_READ_BUFFER3D(uc, uchar)
-DEFINE_READ_BUFFER3D(s, short)
-DEFINE_READ_BUFFER3D(us, ushort)
-DEFINE_READ_BUFFER3D(i, int)
-DEFINE_READ_BUFFER3D(ui, uint)
-DEFINE_READ_BUFFER3D(l, long)
-DEFINE_READ_BUFFER3D(ul, ulong)
-DEFINE_READ_BUFFER3D(f, float)
-
 #define DEFINE_WRITE_BUFFER3D(SUFFIX, TYPE) \
     inline void write_buffer3d ## SUFFIX(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global TYPE * buffer_var, int4 pos, TYPE value) { \
         int pos_in_buffer = pos.x + pos.y * write_buffer_width + pos.z * write_buffer_width * write_buffer_height; \
@@ -55,15 +45,50 @@ DEFINE_READ_BUFFER3D(f, float)
         buffer_var[pos_in_buffer] = value; \
     }
 
+#if defined(USE_3D) && defined(USE_CHAR)
+DEFINE_READ_BUFFER3D(c, char)
 DEFINE_WRITE_BUFFER3D(c, char)
+#endif
+
+#if defined(USE_3D) && defined(USE_UCHAR)
+DEFINE_READ_BUFFER3D(uc, uchar)
 DEFINE_WRITE_BUFFER3D(uc, uchar)
+#endif
+
+#if defined(USE_3D) && defined(USE_SHORT)
+DEFINE_READ_BUFFER3D(s, short)
 DEFINE_WRITE_BUFFER3D(s, short)
+#endif
+
+#if defined(USE_3D) && defined(USE_USHORT)
+DEFINE_READ_BUFFER3D(us, ushort)
 DEFINE_WRITE_BUFFER3D(us, ushort)
+#endif
+
+#if defined(USE_3D) && defined(USE_INT)
+DEFINE_READ_BUFFER3D(i, int)
 DEFINE_WRITE_BUFFER3D(i, int)
+#endif
+
+#if defined(USE_3D) && defined(USE_UINT)
+DEFINE_READ_BUFFER3D(ui, uint)
 DEFINE_WRITE_BUFFER3D(ui, uint)
-DEFINE_WRITE_BUFFER3D(l, long)
-DEFINE_WRITE_BUFFER3D(ul, ulong)
+#endif
+
+// #if defined(USE_3D) && defined(USE_LONG)
+// DEFINE_READ_BUFFER3D(l, long)
+// DEFINE_WRITE_BUFFER3D(l, long)
+// #endif
+
+// #if defined(USE_3D) && defined(USE_ULONG)
+// DEFINE_READ_BUFFER3D(ul, ulong)
+// DEFINE_WRITE_BUFFER3D(ul, ulong)
+// #endif
+
+#if defined(USE_3D) && defined(USE_FLOAT)
+DEFINE_READ_BUFFER3D(f, float)
 DEFINE_WRITE_BUFFER3D(f, float)
+#endif
 
 #define DEFINE_READ_BUFFER2D(SUFFIX, TYPE) \
     inline TYPE##2 read_buffer2d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global TYPE * buffer_var, sampler_t sampler, int2 position) { \
@@ -75,16 +100,6 @@ DEFINE_WRITE_BUFFER3D(f, float)
         return (TYPE##2){buffer_var[pos_in_buffer], 0}; \
     }
 
-DEFINE_READ_BUFFER2D(c, char)
-DEFINE_READ_BUFFER2D(uc, uchar)
-DEFINE_READ_BUFFER2D(s, short)
-DEFINE_READ_BUFFER2D(us, ushort)
-DEFINE_READ_BUFFER2D(i, int)
-DEFINE_READ_BUFFER2D(ui, uint)
-DEFINE_READ_BUFFER2D(l, long)
-DEFINE_READ_BUFFER2D(ul, ulong)
-DEFINE_READ_BUFFER2D(f, float)
-
 #define DEFINE_WRITE_BUFFER2D(SUFFIX, TYPE) \
     inline void write_buffer2d ## SUFFIX(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global TYPE * buffer_var, int2 pos, TYPE value) { \
         int pos_in_buffer = pos.x + pos.y * write_buffer_width; \
@@ -92,15 +107,50 @@ DEFINE_READ_BUFFER2D(f, float)
         buffer_var[pos_in_buffer] = value; \
     }
 
+#if defined(USE_2D) && defined(USE_CHAR)
+DEFINE_READ_BUFFER2D(c, char)
 DEFINE_WRITE_BUFFER2D(c, char)
+#endif
+
+#if defined(USE_2D) && defined(USE_UCHAR)
+DEFINE_READ_BUFFER2D(uc, uchar)
 DEFINE_WRITE_BUFFER2D(uc, uchar)
+#endif
+
+#if defined(USE_2D) && defined(USE_SHORT)
+DEFINE_READ_BUFFER2D(s, short)
 DEFINE_WRITE_BUFFER2D(s, short)
+#endif
+
+#if defined(USE_2D) && defined(USE_USHORT)
+DEFINE_READ_BUFFER2D(us, ushort)
 DEFINE_WRITE_BUFFER2D(us, ushort)
+#endif
+
+#if defined(USE_2D) && defined(USE_INT)
+DEFINE_READ_BUFFER2D(i, int)
 DEFINE_WRITE_BUFFER2D(i, int)
+#endif
+
+#if defined(USE_2D) && defined(USE_UINT)
+DEFINE_READ_BUFFER2D(ui, uint)
 DEFINE_WRITE_BUFFER2D(ui, uint)
-DEFINE_WRITE_BUFFER2D(l, long)
-DEFINE_WRITE_BUFFER2D(ul, ulong)
+#endif
+
+// #if defined(USE_2D) && defined(USE_LONG)
+// DEFINE_READ_BUFFER2D(l, long)
+// DEFINE_WRITE_BUFFER2D(l, long)
+// #endif
+
+// #if defined(USE_2D) && defined(USE_ULONG)
+// DEFINE_READ_BUFFER2D(ul, ulong)
+// DEFINE_WRITE_BUFFER2D(ul, ulong)
+// #endif
+
+#if defined(USE_2D) && defined(USE_FLOAT)
+DEFINE_READ_BUFFER2D(f, float)
 DEFINE_WRITE_BUFFER2D(f, float)
+#endif
 
 #define DEFINE_READ_BUFFER1D(SUFFIX, TYPE) \
     inline TYPE##2 read_buffer1d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global TYPE * buffer_var, sampler_t sampler, int position) { \
@@ -109,31 +159,56 @@ DEFINE_WRITE_BUFFER2D(f, float)
         return (TYPE##2){buffer_var[pos], 0}; \
     }
 
-DEFINE_READ_BUFFER1D(c, char)
-DEFINE_READ_BUFFER1D(uc, uchar)
-DEFINE_READ_BUFFER1D(i, int)
-DEFINE_READ_BUFFER1D(ui, uint)
-DEFINE_READ_BUFFER1D(s, short)
-DEFINE_READ_BUFFER1D(us, ushort)
-DEFINE_READ_BUFFER1D(l, long)
-DEFINE_READ_BUFFER1D(ul, ulong)
-DEFINE_READ_BUFFER1D(f, float)
-
 #define DEFINE_WRITE_BUFFER1D(SUFFIX, TYPE) \
     inline void write_buffer1d ## SUFFIX(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global TYPE * buffer_var, int pos, TYPE value) { \
         if (pos < 0 || pos >= write_buffer_width) return; \
         buffer_var[pos] = value; \
     }
 
+#if defined(USE_1D) && defined(USE_CHAR)
+DEFINE_READ_BUFFER1D(c, char)
 DEFINE_WRITE_BUFFER1D(c, char)
+#endif
+
+#if defined(USE_1D) && defined(USE_UCHAR)
+DEFINE_READ_BUFFER1D(uc, uchar)
 DEFINE_WRITE_BUFFER1D(uc, uchar)
-DEFINE_WRITE_BUFFER1D(i, int)
-DEFINE_WRITE_BUFFER1D(us, ushort)
+#endif
+
+#if defined(USE_1D) && defined(USE_SHORT)
+DEFINE_READ_BUFFER1D(s, short)
 DEFINE_WRITE_BUFFER1D(s, short)
+#endif
+
+#if defined(USE_1D) && defined(USE_USHORT)
+DEFINE_READ_BUFFER1D(us, ushort)
+DEFINE_WRITE_BUFFER1D(us, ushort)
+#endif
+
+#if defined(USE_1D) && defined(USE_INT)
+DEFINE_READ_BUFFER1D(i, int)
+DEFINE_WRITE_BUFFER1D(i, int)
+#endif
+
+#if defined(USE_1D) && defined(USE_UINT)
+DEFINE_READ_BUFFER1D(ui, uint)
 DEFINE_WRITE_BUFFER1D(ui, uint)
-DEFINE_WRITE_BUFFER1D(l, long)
-DEFINE_WRITE_BUFFER1D(ul, ulong)
+#endif
+
+// #if defined(USE_1D) && defined(USE_LONG)
+// DEFINE_READ_BUFFER1D(l, long)
+// DEFINE_WRITE_BUFFER1D(l, long)
+// #endif
+
+// #if defined(USE_1D) && defined(USE_ULONG)
+// DEFINE_READ_BUFFER1D(ul, ulong)
+// DEFINE_WRITE_BUFFER1D(ul, ulong)
+// #endif
+
+#if defined(USE_1D) && defined(USE_FLOAT)
+DEFINE_READ_BUFFER1D(f, float)
 DEFINE_WRITE_BUFFER1D(f, float)
+#endif
 
 inline uchar clij_convert_uchar_sat(float value) {
     return (uchar)clamp(value, 0.0f, 255.0f);
@@ -159,13 +234,13 @@ inline int clij_convert_int_sat(float value) {
     return (int)clamp(value, -2147483648.0f, 2147483647.0f);
 }
 
-inline ulong clij_convert_ulong_sat(float value) {
-    return (ulong)clamp(value, 0.0f, 18446744073709551615.0f);
-}
+// inline ulong clij_convert_ulong_sat(float value) {
+//     return (ulong)clamp(value, 0.0f, 18446744073709551615.0f);
+// }
 
-inline long clij_convert_long_sat(float value) {
-    return (long)clamp(value, -9223372036854775808.0f, 9223372036854775807.0f);
-}
+// inline long clij_convert_long_sat(float value) {
+//     return (long)clamp(value, -9223372036854775808.0f, 9223372036854775807.0f);
+// }
 
 inline float clij_convert_float_sat(float value) {
     return value;

@@ -23,7 +23,8 @@ __kernel void nonzero_minimum_box(
     for (int dy = -r.y; dy <= r.y; ++dy) {
       for (int dx = -r.x; dx <= r.x; ++dx) {
         IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(dx,dy,dz,0)).x;
-        foundMinimum = (valude < foundMinimum && value > 0) ? value : foundMinimum;
+        int condition = (value < foundMinimum) & (value > 0);
+        foundMinimum = (condition * value) + ((1 - condition) * foundMinimum);
       }
     }
   }

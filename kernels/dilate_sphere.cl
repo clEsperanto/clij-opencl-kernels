@@ -53,6 +53,5 @@ __kernel void dilate_sphere(
     }
   }
 
-  value = (value != 0) ? 1 : 0;
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value != 0));
 }

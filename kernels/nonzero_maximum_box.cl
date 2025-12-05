@@ -12,23 +12,23 @@ __kernel void nonzero_maximum_box(
 
   const int4 r = (int4){(GET_IMAGE_WIDTH(src) > 1), (GET_IMAGE_HEIGHT(src) > 1), (GET_IMAGE_DEPTH(src) > 1), 0};
 
-
   const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
   IMAGE_src_PIXEL_TYPE foundMaximum = READ_IMAGE(src, sampler, coord).x;
   if (foundMaximum == 0) {
       return;
   }
+
   IMAGE_src_PIXEL_TYPE originalValue = foundMaximum;
   for (int dz = -r.z; dz <= r.z; ++dz) {
     for (int dy = -r.y; dy <= r.y; ++dy) {
       for (int dx = -r.x; dx <= r.x; ++dx) {
         IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(dx,dy,dz,0)).x;
-        if ( value > foundMaximum && value > 0) {
-          foundMaximum = value;
-        }
+        int condition = (value > foundMaximum) & (value > 0);
+        foundMaximum = (condition * value) + ((1 - condition) * foundMaximum);
       }
     }
   }
+
   if (foundMaximum != originalValue) {
     WRITE_IMAGE(dst0, POS_dst0_INSTANCE(0,0,0,0), 1);
   }

@@ -11,9 +11,9 @@ __kernel void detect_maxima(
 
   const int4 radius = (int4){GET_IMAGE_WIDTH(src) > 1, GET_IMAGE_HEIGHT(src) > 1, GET_IMAGE_DEPTH(src) > 1, 0};
 
-  bool isMax = true;
+  int isMax = 1;
   float localMax = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
-  const int4 pos = (int4){x, y, z,0};
+  const int4 pos = (int4){x, y, z, 0};
 
   for (int dz = -radius.z; dz <= radius.z; ++dz) {
     for (int dy = -radius.y; dy <= radius.y; ++dy) {
@@ -34,7 +34,7 @@ __kernel void detect_maxima(
         // we get the value of the pixel and test if it is greater than the current maximum
         const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(localPos.x,localPos.y,localPos.z,0)).x;
         if (value >= localMax) {
-            isMax = false;
+            isMax = 0;
             break;
         }
         
@@ -48,6 +48,5 @@ __kernel void detect_maxima(
     }
   }
 
-  IMAGE_dst_PIXEL_TYPE result = (isMax) ? 1 : 0;
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), result);
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), isMax);
 }

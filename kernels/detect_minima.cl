@@ -11,7 +11,7 @@ __kernel void detect_minima(
 
   const int4 radius = (int4){GET_IMAGE_WIDTH(src) > 1, GET_IMAGE_HEIGHT(src) > 1, GET_IMAGE_DEPTH(src) > 1, 0};
 
-  bool isMin = true;
+  int isMin = 1;
   float localMin = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
   const int4 pos = (int4){x,y,z,0};
 
@@ -27,7 +27,7 @@ __kernel void detect_minima(
         }
         const float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(localPos.x,localPos.y,localPos.z,0)).x;
         if (value <= localMin) {
-            isMin = false;
+            isMin = 0;
             break;
         }
       }
@@ -40,6 +40,5 @@ __kernel void detect_minima(
     }
   }
 
-  IMAGE_dst_PIXEL_TYPE result = (isMin) ? 1 : 0;
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), result);
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), isMin);
 }

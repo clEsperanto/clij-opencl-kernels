@@ -19,10 +19,9 @@ __kernel void depth_projection(
   float max_z = 0;
   for (float z = 0; z < GET_IMAGE_DEPTH(src); z += GET_IMAGE_DEPTH(src) / 255.0 ) {
     float value = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
-    if (value > max || z == 0) {
-      max = value;
-      max_z = z;
-    }
+    int condition = (value > max) | (z == 0);
+    max = (condition * value) + ((1 - condition) * max);
+    max_z = (condition * z) + ((1 - condition) * max_z);
   }
 
   float intensity = (max - scalar0) / (scalar1 - scalar0);

@@ -85,6 +85,23 @@ DEFINE_READ_BUFFER2D(l, long)
 DEFINE_READ_BUFFER2D(ul, ulong)
 DEFINE_READ_BUFFER2D(f, float)
 
+#define DEFINE_WRITE_BUFFER2D(SUFFIX, TYPE) \
+    inline void write_buffer2d ## SUFFIX(int write_buffer_width, int write_buffer_height, int write_buffer_depth, __global TYPE * buffer_var, int2 pos, TYPE value) { \
+        int pos_in_buffer = pos.x + pos.y * write_buffer_width; \
+        if (pos.x < 0 || pos.x >= write_buffer_width || pos.y < 0 || pos.y >= write_buffer_height) return; \
+        buffer_var[pos_in_buffer] = value; \
+    }
+
+DEFINE_WRITE_BUFFER2D(c, char)
+DEFINE_WRITE_BUFFER2D(uc, uchar)
+DEFINE_WRITE_BUFFER2D(s, short)
+DEFINE_WRITE_BUFFER2D(us, ushort)
+DEFINE_WRITE_BUFFER2D(i, int)
+DEFINE_WRITE_BUFFER2D(ui, uint)
+DEFINE_WRITE_BUFFER2D(l, long)
+DEFINE_WRITE_BUFFER2D(ul, ulong)
+DEFINE_WRITE_BUFFER2D(f, float)
+
 #define DEFINE_READ_BUFFER1D(SUFFIX, TYPE) \
     inline TYPE##2 read_buffer1d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global TYPE * buffer_var, sampler_t sampler, int position) { \
         int pos = clamp(position, 0, read_buffer_width - 1); \

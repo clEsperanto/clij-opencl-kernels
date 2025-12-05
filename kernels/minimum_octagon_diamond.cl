@@ -15,33 +15,21 @@ __kernel void minimum_octagon_diamond(
   
   if (GET_IMAGE_WIDTH(src) > 1) {
     value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(-1,0,0,0))).x;
-    if (minimum > value) {
-      minimum = value;
-    }
+    minimum = (minimum > value) ? value : minimum;
     value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(1,0,0,0))).x;
-    if (minimum > value) {
-      minimum = value;
-    }
+    minimum = (minimum > value) ? value : minimum;
   }
   if (GET_IMAGE_HEIGHT(src) > 1) {
     value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,-1,0,0))).x;
-    if (minimum > value) {
-      minimum = value;
-    }
+    minimum = (minimum > value) ? value : minimum;
     value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,1,0,0))).x;
-    if (minimum > value) {
-      minimum = value;
-    }
+    minimum = (minimum > value) ? value : minimum;
   }
   if (GET_IMAGE_DEPTH(src) > 1) {
     value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,-1,0))).x;
-    if (minimum > value) {
-      minimum = value;
-    }
+    minimum = (minimum > value) ? value : minimum;
     value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,1,0))).x;
-    if (minimum > value) {
-      minimum = value;
-    }
+    minimum = (minimum > value) ? value : minimum;
   }
 
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(minimum));

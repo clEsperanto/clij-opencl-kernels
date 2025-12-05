@@ -13,5 +13,5 @@ __kernel void generate_binary_overlap_matrix(
   const float label1 = (float) READ_IMAGE(src0, sampler, POS_src0_INSTANCE(x, y, z, 0)).x;
   const float label2 = (float) READ_IMAGE(src1, sampler, POS_src1_INSTANCE(x, y, z, 0)).x;
 
-  WRITE_IMAGE(dst, (POS_dst_INSTANCE(label1, label2, 0, 0)), CONVERT_dst_PIXEL_TYPE(1));
+  WRITE_IMAGE(dst, (POS_dst_INSTANCE(label1, label2, 0, 0)), 1);
 }

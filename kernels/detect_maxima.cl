@@ -9,14 +9,11 @@ __kernel void detect_maxima(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  int4 radius = (int4){0,0,0,0};
-  if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = 1; }
-  if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = 1; }
-  if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = 1; }
+  const int4 radius = (int4){GET_IMAGE_WIDTH(src) > 1, GET_IMAGE_HEIGHT(src) > 1, GET_IMAGE_DEPTH(src) > 1, 0};
 
   bool isMax = true;
   float localMax = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
-  const int4 pos = (int4){x,y,z,0};
+  const int4 pos = (int4){x, y, z,0};
 
   for (int dz = -radius.z; dz <= radius.z; ++dz) {
     for (int dy = -radius.y; dy <= radius.y; ++dy) {
@@ -51,9 +48,6 @@ __kernel void detect_maxima(
     }
   }
 
-  IMAGE_dst_PIXEL_TYPE result = 0;
-  if (isMax) {
-    result = 1;
-  }
+  IMAGE_dst_PIXEL_TYPE result = (isMax) ? 1 : 0;
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), result);
 }

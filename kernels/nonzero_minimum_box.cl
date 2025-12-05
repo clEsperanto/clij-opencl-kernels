@@ -10,29 +10,26 @@ __kernel void nonzero_minimum_box(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  int4 r = (int4){0,0,0,0};
-  if (GET_IMAGE_WIDTH(src)  > 1) { r.x = 1; }
-  if (GET_IMAGE_HEIGHT(src) > 1) { r.y = 1; }
-  if (GET_IMAGE_DEPTH(src)  > 1) { r.z = 1; }
+  int4 r = (int4){(GET_IMAGE_WIDTH(src) > 1), (GET_IMAGE_HEIGHT(src) > 1), (GET_IMAGE_DEPTH(src) > 1), 0};
 
   const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
   IMAGE_src_PIXEL_TYPE foundMinimum = READ_IMAGE(src, sampler, coord).x;
-  if (foundMinimum != 0) {
-      IMAGE_src_PIXEL_TYPE originalValue = foundMinimum;
-          for (int dz = -r.z; dz <= r.z; ++dz) {
-        for (int dy = -r.y; dy <= r.y; ++dy) {
-      for (int dx = -r.x; dx <= r.x; ++dx) {
-            IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(dx,dy,dz,0)).x;
-            if ( value < foundMinimum && value > 0) {
-              foundMinimum = value;
-            }
-          }
-        }
-      }
-      
-      if (foundMinimum != originalValue) {
-        WRITE_IMAGE(dst0, POS_dst0_INSTANCE(0,0,0,0), 1);
-      }
-      WRITE_IMAGE(dst1, POS_dst1_INSTANCE(x,y,z,0), CONVERT_dst1_PIXEL_TYPE(foundMinimum));
+  if (foundMinimum == 0) {
+    return;
   }
+
+  IMAGE_src_PIXEL_TYPE originalValue = foundMinimum;
+  for (int dz = -r.z; dz <= r.z; ++dz) {
+    for (int dy = -r.y; dy <= r.y; ++dy) {
+      for (int dx = -r.x; dx <= r.x; ++dx) {
+        IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, coord + POS_src_INSTANCE(dx,dy,dz,0)).x;
+        foundMinimum = (valude < foundMinimum && value > 0) ? value : foundMinimum;
+      }
+    }
+  }
+  
+  if (foundMinimum != originalValue) {
+    WRITE_IMAGE(dst0, POS_dst0_INSTANCE(0,0,0,0), 1);
+  }
+  WRITE_IMAGE(dst1, POS_dst1_INSTANCE(x,y,z,0), CONVERT_dst1_PIXEL_TYPE(foundMinimum));
 }

@@ -11,6 +11,11 @@ __kernel void sobel(
   
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
 
+  const int4 r = (int4){2 * (GET_IMAGE_WIDTH(src)  > 1), 
+                        2 * (GET_IMAGE_HEIGHT(src) > 1), 
+                        2 * (GET_IMAGE_DEPTH(src)  > 1), 
+                        0};
+
   const float hx[3] = {1, 2, 1};
   const float hy[3] = {1, 2, 1};
   const float hz[3] = {1, 2, 1};
@@ -18,11 +23,6 @@ __kernel void sobel(
   const float hpx[3] = {1, 0, -1};
   const float hpy[3] = {1, 0, -1};
   const float hpz[3] = {1, 0, -1};
-
-  int4 r = (int4){0,0,0,0};
-  if (GET_IMAGE_DEPTH(src)  > 1) { r.z = 2; }
-  if (GET_IMAGE_HEIGHT(src) > 1) { r.y = 2; }
-  if (GET_IMAGE_WIDTH(src)  > 1) { r.x = 2; }
 
   float gy[3][3][3];
   float gx[3][3][3];

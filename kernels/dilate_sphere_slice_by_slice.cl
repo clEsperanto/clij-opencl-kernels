@@ -27,9 +27,7 @@ __kernel void dilate_sphere_slice_by_slice(
       }
     }
   }
-  if (value != 0) {
-    value = 1;
-  }
-
+  value = (value != 0) ? 1 : 0;
+  
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
 }

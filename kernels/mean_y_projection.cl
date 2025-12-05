@@ -8,13 +8,11 @@ __kernel void mean_y_projection (
   const int x = get_global_id(0);
   const int z = get_global_id(1);
 
-  float sum = 0;
-  int count = 0;
-  for (int y = 0; y < GET_IMAGE_HEIGHT(src); ++y)
+  float sum = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,0,z,0)).x;
+  for (int y = 1; y < GET_IMAGE_HEIGHT(src); y++)
   {
     sum += (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
-    count++;
   }
   
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,z,0,0), CONVERT_dst_PIXEL_TYPE(sum / count));
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,z,0,0), CONVERT_dst_PIXEL_TYPE(sum / GET_IMAGE_HEIGHT(src)));
 }

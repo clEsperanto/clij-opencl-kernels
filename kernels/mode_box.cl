@@ -14,19 +14,19 @@ __kernel void mode_box
   const int z = get_global_id(2);
 
   int4 coord = (int4){x,y,z,0};
-  int4 radius = (int4){0,0,0,0};
-  if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = (scalar0-1)/2;}
-  if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = (scalar1-1)/2;}
-  if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (scalar2-1)/2;}
+  int4 radius = (int4){(GET_IMAGE_WIDTH(src) > 1) * ((scalar0-1)/2),
+                       (GET_IMAGE_HEIGHT(src) > 1) * ((scalar1-1)/2),
+                       (GET_IMAGE_DEPTH(src) > 1) * ((scalar2-1)/2),
+                       0};
   
   long histogram[256];
   for (int h = 0; h < 256; h++){
     histogram[h]=0;
   }
 
-      for (int dz = -radius.z; dz <= radius.z; ++dz) {
+  for (int dz = -radius.z; dz <= radius.z; ++dz) {
     for (int dy = -radius.y; dy <= radius.y; ++dy) {
-  for (int dx = -radius.x; dx <= radius.x; ++dx) {
+      for (int dx = -radius.x; dx <= radius.x; ++dx) {
          const int x1 = coord.x + dx;
          const int x2 = coord.y + dy;
          const int x3 = coord.z + dz;

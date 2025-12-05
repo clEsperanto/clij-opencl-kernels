@@ -13,10 +13,9 @@ __kernel void dilate_box(
   const int z = get_global_id(2);
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
 
-  int4 r = (int4){0,0,0,0};
-  if (GET_IMAGE_WIDTH(src)  > 1) { r.x = (scalar0-1)/2; }
-  if (GET_IMAGE_HEIGHT(src) > 1) { r.y = (scalar1-1)/2; }
-  if (GET_IMAGE_DEPTH(src)  > 1) { r.z = (scalar2-1)/2; }
+  const int4 r = (int4){ (GET_IMAGE_WIDTH(src)  > 1) * ((scalar0 - 1) / 2), 
+                         (GET_IMAGE_HEIGHT(src) > 1) * ((scalar1 - 1) / 2), 
+                         (GET_IMAGE_DEPTH(src)  > 1) * ((scalar2 - 1) / 2), 0 };
 
   IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, pos).x;
   if (value != 0)
@@ -43,10 +42,7 @@ __kernel void dilate_box(
       break;
     }
   }
-  
 
-  if (value != 0) {
-    value = 1;
-  }
+  value = (value != 0) ? 1 : 0;
   WRITE_IMAGE (dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
 }

@@ -22,8 +22,8 @@ __kernel void convolve(
   for (int cz = -c.z; cz <= c.z; ++cz) {
     for (int cy = -c.y; cy <= c.y; ++cy) {
       for (int cx = -c.x; cx <= c.x; ++cx) {
-        POS_src1_TYPE coord_kernel = pos_kernel + POS_src1_INSTANCE(cx,cy,cz,0);
-        POS_src0_TYPE coord_image  = pos_image  + POS_src0_INSTANCE(cx,cy,cz,0);
+        const POS_src1_TYPE coord_kernel = pos_kernel + POS_src1_INSTANCE(cx,cy,cz,0);
+        const POS_src0_TYPE coord_image  = pos_image  + POS_src0_INSTANCE(cx,cy,cz,0);
         sum += (float) READ_IMAGE(src1, sampler, coord_kernel).x 
              * (float) READ_IMAGE(src0, sampler, coord_image ).x; 
       }

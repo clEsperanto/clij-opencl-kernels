@@ -10,20 +10,15 @@ __kernel void minimum_octagon_box(
   const int z = get_global_id(2);
 
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
-
-  int4 radius = (int4){0,0,0,0};
-  if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = 1; }
-  if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = 1; }
-  if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = 1; }
+  const int4 radius = (int4){(GET_IMAGE_WIDTH(src) > 1), (GET_IMAGE_HEIGHT(src) > 1), (GET_IMAGE_DEPTH(src) > 1), 0};
 
   IMAGE_src_PIXEL_TYPE minimum = READ_IMAGE(src, sampler, pos).x;
   for (int dx = -radius.x; dx <= radius.x; ++dx) {
     for (int dy = -radius.y; dy <= radius.y; ++dy) {
       for (int dz = -radius.z; dz <= radius.z; ++dz) {
         IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(dx,dy,dz,0))).x;
-        if (minimum > value) {
-          minimum = value;
-        }
+        int condition = (value < minimum);
+        minimum = (condition * value) + ((1 - condition) * minimum);
       }
     }
   }

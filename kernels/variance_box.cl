@@ -13,11 +13,11 @@ __kernel void variance_box(
   const int z = get_global_id(2);
   const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
 
-  int4 radius = (int4){0, 0, 0, 0};
-  if (GET_IMAGE_WIDTH(src)  > 1) { radius.x = (scalar0-1)/2; }
-  if (GET_IMAGE_HEIGHT(src) > 1) { radius.y = (scalar1-1)/2; }
-  if (GET_IMAGE_DEPTH(src)  > 1) { radius.z = (scalar2-1)/2; }
-  
+  int4 radius = (int4){(GET_IMAGE_WIDTH(src) > 1) * ((scalar0-1)/2),
+                       (GET_IMAGE_HEIGHT(src) > 1) * ((scalar1-1)/2),
+                       (GET_IMAGE_DEPTH(src) > 1) * ((scalar2-1)/2),
+                       0};
+
   int count = 0;
   float sum = 0;
   for (int dz = -radius.z; dz <= radius.z; ++dz) {
@@ -30,6 +30,7 @@ __kernel void variance_box(
     }
   }
   const float mean_intensity = sum / count;
+
   sum = 0;
   count = 0;
   for (int dz = -radius.z; dz <= radius.z; ++dz) {
@@ -42,5 +43,6 @@ __kernel void variance_box(
       }
     }
   }
+  
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(sum / count));
 }

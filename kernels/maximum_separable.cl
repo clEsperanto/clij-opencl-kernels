@@ -20,7 +20,8 @@ __kernel void maximum_separable(
 
   float res = (float) READ_IMAGE(src, sampler, coord).x;
   for (int v = -center; v <= center; ++v) {
-    res = max(res, (float) READ_IMAGE(src, sampler, coord + v * dir).x);
+    float value = (float) READ_IMAGE(src, sampler, coord + v * dir).x;
+    res = max(res, value);
   }
 
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(res));

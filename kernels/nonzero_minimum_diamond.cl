@@ -19,33 +19,27 @@ __kernel void nonzero_minimum_diamond(
     
     if(GET_IMAGE_WIDTH(src) > 1) {
         value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(1,0,0,0))).x;
-        if ( value < foundMinimum && value > 0) {
-            foundMinimum = value;
-        }
+        int condition = (value < foundMinimum) & (value > 0);
+        foundMinimum = (condition * value) + ((1 - condition) * foundMinimum);
         value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(-1,0,0,0))).x;
-        if ( value < foundMinimum && value > 0) {
-            foundMinimum = value;
-        }
+        condition = (value < foundMinimum) & (value > 0);
+        foundMinimum = (condition * value) + ((1 - condition) * foundMinimum);
     }
     if(GET_IMAGE_HEIGHT(src) > 1) {
         value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,1,0,0))).x;
-        if ( value < foundMinimum && value > 0) {
-            foundMinimum = value;
-        }
+        int condition = (value < foundMinimum) & (value > 0);
+        foundMinimum = (condition * value) + ((1 - condition) * foundMinimum);
         value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,-1,0,0))).x;
-        if ( value < foundMinimum && value > 0) {
-            foundMinimum = value;
-        }
+        condition = (value < foundMinimum) & (value > 0);
+        foundMinimum = (condition * value) + ((1 - condition) * foundMinimum);
     }
     if(GET_IMAGE_DEPTH(src) > 1) {
         value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,1,0))).x;
-        if ( value < foundMinimum && value > 0) {
-            foundMinimum = value;
-        }
+        int condition = (value < foundMinimum) & (value > 0);
+        foundMinimum = (condition * value) + ((1 - condition) * foundMinimum);
         value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,-1,0))).x;
-        if ( value < foundMinimum && value > 0) {
-            foundMinimum = value;
-        }
+        condition = (value < foundMinimum) & (value > 0);
+        foundMinimum = (condition * value) + ((1 - condition) * foundMinimum);
     }
     
     if (foundMinimum != originalValue) {

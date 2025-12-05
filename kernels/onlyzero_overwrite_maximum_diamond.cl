@@ -18,33 +18,21 @@ __kernel void onlyzero_overwrite_maximum_diamond(
     IMAGE_src_PIXEL_TYPE value;
     if(GET_IMAGE_WIDTH(src) > 1) {
       value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(1,0,0,0))).x;
-      if ( value > foundMaximum && value > 0) {
-        foundMaximum = value;
-      }
+      foundMaximum = (value > foundMaximum && value > 0) ? value : foundMaximum;
       value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(-1,0,0,0))).x;
-      if ( value > foundMaximum && value > 0) {
-        foundMaximum = value;
-      }
+      foundMaximum = (value > foundMaximum && value > 0) ? value : foundMaximum;
     }
     if(GET_IMAGE_HEIGHT(src) > 1) {
       value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,1,0,0))).x;
-      if ( value > foundMaximum && value > 0) {
-        foundMaximum = value;
-      }
+      foundMaximum = (value > foundMaximum && value > 0) ? value : foundMaximum;
       value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,-1,0,0))).x;
-      if ( value > foundMaximum && value > 0) {
-        foundMaximum = value;
-      }
+      foundMaximum = (value > foundMaximum && value > 0) ? value : foundMaximum;
     }  
     if(GET_IMAGE_DEPTH(src) > 1) {
       value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,1,0))).x;
-      if ( value > foundMaximum && value > 0) {
-        foundMaximum = value;
-      }
+      foundMaximum = (value > foundMaximum && value > 0) ? value : foundMaximum;
       value = READ_IMAGE(src, sampler, (pos + POS_src_INSTANCE(0,0,-1,0))).x;
-      if ( value > foundMaximum && value > 0) {
-        foundMaximum = value;
-      }
+      foundMaximum = (value > foundMaximum && value > 0) ? value : foundMaximum;
     }
   }
   if (foundMaximum != originalValue) {

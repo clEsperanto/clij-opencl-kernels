@@ -1,6 +1,6 @@
 __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
-__kernel void reslice_right( 
+__kernel void reslice_left( 
     IMAGE_src_TYPE src,
     IMAGE_dst_TYPE dst,
 ) 

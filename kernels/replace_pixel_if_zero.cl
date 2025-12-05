@@ -10,10 +10,10 @@ __kernel void replace_pixels_if_zero(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  IMAGE_dst_PIXEL_TYPE value = CONVERT_dst_PIXEL_TYPE(READ_IMAGE(src0, sampler, POS_src0_INSTANCE(x,y,z,0)).x);
+  float value = (float) READ_IMAGE(src0, sampler, POS_src0_INSTANCE(x,y,z,0)).x;
   if (value == 0) {
-    value = CONVERT_dst_PIXEL_TYPE(READ_IMAGE(src1, sampler, POS_src1_INSTANCE(x,y,z,0)).x);
+    value = (float) READ_IMAGE(src1, sampler, POS_src1_INSTANCE(x,y,z,0)).x;
   }
 
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), value);
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
 }

@@ -16,8 +16,10 @@ def stringify(input_file: str, output_path: str, prefix: str):
 
 namespace kernel {{
 
-constexpr const char* {kernel_locase} =
+constexpr const char* {kernel_locase} = R"CLC(
 {kernel_source}
+)CLC";
+
 }} // end of namespace kernel
 
 #endif // {prefix}_{kernel_upcase}_H
@@ -34,15 +36,6 @@ constexpr const char* {kernel_locase} =
 
     # compose output file name and path using os.path.join
     output_file = os.path.join(output_path, prefix.lower() + "_" + lowcase_name + ".h")
-    split_kernel_source = kernel_source.split("\n")
-
-    lines = []
-    for i, line in enumerate(split_kernel_source):
-            if i == len(split_kernel_source) - 1:
-                lines.append(f"\t\"{line}\";\n")
-            else:
-                lines.append(f"\t\"{line}\\n\"\n")
-    kernel_source = "".join(lines)
 
     with open(output_file, 'w') as f:
         f.write(kernel_template.format(prefix=prefix.upper(), kernel_upcase=upcase_name, kernel_locase=lowcase_name, kernel_source=kernel_source))

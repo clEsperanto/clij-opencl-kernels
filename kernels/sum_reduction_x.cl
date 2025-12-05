@@ -10,8 +10,8 @@ __kernel void sum_reduction_x(
   const int z = get_global_id(1);
   const int y = get_global_id(2);
   
-  float sum = 0;
-  for(int dx = 0; dx < index; ++dx) {
+  float sum = (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x * index + 0,y,z,0)).x;
+  for(int dx = 1; dx < index; ++dx) {
     sum += (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x * index + dx,y,z,0)).x;
   }
 

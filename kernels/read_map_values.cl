@@ -13,6 +13,6 @@ __kernel void read_map_values(
     const int label = READ_IMAGE(src0, sampler, POS_src0_INSTANCE(x, y, z, 0)).x;
     const float intensity = READ_IMAGE(src1, sampler, POS_src1_INSTANCE(x, y, z, 0)).x;
 
-    POS_dst_TYPE dpos = POS_dst_INSTANCE(label, 0, 0, 0);
+    const POS_dst_TYPE dpos = POS_dst_INSTANCE(label, 0, 0, 0);
     WRITE_IMAGE(dst, dpos, CONVERT_dst_PIXEL_TYPE(intensity));
 }

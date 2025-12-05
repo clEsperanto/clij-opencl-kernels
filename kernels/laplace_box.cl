@@ -9,23 +9,19 @@ __kernel void laplace_box(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  int4 r = (int4){0,0,0,0};
-  if (GET_IMAGE_DEPTH(src)  > 1) { r.z = 1; }
-  if (GET_IMAGE_HEIGHT(src) > 1) { r.y = 1; }
-  if (GET_IMAGE_WIDTH(src)  > 1) { r.x = 1; }
+  int4 r = (int4){(GET_IMAGE_WIDTH(src) > 1), (GET_IMAGE_HEIGHT(src) > 1), (GET_IMAGE_DEPTH(src) > 1), 0};
 
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
   const float norm = pow(3.0f, (int)(r.x + r.y + r.z)) - 1;
 
   float result = 0;
-      for (int dz = -r.z; dz <= r.z; ++dz) {
+  for (int dz = -r.z; dz <= r.z; ++dz) {
     for (int dy = -r.y; dy <= r.y; ++dy) {
-  for (int dx = -r.x; dx <= r.x; ++dx) {
-        if (dx == 0 && dy == 0 && dz == 0) {
-          result += (float) READ_IMAGE(src, sampler, pos).x * norm;
-        } else {
-          result += (float) READ_IMAGE(src, sampler, pos + POS_src_INSTANCE(dx,dy,dz,0)).x * -1;
-        }
+      for (int dx = -r.x; dx <= r.x; ++dx) {
+        const int is_center = (dx == 0 && dy == 0 && dz == 0);
+        const float weight = is_center ? norm : -1.0f;
+        const POS_src_TYPE offset = is_center ? POS_src_INSTANCE(0,0,0,0) : POS_src_INSTANCE(dx,dy,dz,0);
+        result += (float) READ_IMAGE(src, sampler, pos + offset).x * weight;
       }
     }
   }

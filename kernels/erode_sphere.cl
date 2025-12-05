@@ -13,11 +13,14 @@ __kernel void erode_sphere(
   const int z = get_global_id(2);
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
 
-  int4 radius = (int4){0,0,0,0};
-  float4 squared = (float4){FLT_MIN,FLT_MIN,FLT_MIN,0};
-  if (GET_IMAGE_WIDTH(src)  > 1 && scalar0 > 1) { radius.x = (scalar0-1)/2; squared.x = (float) (radius.x*radius.x);}
-  if (GET_IMAGE_HEIGHT(src) > 1 && scalar1 > 1) { radius.y = (scalar1-1)/2; squared.y = (float) (radius.y*radius.y);}
-  if (GET_IMAGE_DEPTH(src)  > 1 && scalar2 > 1) { radius.z = (scalar2-1)/2; squared.z = (float) (radius.z*radius.z);}
+  const int4 radius = (int4){(GET_IMAGE_WIDTH(src) > 1 && scalar0 > 1) * ((scalar0-1)/2), 
+                             (GET_IMAGE_HEIGHT(src) > 1 && scalar1 > 1) * ((scalar1-1)/2),
+                             (GET_IMAGE_DEPTH(src) > 1 && scalar2 > 1) * ((scalar2-1)/2), 
+                             0};
+  const float4 squared = (float4){(radius.x > 0) ? (float)(radius.x*radius.x) : FLT_MIN,
+                                  (radius.y > 0) ? (float)(radius.y*radius.y) : FLT_MIN,
+                                  (radius.z > 0) ? (float)(radius.z*radius.z) : FLT_MIN,
+                                  0};
 
   IMAGE_src_PIXEL_TYPE value = READ_IMAGE(src, sampler, pos).x;
   if (value == 0)
@@ -50,8 +53,5 @@ __kernel void erode_sphere(
     }
   }
 
-  if (value != 0) {
-    value = 1;
-  }
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value));
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(value != 0));
 }

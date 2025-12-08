@@ -44,7 +44,6 @@ __kernel void multiply_matrix_optimized(
 
       // Compute partial dot product with unrolled loops (4x unrolling)
       // This reduces loop overhead and improves instruction-level parallelism
-      #pragma unroll 1
       for (int i = 0; i < TILE_SIZE; i += 4) {
           // Unroll 4 iterations at a time
           sum[0] += tile_src0[local_y][i]     * tile_src1[i][local_x];

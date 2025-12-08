@@ -19,44 +19,66 @@ __kernel void multiply_matrix_optimized(
   __local float tile_src0[TILE_SIZE][TILE_SIZE];
   __local float tile_src1[TILE_SIZE][TILE_SIZE];
 
-  // Work coarsening: compute 4 output elements per work item using vector type
-  float4 sum = (float4)(0.0f);
+  float sum = 0.0f;
 
   // Process matrix in tiles
   for (int tile = 0; tile < (src0_width + TILE_SIZE - 1) / TILE_SIZE; ++tile) {
       // Load tiles into local memory
+#if TILE_SIZE == 1
+      const int tile_col = tile;
+      const int tile_row = tile;
+#else
       const int tile_col = tile * TILE_SIZE + local_x;
       const int tile_row = tile * TILE_SIZE + local_y;
+#endif
 
       if (tile_col < src0_width && y < src0_height) {
+#if TILE_SIZE == 1
+          tile_src0[0][0] = READ_IMAGE(src0, sampler, POS_src0_INSTANCE(tile_col, y, 0, 0)).x;
+#else
           tile_src0[local_y][local_x] = READ_IMAGE(src0, sampler, POS_src0_INSTANCE(tile_col, y, 0, 0)).x;
+#endif
       } else {
+#if TILE_SIZE == 1
+          tile_src0[0][0] = 0;
+#else
           tile_src0[local_y][local_x] = 0;
+#endif
       }
 
       if (tile_row < src1_height && x < src1_width) {
+#if TILE_SIZE == 1
+          tile_src1[0][0] = READ_IMAGE(src1, sampler, POS_src1_INSTANCE(x, tile_row, 0, 0)).x;
+#else
           tile_src1[local_y][local_x] = READ_IMAGE(src1, sampler, POS_src1_INSTANCE(x, tile_row, 0, 0)).x;
+#endif
       } else {
+#if TILE_SIZE == 1
+          tile_src1[0][0] = 0;
+#else
           tile_src1[local_y][local_x] = 0;
+#endif
       }
 
-      barrier(CLK_LOCAL_MEM_FENCE); // do we need both?
+      barrier(CLK_LOCAL_MEM_FENCE);
 
-      // Compute partial dot product with unrolled loops (4x unrolling)
+      // Compute partial dot product
+#if TILE_SIZE == 1
+      // Simple scalar accumulation for TILE_SIZE=1
+      sum += tile_src0[0][0] * tile_src1[0][0];
+#else
+      // Unrolled loop for larger tile sizes (4x unrolling)
       // This reduces loop overhead and improves instruction-level parallelism
       for (int i = 0; i < TILE_SIZE; i += 4) {
-          // Unroll 4 iterations at a time
-          sum.x += tile_src0[local_y][i]     * tile_src1[i][local_x];
-          sum.y += tile_src0[local_y][i + 1] * tile_src1[i + 1][local_x];
-          sum.z += tile_src0[local_y][i + 2] * tile_src1[i + 2][local_x];
-          sum.w += tile_src0[local_y][i + 3] * tile_src1[i + 3][local_x];
+          sum += tile_src0[local_y][i]     * tile_src1[i][local_x];
+          sum += tile_src0[local_y][i + 1] * tile_src1[i + 1][local_x];
+          sum += tile_src0[local_y][i + 2] * tile_src1[i + 2][local_x];
+          sum += tile_src0[local_y][i + 3] * tile_src1[i + 3][local_x];
       }
+#endif
 
-      barrier(CLK_LOCAL_MEM_FENCE); // do we need both?
+      barrier(CLK_LOCAL_MEM_FENCE);
   }
-
-  // Accumulate the 4 partial sums (work coarsening output elements)
-  const float final_sum = sum.x + sum.y + sum.z + sum.w;
   
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x, y, 0, 0), CONVERT_dst_PIXEL_TYPE(final_sum));
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x, y, 0, 0), CONVERT_dst_PIXEL_TYPE(sum));
 }

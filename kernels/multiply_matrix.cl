@@ -60,8 +60,6 @@ __kernel void multiply_matrix(
 #endif
       }
 
-      barrier(CLK_LOCAL_MEM_FENCE);
-
       // Compute partial dot product
 #if TILE_SIZE == 1
       // Simple scalar accumulation for TILE_SIZE=1

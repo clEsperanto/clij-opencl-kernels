@@ -34,19 +34,19 @@ __kernel void convolve(
   // Unroll innermost loop for better instruction-level parallelism
   #pragma unroll 4
   for (int cz = cz_start; cz <= cz_end; ++cz) {
-    POS_filter_TYPE filter_z = POS_filter_INSTANCE(0, 0, cz, 0);
-    POS_image_TYPE image_z = POS_image_INSTANCE(0, 0, cz, 0);
+    const POS_filter_TYPE filter_z = POS_filter_INSTANCE(0, 0, cz, 0);
+    const POS_image_TYPE image_z = POS_image_INSTANCE(0, 0, cz, 0);
     
     #pragma unroll 4
     for (int cy = cy_start; cy <= cy_end; ++cy) {
-      POS_filter_TYPE filter_yz = filter_z + POS_filter_INSTANCE(0, cy, 0, 0);
-      POS_image_TYPE image_yz = image_z + POS_image_INSTANCE(0, cy, 0, 0);
+      const POS_filter_TYPE filter_yz = filter_z + POS_filter_INSTANCE(0, cy, 0, 0);
+      const POS_image_TYPE image_yz = image_z + POS_image_INSTANCE(0, cy, 0, 0);
       
       #pragma unroll 4
       for (int cx = cx_start; cx <= cx_end; ++cx) {
         // Accumulate position offsets to minimize arithmetic
-        POS_filter_TYPE pos_filter = coord_kernel + filter_yz + POS_filter_INSTANCE(cx, 0, 0, 0);
-        POS_image_TYPE pos_image = coord_image + image_yz + POS_image_INSTANCE(cx, 0, 0, 0);
+        const POS_filter_TYPE pos_filter = coord_kernel + filter_yz + POS_filter_INSTANCE(cx, 0, 0, 0);
+        const POS_image_TYPE pos_image = coord_image + image_yz + POS_image_INSTANCE(cx, 0, 0, 0);
         
         // Read once and multiply - fused multiply-add (FMA) opportunity
         float filter_val = (float)READ_IMAGE(filter, sampler, pos_filter).x;

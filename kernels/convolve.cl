@@ -1,25 +1,25 @@
-__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
+__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_src1_NEAREST;
 
 __kernel void convolve(
-    IMAGE_image_TYPE  image,
-    IMAGE_filter_TYPE  filter,
-    IMAGE_dst_TYPE   dst
+    src0_src0_TYPE  src0,
+    src0_src1_TYPE  src1,
+    src0_dst_TYPE   dst
 ) 
 {
   const int x = get_global_id(0);
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  const int kernelWidth  = GET_IMAGE_WIDTH(filter);
-  const int kernelHeight = GET_IMAGE_HEIGHT(filter);
-  const int kernelDepth  = GET_IMAGE_DEPTH(filter);
+  const int kernelWidth  = GET_src0_WIDTH(src1);
+  const int kernelHeight = GET_src0_HEIGHT(src1);
+  const int kernelDepth  = GET_src0_DEPTH(src1);
 
   const int ox = kernelWidth >> 1;  // Bit shift instead of division
   const int oy = kernelHeight >> 1;
   const int oz = kernelDepth >> 1;
 
-  const POS_image_TYPE coord_image  = POS_image_INSTANCE(x, y, z, 0);
-  const POS_filter_TYPE coord_kernel = POS_filter_INSTANCE(ox, oy, oz, 0);
+  const POS_src0_TYPE coord_src0  = POS_src0_INSTANCE(x, y, z, 0);
+  const POS_src1_TYPE coord_kernel = POS_src1_INSTANCE(ox, oy, oz, 0);
 
   float sum = 0.0f;
   
@@ -34,27 +34,27 @@ __kernel void convolve(
   // Unroll innermost loop for better instruction-level parallelism
   #pragma unroll 4
   for (int cz = cz_start; cz <= cz_end; ++cz) {
-    const POS_filter_TYPE filter_z = POS_filter_INSTANCE(0, 0, cz, 0);
-    const POS_image_TYPE image_z = POS_image_INSTANCE(0, 0, cz, 0);
+    const POS_src1_TYPE src1_z = POS_src1_INSTANCE(0, 0, cz, 0);
+    const POS_src0_TYPE src0_z = POS_src0_INSTANCE(0, 0, cz, 0);
     
     #pragma unroll 4
     for (int cy = cy_start; cy <= cy_end; ++cy) {
-      const POS_filter_TYPE filter_yz = filter_z + POS_filter_INSTANCE(0, cy, 0, 0);
-      const POS_image_TYPE image_yz = image_z + POS_image_INSTANCE(0, cy, 0, 0);
+      const POS_src1_TYPE src1_yz = src1_z + POS_src1_INSTANCE(0, cy, 0, 0);
+      const POS_src0_TYPE src0_yz = src0_z + POS_src0_INSTANCE(0, cy, 0, 0);
       
       #pragma unroll 4
       for (int cx = cx_start; cx <= cx_end; ++cx) {
         // Accumulate position offsets to minimize arithmetic
-        const POS_filter_TYPE pos_filter = coord_kernel + filter_yz + POS_filter_INSTANCE(cx, 0, 0, 0);
-        const POS_image_TYPE pos_image = coord_image + image_yz + POS_image_INSTANCE(cx, 0, 0, 0);
+        const POS_src1_TYPE pos_src1 = coord_kernel + src1_yz + POS_src1_INSTANCE(cx, 0, 0, 0);
+        const POS_src0_TYPE pos_src0 = coord_src0 + src0_yz + POS_src0_INSTANCE(cx, 0, 0, 0);
         
         // Read once and multiply - fused multiply-add (FMA) opportunity
-        float filter_val = (float)READ_IMAGE(filter, sampler, pos_filter).x;
-        float image_val = (float)READ_IMAGE(image, sampler, pos_image).x;
-        sum = fma(filter_val, image_val, sum);  // Use FMA for better performance
+        float src1_val = (float)READ_src0(src1, sampler, pos_src1).x;
+        float src0_val = (float)READ_src0(src0, sampler, pos_src0).x;
+        sum = fma(src1_val, src0_val, sum);  // Use FMA for better performance
       }
     }
   }
 
-  WRITE_IMAGE(dst, POS_dst_INSTANCE(x, y, z, 0), CONVERT_dst_PIXEL_TYPE(sum));
+  WRITE_src0(dst, POS_dst_INSTANCE(x, y, z, 0), CONVERT_dst_PIXEL_TYPE(sum));
 }

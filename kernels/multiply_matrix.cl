@@ -48,19 +48,22 @@ __kernel void multiply_matrix(
       barrier(CLK_LOCAL_MEM_FENCE);
 
       // Compute partial dot product
+      // Only compute if output position is valid
+      if (x < src1_width && y < src0_height) {
 #if TILE_SIZE == 1
-      // Simple scalar accumulation for TILE_SIZE=1
-      sum += tile_src0[0][0] * tile_src1[0][0];
+          // Simple scalar accumulation for TILE_SIZE=1
+          sum += tile_src0[0][0] * tile_src1[0][0];
 #else
-      // Unrolled loop for larger tile sizes (4x unrolling)
-      // This reduces loop overhead and improves instruction-level parallelism
-      for (int i = 0; i < TILE_SIZE; i += 4) {
-          sum += tile_src0[local_y][i]     * tile_src1[i][local_x];
-          sum += tile_src0[local_y][i + 1] * tile_src1[i + 1][local_x];
-          sum += tile_src0[local_y][i + 2] * tile_src1[i + 2][local_x];
-          sum += tile_src0[local_y][i + 3] * tile_src1[i + 3][local_x];
-      }
+          // Unrolled loop for larger tile sizes (4x unrolling)
+          // This reduces loop overhead and improves instruction-level parallelism
+          for (int i = 0; i < TILE_SIZE; i += 4) {
+              sum += tile_src0[local_y][i]     * tile_src1[i][local_x];
+              sum += tile_src0[local_y][i + 1] * tile_src1[i + 1][local_x];
+              sum += tile_src0[local_y][i + 2] * tile_src1[i + 2][local_x];
+              sum += tile_src0[local_y][i + 3] * tile_src1[i + 3][local_x];
+          }
 #endif
+      }
 
       // not needed 
       // barrier(CLK_LOCAL_MEM_FENCE);

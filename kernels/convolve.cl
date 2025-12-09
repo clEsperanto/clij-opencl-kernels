@@ -1,18 +1,18 @@
-__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_src1_NEAREST;
+__constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 __kernel void convolve(
-    src0_src0_TYPE  src0,
-    src0_src1_TYPE  src1,
-    src0_dst_TYPE   dst
+    IMAGE_src0_TYPE  src0,
+    IMAGE_src1_TYPE  src1,
+    IMAGE_dst_TYPE   dst
 ) 
 {
   const int x = get_global_id(0);
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  const int kernelWidth  = GET_src0_WIDTH(src1);
-  const int kernelHeight = GET_src0_HEIGHT(src1);
-  const int kernelDepth  = GET_src0_DEPTH(src1);
+  const int kernelWidth  = GET_IMAGE_WIDTH(src1);
+  const int kernelHeight = GET_IMAGE_HEIGHT(src1);
+  const int kernelDepth  = GET_IMAGE_DEPTH(src1);
 
   const int ox = kernelWidth >> 1;  // Bit shift instead of division
   const int oy = kernelHeight >> 1;
@@ -49,12 +49,12 @@ __kernel void convolve(
         const POS_src0_TYPE pos_src0 = coord_src0 + src0_yz + POS_src0_INSTANCE(cx, 0, 0, 0);
         
         // Read once and multiply - fused multiply-add (FMA) opportunity
-        float src1_val = (float)READ_src0(src1, sampler, pos_src1).x;
-        float src0_val = (float)READ_src0(src0, sampler, pos_src0).x;
+        float src1_val = (float)READ_IMAGE(src1, sampler, pos_src1).x;
+        float src0_val = (float)READ_IMAGE(src0, sampler, pos_src0).x;
         sum = fma(src1_val, src0_val, sum);  // Use FMA for better performance
       }
     }
   }
 
-  WRITE_src0(dst, POS_dst_INSTANCE(x, y, z, 0), CONVERT_dst_PIXEL_TYPE(sum));
+  WRITE_IMAGE(dst, POS_dst_INSTANCE(x, y, z, 0), CONVERT_dst_PIXEL_TYPE(sum));
 }

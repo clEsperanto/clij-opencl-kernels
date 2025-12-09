@@ -78,7 +78,7 @@ __kernel void multiply_matrix(
       }
 #endif
 
-      barrier(CLK_LOCAL_MEM_FENCE);
+      // barrier(CLK_LOCAL_MEM_FENCE);
   }
   
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x, y, 0, 0), CONVERT_dst_PIXEL_TYPE(sum));

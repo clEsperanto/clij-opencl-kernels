@@ -33,31 +33,15 @@ __kernel void multiply_matrix(
 #endif
 
       if (tile_col < src0_width && y < src0_height) {
-#if TILE_SIZE == 1
-          tile_src0[0][0] = READ_IMAGE(src0, sampler, POS_src0_INSTANCE(tile_col, y, 0, 0)).x;
-#else
           tile_src0[local_y][local_x] = READ_IMAGE(src0, sampler, POS_src0_INSTANCE(tile_col, y, 0, 0)).x;
-#endif
       } else {
-#if TILE_SIZE == 1
-          tile_src0[0][0] = 0;
-#else
           tile_src0[local_y][local_x] = 0;
-#endif
       }
 
       if (tile_row < src1_height && x < src1_width) {
-#if TILE_SIZE == 1
-          tile_src1[0][0] = READ_IMAGE(src1, sampler, POS_src1_INSTANCE(x, tile_row, 0, 0)).x;
-#else
           tile_src1[local_y][local_x] = READ_IMAGE(src1, sampler, POS_src1_INSTANCE(x, tile_row, 0, 0)).x;
-#endif
       } else {
-#if TILE_SIZE == 1
-          tile_src1[0][0] = 0;
-#else
           tile_src1[local_y][local_x] = 0;
-#endif
       }
 
       // Synchronize to ensure all work items have finished loading tiles
@@ -65,11 +49,8 @@ __kernel void multiply_matrix(
 
       // Compute partial dot product
 #if TILE_SIZE == 1
-      // Simple scalar accumulation for TILE_SIZE=1
       sum += tile_src0[0][0] * tile_src1[0][0];
 #else
-      // Unrolled loop for larger tile sizes (4x unrolling)
-      // This reduces loop overhead and improves instruction-level parallelism
       for (int i = 0; i < TILE_SIZE; i += 4) {
           sum += tile_src0[local_y][i]     * tile_src1[i][local_x];
           sum += tile_src0[local_y][i + 1] * tile_src1[i + 1][local_x];
@@ -78,6 +59,7 @@ __kernel void multiply_matrix(
       }
 #endif
 
+      // not needed (?)
       // barrier(CLK_LOCAL_MEM_FENCE);
   }
   

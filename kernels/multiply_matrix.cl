@@ -60,6 +60,9 @@ __kernel void multiply_matrix(
 #endif
       }
 
+      // Synchronize to ensure all work items have finished loading tiles
+      barrier(CLK_LOCAL_MEM_FENCE);
+
       // Compute partial dot product
 #if TILE_SIZE == 1
       // Simple scalar accumulation for TILE_SIZE=1

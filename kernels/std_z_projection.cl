@@ -10,13 +10,11 @@ __kernel void std_z_projection(
   const int depth = GET_IMAGE_DEPTH(src);
 
   float sum = 0;
-  int count = 0;
   for(int z = 0; z < depth; z++)
   {
     sum = sum + (float) READ_IMAGE(src, sampler, POS_src_INSTANCE(x,y,z,0)).x;
-    count++;
   }
-  float mean = (sum / count);
+  float mean = (sum / depth);
 
   sum = 0;
   for(int z = 0; z < depth; z++)
@@ -25,6 +23,6 @@ __kernel void std_z_projection(
     sum = sum + (value * value);
   }
 
-  const float std_value = sqrt((float) sum / (count - 1));
+  const float std_value = sqrt((float) sum / (depth - 1));
   WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,0,0), CONVERT_dst_PIXEL_TYPE(std_value));
 }

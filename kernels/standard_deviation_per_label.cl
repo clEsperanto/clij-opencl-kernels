@@ -51,14 +51,14 @@ __kernel void standard_deviation_per_label (
     former_label = label;
 
     if (label > 0 || sum_background != 0) {
-      float centroid_x = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,0,0,0)).x;
-      float centroid_y = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,1,0,0)).x;
-      float centroid_z = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,2,0,0)).x;
-      float mass_center_x = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,3,0,0)).x;
-      float mass_center_y = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,4,0,0)).x;
-      float mass_center_z = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,5,0,0)).x;
-      float mean_intensity = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,6,0,0)).x;
-      float area = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,7,0,0)).x;
+      const float centroid_x = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,0,0,0)).x;
+      const float centroid_y = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,1,0,0)).x;
+      const float centroid_z = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,2,0,0)).x;
+      const float mass_center_x = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,3,0,0)).x;
+      const float mass_center_y = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,4,0,0)).x;
+      const float mass_center_z = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,5,0,0)).x;
+      const float mean_intensity = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,6,0,0)).x;
+      const float area = READ_IMAGE(src_statistics,sampler,POS_src_statistics_INSTANCE(label,7,0,0)).x;
 
       const float centroid_distance = sqrt(
         pow((float)x - centroid_x, (float)2.0) +
@@ -75,17 +75,8 @@ __kernel void standard_deviation_per_label (
       const float intensity_difference_squared =
         pow(value - mean_intensity, (float)2.0) / area;
 
-      if (sum == 0) { // no pixels yet found for this label
-        max_distance_centroid = centroid_distance;
-        max_distance_mass_center = mass_center_distance;
-      } else {
-        if (max_distance_centroid < centroid_distance) {
-          max_distance_centroid = centroid_distance;
-        }
-        if (max_distance_mass_center < mass_center_distance) {
-          max_distance_mass_center = mass_center_distance;
-        }
-      }
+      max_distance_centroid = fmax(max_distance_centroid, centroid_distance);
+      max_distance_mass_center = fmax(max_distance_mass_center, mass_center_distance);
 
       sum_distance_centroid += centroid_distance;
       sum_distance_mass_center += mass_center_distance;

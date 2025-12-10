@@ -32,9 +32,9 @@ __kernel void local_cross_correlation(
         const float Ib = (float) READ_IMAGE(src1, sampler, coord_kernel).x;
 
         // https://anomaly.io/understand-auto-cross-correlation-normalized-shift/index.html
-        sum1 = sum1 + (Ia * Ib);
-        sum2 = sum2 + (Ia * Ia);
-        sum3 = sum3 + (Ib * Ib);
+        sum1 = fma(Ia, Ib, sum1);
+        sum2 = fma(Ia, Ia, sum2);
+        sum3 = fma(Ib, Ib, sum3);
         }
     }
   }

@@ -9,7 +9,11 @@ __kernel void laplace_box(
   const int y = get_global_id(1);
   const int z = get_global_id(2);
 
-  int4 r = (int4){(GET_IMAGE_WIDTH(src) > 1), (GET_IMAGE_HEIGHT(src) > 1), (GET_IMAGE_DEPTH(src) > 1), 0};
+  const int4 r = (int4){
+    (GET_IMAGE_WIDTH(src) > 1), 
+    (GET_IMAGE_HEIGHT(src) > 1), 
+    (GET_IMAGE_DEPTH(src) > 1), 
+    0};
 
   const POS_src_TYPE pos = POS_src_INSTANCE(x,y,z,0);
   const float norm = pow(3.0f, (int)(r.x + r.y + r.z)) - 1;

@@ -25,11 +25,11 @@ __kernel void mode_box
   }
 
   for (int dz = -radius.z; dz <= radius.z; ++dz) {
+    const int x3 = coord.z + dz;
     for (int dy = -radius.y; dy <= radius.y; ++dy) {
+      const int x2 = coord.y + dy;
       for (int dx = -radius.x; dx <= radius.x; ++dx) {
-         const int x1 = coord.x + dx;
-         const int x2 = coord.y + dy;
-         const int x3 = coord.z + dz;
+        const int x1 = coord.x + dx;
 
         if (x1 < 0 || x2 < 0 || x3 < 0 || x1 >= GET_IMAGE_WIDTH(src) || x2 >= GET_IMAGE_HEIGHT(src) || x3 >= GET_IMAGE_DEPTH(src)) {
           continue;

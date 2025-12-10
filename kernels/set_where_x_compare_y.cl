@@ -12,6 +12,6 @@ __kernel void set_where_x_compare_y(
     const int z = get_global_id(2);
     
     if (COMPARISON_OP(x, y)) {
-    WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(scalar));
+        WRITE_IMAGE(dst, POS_dst_INSTANCE(x,y,z,0), CONVERT_dst_PIXEL_TYPE(scalar));
     }
 }

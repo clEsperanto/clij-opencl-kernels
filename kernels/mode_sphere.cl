@@ -28,16 +28,16 @@ __kernel void mode_sphere
     histogram[h]=0;
   }
 
-  for (int dx = -radius.x; dx <= radius.x; ++dx) {
-    const float xSquared = dx * dx;
+  for (int dz = -radius.z; dz <= radius.z; ++dz) {
+    const float zSquared = dz * dz;
+    const int x3 = coord.z + dz;
     for (int dy = -radius.y; dy <= radius.y; ++dy) {
       const float ySquared = dy * dy;
-      for (int dz = -radius.z; dz <= radius.z; ++dz) {
-        const float zSquared = dz * dz;
+      const int x2 = coord.y + dy;
+      for (int dx = -radius.x; dx <= radius.x; ++dx) {
+        const float xSquared = dx * dx;
+        const int x1 = coord.x + dx;
         if (xSquared / squared.x + ySquared / squared.y + zSquared / squared.z <= 1.0) {
-          const int x1 = coord.x + dx;
-          const int x2 = coord.y + dy;
-          const int x3 = coord.z + dz;
           
           if (x1 < 0 || x2 < 0 || x3 < 0 || x1 >= GET_IMAGE_WIDTH(src) || x2 >= GET_IMAGE_HEIGHT(src) || x3 >= GET_IMAGE_DEPTH(src)) {
             continue;

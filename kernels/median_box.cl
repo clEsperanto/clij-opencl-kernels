@@ -36,11 +36,7 @@ __kernel void median_box(
   const int ry = (GET_IMAGE_HEIGHT(src) > 1 && scalar1 > 1) * ((scalar1-1)/2);
   const int rz = (GET_IMAGE_DEPTH(src) > 1 && scalar2 > 1) * ((scalar2-1)/2);
   
-  int4 radius = (int4){rx, ry, rz, 0};
-  float4 squared = (float4){(rx > 0) ? (float)(rx*rx) : FLT_MIN,
-                            (ry > 0) ? (float)(ry*ry) : FLT_MIN,
-                            (rz > 0) ? (float)(rz*rz) : FLT_MIN,
-                            0};
+  const int4 radius = (int4){rx, ry, rz, 0};
   const POS_src_TYPE coord = POS_src_INSTANCE(x,y,z,0);
 
   // int array_size = scalar0 * scalar1 * scalar2;

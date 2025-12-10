@@ -3,6 +3,7 @@ __constant sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_T
 // TILE_SIZE SELECTION RULE:
 // The TILE_SIZE should be chosen based on matrix dimensions to optimize performance
 // without wasting resources on oversized work groups.
+// The TILE_SIZE should be chosen based on hardware limits and capabilities.
 //
 // Recommended rule:
 //   TILE_SIZE = min(32, nearest_power_of_2(sqrt(min(src0_width, src1_height))))

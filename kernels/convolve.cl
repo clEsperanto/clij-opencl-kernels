@@ -31,26 +31,22 @@ __kernel void convolve(
   const int cx_start = -ox;
   const int cx_end = ox;
   
-  // Unroll innermost loop for better instruction-level parallelism
-  #pragma unroll 4
   for (int cz = cz_start; cz <= cz_end; ++cz) {
     const POS_src1_TYPE src1_z = POS_src1_INSTANCE(0, 0, cz, 0);
     const POS_src0_TYPE src0_z = POS_src0_INSTANCE(0, 0, cz, 0);
     
-    #pragma unroll 4
     for (int cy = cy_start; cy <= cy_end; ++cy) {
       const POS_src1_TYPE src1_yz = src1_z + POS_src1_INSTANCE(0, cy, 0, 0);
       const POS_src0_TYPE src0_yz = src0_z + POS_src0_INSTANCE(0, cy, 0, 0);
       
-      #pragma unroll 4
       for (int cx = cx_start; cx <= cx_end; ++cx) {
         // Accumulate position offsets to minimize arithmetic
         const POS_src1_TYPE pos_src1 = coord_kernel + src1_yz + POS_src1_INSTANCE(cx, 0, 0, 0);
         const POS_src0_TYPE pos_src0 = coord_src0 + src0_yz + POS_src0_INSTANCE(cx, 0, 0, 0);
         
         // Read once and multiply - fused multiply-add (FMA) opportunity
-        float src1_val = (float)READ_IMAGE(src1, sampler, pos_src1).x;
-        float src0_val = (float)READ_IMAGE(src0, sampler, pos_src0).x;
+        const float src1_val = (float) READ_IMAGE(src1, sampler, pos_src1).x;
+        const float src0_val = (float) READ_IMAGE(src0, sampler, pos_src0).x;
         sum = fma(src1_val, src0_val, sum);  // Use FMA for better performance
       }
     }

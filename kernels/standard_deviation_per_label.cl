@@ -1,3 +1,5 @@
+const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
+
 __kernel void standard_deviation_per_label (
     IMAGE_src_statistics_TYPE src_statistics,
     IMAGE_src_label_TYPE src_label,
@@ -6,7 +8,6 @@ __kernel void standard_deviation_per_label (
     int sum_background,
     int z
 ) {
-  const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
   const int y = get_global_id(1);
   int former_label = -1;

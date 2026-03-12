@@ -107,11 +107,11 @@ __kernel void removeSmallValues(  __global float *a,
 // based on clij2-fft - BNorthan                                  //
 ////////////////////////////////////////////////////////////////////
 
-float hypot3(float a, float b, float c) {
+inline float hypot3(float a, float b, float c) {
     return sqrt(a*a+b*b+c*c);
 }
 
-float m(float a, float b) {
+inline float m(float a, float b) {
     if (a < 0 && b < 0) {
         if (a >= b) return a;
         return b;
@@ -133,7 +133,7 @@ float m(float a, float b) {
  * variation - the correction will be modified with the total variation constraint and written to 'variation'
  *
  **/
-__kernel void totalVariationTerm(  __global float *estimate, global float * correction, __global float * variation,
+__kernel void totalVariationTerm(  __global float *estimate, __global float * correction, __global float * variation,
                     const unsigned int Nx, const unsigned int Ny, const unsigned int Nz, float hx, float hy, float hz, float regularizationFactor)  
 {                                             
     

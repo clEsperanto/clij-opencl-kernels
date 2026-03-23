@@ -15,7 +15,16 @@ __kernel void range(
   const int dy = get_global_id(1);
   const int dz = get_global_id(2);
 
-  const int4 src_coords = (int4)(dx * step_x + start_x, dy * step_y + start_y, dz * step_z + start_z, 0);
-  const float out = READ_IMAGE(src, sampler, POS_src_INSTANCE(src_coords.x, src_coords.y, src_coords.z, 0)).x;
+  if (dx >= get_image_width(dst) || dy >= get_image_height(dst) || dz >= get_image_depth(dst))
+    return;
+
+  const int sx = start_x + dx * step_x;
+  const int sy = start_y + dy * step_y;
+  const int sz = start_z + dz * step_z;
+
+  if (sx < 0 || sx >= get_image_width(src) || sy < 0 || sy >= get_image_height(src) || sz < 0 || sz >= get_image_depth(src))
+    return;
+
+  const float out = READ_IMAGE(src, sampler, POS_src_INSTANCE(sx, sy, sz, 0)).x;
   WRITE_IMAGE(dst, POS_dst_INSTANCE(dx, dy, dz, 0), CONVERT_dst_PIXEL_TYPE(out));
 }

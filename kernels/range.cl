@@ -15,14 +15,14 @@ __kernel void range(
   const int dy = get_global_id(1);
   const int dz = get_global_id(2);
 
-  if (dx >= get_image_width(dst) || dy >= get_image_height(dst) || dz >= get_image_depth(dst))
+  if (dx >= GET_WIDTH(dst) || dy >= GET_HEIGHT(dst) || dz >= GET_DEPTH(dst))
     return;
 
   const int sx = start_x + dx * step_x;
   const int sy = start_y + dy * step_y;
   const int sz = start_z + dz * step_z;
 
-  if (sx < 0 || sx >= get_image_width(src) || sy < 0 || sy >= get_image_height(src) || sz < 0 || sz >= get_image_depth(src))
+  if (sx < 0 || sx >= GET_WIDTH(src) || sy < 0 || sy >= GET_HEIGHT(src) || sz < 0 || sz >= GET_DEPTH(src))
     return;
 
   const float out = READ_IMAGE(src, sampler, POS_src_INSTANCE(sx, sy, sz, 0)).x;

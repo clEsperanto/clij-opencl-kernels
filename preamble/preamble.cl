@@ -104,7 +104,6 @@ DEFINE_WRITE_BUFFER3D(f, float)
             buffer_var[pos.x + pos.y * write_buffer_width] = value; \
         } \
     }
-    }
 
 #if defined(USE_2D) && defined(USE_CHAR)
 DEFINE_READ_BUFFER2D(c, char)

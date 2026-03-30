@@ -40,7 +40,7 @@
         if (pos.x >= 0 && pos.x < write_buffer_width && \
             pos.y >= 0 && pos.y < write_buffer_height && \
             pos.z >= 0 && pos.z < write_buffer_depth) { \
-            int pos_in_buffer = pos.x + pos.y * write_buffer_width + pos.z * write_buffer_width * read_buffer_height; \
+            int pos_in_buffer = pos.x + pos.y * write_buffer_width + pos.z * write_buffer_width * write_buffer_height; \
             buffer_var[pos_in_buffer] = value; \
         } \
     }

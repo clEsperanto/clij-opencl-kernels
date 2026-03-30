@@ -13,7 +13,8 @@
 #define ulong unsigned long
 
 
-__device__ inline float saturate(float x, float minval, float maxval) {
+__device__ inline float saturate(float x, float minval, float maxval) 
+{
     return fminf(fmaxf(x, minval), maxval);
 }
 
@@ -119,14 +120,10 @@ __device__ inline float clij_convert_float_sat(float value) {
     #define BUFFER_READ_WRITE 1
 
 #define DEFINE_READ_BUFFER3D(SUFFIX, TYPE, MAKE_FUNC) \
-    __device__ inline TYPE##2 read_buffer3d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, TYPE * buffer_var, int sampler, int4 position) { \
-        int x = max((MINMAX_TYPE)position.x, (MINMAX_TYPE)0); \
-        int y = max((MINMAX_TYPE)position.y, (MINMAX_TYPE)0); \
-        int z = max((MINMAX_TYPE)position.z, (MINMAX_TYPE)0); \
-        x = min((MINMAX_TYPE)x, (MINMAX_TYPE)read_buffer_width - 1); \
-        y = min((MINMAX_TYPE)y, (MINMAX_TYPE)read_buffer_height - 1); \
-        z = min((MINMAX_TYPE)z, (MINMAX_TYPE)read_buffer_depth - 1); \
-        int pos_in_buffer = x + y * read_buffer_width + z * read_buffer_width * read_buffer_height; \
+    __device__ inline TYPE##2 read_buffer3d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, TYPE * buffer_var, int sampler, int4 pos) { \
+        if (pos.x < 0 || pos.x >= read_buffer_width || pos.y < 0 || pos.y >= read_buffer_height || pos.z < 0 || pos.z >= read_buffer_depth) \
+            return MAKE_FUNC(0, 0); \
+        int pos_in_buffer = pos.x + pos.y * read_buffer_width + pos.z * read_buffer_width * read_buffer_height; \
         return MAKE_FUNC(buffer_var[pos_in_buffer], 0); \
     }
 
@@ -191,12 +188,10 @@ DEFINE_WRITE_BUFFER3D(d, double)
 #endif
 
 #define DEFINE_READ_BUFFER2D(SUFFIX, TYPE, MAKE_FUNC) \
-    __device__ inline TYPE##2 read_buffer2d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, TYPE * buffer_var, int sampler, int2 position) { \
-        int x = max((MINMAX_TYPE)position.x, (MINMAX_TYPE)0); \
-        int y = max((MINMAX_TYPE)position.y, (MINMAX_TYPE)0); \
-        x = min((MINMAX_TYPE)x, (MINMAX_TYPE)read_buffer_width - 1); \
-        y = min((MINMAX_TYPE)y, (MINMAX_TYPE)read_buffer_height - 1); \
-        int pos_in_buffer = x + y * read_buffer_width; \
+    __device__ inline TYPE##2 read_buffer2d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, TYPE * buffer_var, int sampler, int2 pos) { \
+        if (pos.x < 0 || pos.x >= read_buffer_width || pos.y < 0 || pos.y >= read_buffer_height) \
+            return MAKE_FUNC(0, 0); \
+        int pos_in_buffer = pos.x + pos.y * read_buffer_width; \
         return MAKE_FUNC(buffer_var[pos_in_buffer], 0); \
     }
 
@@ -260,9 +255,9 @@ DEFINE_WRITE_BUFFER2D(d, double)
 #endif
 
 #define DEFINE_READ_BUFFER1D(SUFFIX, TYPE, MAKE_FUNC) \
-    __device__ inline TYPE##2 read_buffer1d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, TYPE * buffer_var, int sampler, int position) { \
-        int pos = max((MINMAX_TYPE)position, (MINMAX_TYPE)0); \
-        pos = min((MINMAX_TYPE)pos, (MINMAX_TYPE)read_buffer_width - 1); \
+    __device__ inline TYPE##2 read_buffer1d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, TYPE * buffer_var, int sampler, int pos) { \
+        if (pos < 0 || pos >= read_buffer_width) \
+            return MAKE_FUNC(0, 0); \
         return MAKE_FUNC(buffer_var[pos], 0); \
     }
 

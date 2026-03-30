@@ -28,11 +28,10 @@
     #define BUFFER_READ_WRITE 1
 
 #define DEFINE_READ_BUFFER3D(SUFFIX, TYPE) \
-    inline TYPE##2 read_buffer3d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global TYPE * buffer_var, sampler_t sampler, int4 position) { \
-        int x = clamp(position.x, 0, read_buffer_width - 1); \
-        int y = clamp(position.y, 0, read_buffer_height - 1); \
-        int z = clamp(position.z, 0, read_buffer_depth - 1); \
-        int pos_in_buffer = x + y * read_buffer_width + z * read_buffer_width * read_buffer_height; \
+    inline TYPE##2 read_buffer3d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global TYPE * buffer_var, sampler_t sampler, int4 pos) { \
+        if (pos.x < 0 || pos.x >= read_buffer_width || pos.y < 0 || pos.y >= read_buffer_height || pos.z < 0 || pos.z >= read_buffer_depth) \
+            return (TYPE##2){0,0}; \
+        int pos_in_buffer = pos.x + pos.y * read_buffer_width + pos.z * read_buffer_width * read_buffer_height; \
         return (TYPE##2){buffer_var[pos_in_buffer], 0}; \
     }
 
@@ -41,7 +40,7 @@
         if (pos.x >= 0 && pos.x < write_buffer_width && \
             pos.y >= 0 && pos.y < write_buffer_height && \
             pos.z >= 0 && pos.z < write_buffer_depth) { \
-            int pos_in_buffer = pos.x + pos.y * write_buffer_width + pos.z * write_buffer_width * write_buffer_height; \
+            int pos_in_buffer = pos.x + pos.y * write_buffer_width + pos.z * write_buffer_width * read_buffer_height; \
             buffer_var[pos_in_buffer] = value; \
         } \
     }
@@ -76,15 +75,15 @@ DEFINE_READ_BUFFER3D(ui, uint)
 DEFINE_WRITE_BUFFER3D(ui, uint)
 #endif
 
-// #if defined(USE_3D) && defined(USE_LONG)
-// DEFINE_READ_BUFFER3D(l, long)
-// DEFINE_WRITE_BUFFER3D(l, long)
-// #endif
+#if defined(USE_3D) && defined(USE_LONG)
+DEFINE_READ_BUFFER3D(l, long)
+DEFINE_WRITE_BUFFER3D(l, long)
+#endif
 
-// #if defined(USE_3D) && defined(USE_ULONG)
-// DEFINE_READ_BUFFER3D(ul, ulong)
-// DEFINE_WRITE_BUFFER3D(ul, ulong)
-// #endif
+#if defined(USE_3D) && defined(USE_ULONG)
+DEFINE_READ_BUFFER3D(ul, ulong)
+DEFINE_WRITE_BUFFER3D(ul, ulong)
+#endif
 
 #if defined(USE_3D) && defined(USE_FLOAT)
 DEFINE_READ_BUFFER3D(f, float)
@@ -92,10 +91,10 @@ DEFINE_WRITE_BUFFER3D(f, float)
 #endif
 
 #define DEFINE_READ_BUFFER2D(SUFFIX, TYPE) \
-    inline TYPE##2 read_buffer2d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global TYPE * buffer_var, sampler_t sampler, int2 position) { \
-        int x = clamp(position.x, 0, read_buffer_width - 1); \
-        int y = clamp(position.y, 0, read_buffer_height - 1); \
-        return (TYPE##2){buffer_var[x + y * read_buffer_width], 0}; \
+    inline TYPE##2 read_buffer2d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global TYPE * buffer_var, sampler_t sampler, int2 pos) { \
+        if (pos.x < 0 || pos.x >= read_buffer_width || pos.y < 0 || pos.y >= read_buffer_height) \
+            return (TYPE##2){0,0}; \
+        return (TYPE##2){buffer_var[pos.x + pos.y * read_buffer_width], 0}; \
     }
 
 #define DEFINE_WRITE_BUFFER2D(SUFFIX, TYPE) \
@@ -151,8 +150,9 @@ DEFINE_WRITE_BUFFER2D(f, float)
 #endif
 
 #define DEFINE_READ_BUFFER1D(SUFFIX, TYPE) \
-    inline TYPE##2 read_buffer1d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global TYPE * buffer_var, sampler_t sampler, int position) { \
-        int pos = clamp(position, 0, read_buffer_width - 1); \
+    inline TYPE##2 read_buffer1d ## SUFFIX(int read_buffer_width, int read_buffer_height, int read_buffer_depth, __global TYPE * buffer_var, sampler_t sampler, int pos) { \
+        if (pos < 0 || pos >= read_buffer_width) \
+            return (TYPE##2){0,0}; \
         return (TYPE##2){buffer_var[pos], 0}; \
     }
 

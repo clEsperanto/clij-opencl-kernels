@@ -35,6 +35,23 @@ typedef int sampler_t;
     #define FLT_MAX 3.402823e+38f
 #endif
 
+// ---- Function aliases and helpers ----
+#define mad fma
+#define cbrt(x) __cle_cbrt(x)
+#define pow(b,e) __cle_pow(b,e)
+#define frexp(x, p) metal::frexp(x, *(p))
+
+#define convert_uchar_sat clij_convert_uchar_sat
+#define convert_char_sat clij_convert_char_sat
+#define convert_ushort_sat clij_convert_ushort_sat
+#define convert_short_sat clij_convert_short_sat
+#define convert_uint_sat clij_convert_uint_sat
+#define convert_int_sat clij_convert_int_sat
+#define convert_ulong_sat clij_convert_ulong_sat
+#define convert_long_sat clij_convert_long_sat
+#define convert_float_sat clij_convert_float_sat
+
+
 #define MAX_ARRAY_SIZE 1000
 
 // ---- Sampler flag constants (for API parity) ----
@@ -78,7 +95,7 @@ inline float metal_length4(float4 v) {
 }
 
 inline float __cle_cbrt(float x) {
-  return x < 0.0f ? -pow(-x, 1.0f / 3.0f) : pow(x, 1.0f / 3.0f);
+  return x < 0.0f ? -metal::pow(-x, 1.0f / 3.0f) : metal::pow(x, 1.0f / 3.0f);
 }
 
 inline float __cle_pow(float x, float y) {

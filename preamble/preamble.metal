@@ -49,6 +49,10 @@ typedef int sampler_t;
 #define convert_long_sat clij_convert_long_sat
 #define convert_float_sat clij_convert_float_sat
 
+// ---- Bounds checking macros ----
+#define AFFINE_BOUNDS_CHECK(x2, y2, z2, Nx, Ny, Nz) \
+  ((x2) >= -1e-5f && (y2) >= -1e-5f && (z2) >= -1e-5f && \
+   (x2) <= (Nx) && (y2) <= (Ny) && (z2) <= (Nz))
 
 #define MAX_ARRAY_SIZE 1000
 

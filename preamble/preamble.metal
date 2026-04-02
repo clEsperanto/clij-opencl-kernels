@@ -77,6 +77,10 @@ inline float metal_length4(float4 v) {
     return sqrt(metal_dot4(v, v));
 }
 
+inline float __cle_cbrt(float x) {
+  return x < 0.0f ? -pow(-x, 1.0f / 3.0f) : pow(x, 1.0f / 3.0f);
+}
+
 // ---- Atomic add (device address space) ----
 inline uint metal_atomic_add(volatile device atomic_uint* address, uint value) {
     return atomic_fetch_add_explicit(address, value, memory_order_relaxed);

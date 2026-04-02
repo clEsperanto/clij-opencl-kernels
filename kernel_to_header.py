@@ -11,8 +11,7 @@ import glob
 def stringify(input_file: str, output_path: str, prefix: str):
     kernel_template = """// This file is auto generated at build time. Do not edit manually.
 
-#ifndef {prefix}_{kernel_upcase}_H
-#define {prefix}_{kernel_upcase}_H
+#pragma once
 
 namespace kernel {{
 
@@ -22,28 +21,28 @@ constexpr const char* {kernel_locase} = R"CLC(
 
 }} // end of namespace kernel
 
-#endif // {prefix}_{kernel_upcase}_H
 """
 
     with open(input_file, 'r') as f:
         kernel_source = f.read()
 
     # manage name and file name
+    filename = os.path.basename(input_file)
     upcase_name = input_file.split(os.sep)[-1].split(".")[0].upper()
     lowcase_name = upcase_name.lower()
-    if lowcase_name.find("preamble") != -1:
-        if lowcase_name.find(".cl") != -1:
+    if filename.find("preamble") != -1:
+        if filename.find(".cl") != -1:
             lowcase_name = "preamble_cl"
-        elif lowcase_name.find(".cu") != -1:
+        elif filename.find(".cu") != -1:
             lowcase_name = "preamble_cu"
-        elif lowcase_name.find(".metal") != -1:
+        elif filename.find(".metal") != -1:
             lowcase_name = "preamble_metal"
 
     # compose output file name and path using os.path.join
     output_file = os.path.join(output_path, prefix.lower() + "_" + lowcase_name + ".h")
 
     with open(output_file, 'w') as f:
-        f.write(kernel_template.format(prefix=prefix.upper(), kernel_upcase=upcase_name, kernel_locase=lowcase_name, kernel_source=kernel_source))
+        f.write(kernel_template.format(prefix=prefix.upper(), kernel_locase=lowcase_name, kernel_source=kernel_source))
 
 def main():
     if len(sys.argv) < 3:

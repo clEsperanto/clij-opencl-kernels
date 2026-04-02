@@ -4,3 +4,5 @@
 .vscode/
 *.h
 /build/*
+
+.DS_Store

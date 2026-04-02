@@ -32,7 +32,12 @@ constexpr const char* {kernel_locase} = R"CLC(
     upcase_name = input_file.split(os.sep)[-1].split(".")[0].upper()
     lowcase_name = upcase_name.lower()
     if lowcase_name.find("preamble") != -1:
-        lowcase_name = "preamble_cl" if input_file.find(".cl") != -1 else "preamble_cu"
+        if lowcase_name.find(".cl") != -1:
+            lowcase_name = "preamble_cl"
+        elif lowcase_name.find(".cu") != -1:
+            lowcase_name = "preamble_cu"
+        elif lowcase_name.find(".metal") != -1:
+            lowcase_name = "preamble_metal"
 
     # compose output file name and path using os.path.join
     output_file = os.path.join(output_path, prefix.lower() + "_" + lowcase_name + ".h")
@@ -51,6 +56,7 @@ def main():
 
     file_list = glob.glob( os.path.join(input_folder,'**/*.cl'), recursive=True)
     file_list += glob.glob( os.path.join(input_folder,'**/*.cu'), recursive=True)
+    file_list += glob.glob( os.path.join(input_folder,'**/*.metal'), recursive=True)
     for file in file_list:
         stringify(file, output_folder, "cle")
 

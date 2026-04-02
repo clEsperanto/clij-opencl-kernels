@@ -81,6 +81,19 @@ inline float __cle_cbrt(float x) {
   return x < 0.0f ? -pow(-x, 1.0f / 3.0f) : pow(x, 1.0f / 3.0f);
 }
 
+inline float __cle_pow(float x, float y) {
+  float yi = metal::rint(y);
+  if (metal::fabs(y - yi) < 1e-6f) {
+    int n = (int)yi;
+    float base = x;
+    if (n < 0) { n = -n; base = 1.0f / base; }
+    float result = 1.0f;
+    for (int i = 0; i < n; ++i) result *= base;
+    return result;
+  }
+  return metal::pow(x, y);
+}
+
 // ---- Atomic add (device address space) ----
 inline uint metal_atomic_add(volatile device atomic_uint* address, uint value) {
     return atomic_fetch_add_explicit(address, value, memory_order_relaxed);

@@ -38,6 +38,7 @@ typedef int sampler_t;
 // ---- Function aliases and helpers ----
 #define mad fma
 #define frexp(x, p) metal::frexp(x, *(p))
+#define sqrt metal::sqrt
 
 #define convert_uchar_sat clij_convert_uchar_sat
 #define convert_char_sat clij_convert_char_sat

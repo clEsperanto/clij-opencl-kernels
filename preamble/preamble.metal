@@ -96,9 +96,12 @@ inline float metal_length4(float4 v) {
     return sqrt(metal_dot4(v, v));
 }
 
-inline float __cle_cbrt(float x) {
-  return x < 0.0f ? -metal::pow(-x, 1.0f / 3.0f) : metal::pow(x, 1.0f / 3.0f);
-}
+// inline float __cle_cbrt(float x) {
+//   float r = metal::cbrt(x);
+//   float ri = metal::rint(r);
+//   return metal::fabs(r - ri) < 1e-6f ? ri : r;
+// }
+#define __cle_cbrt metal::cbrt
 
 inline float __cle_pow(float x, float y) {
   float yi = metal::rint(y);

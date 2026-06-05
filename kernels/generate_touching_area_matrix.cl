@@ -1,8 +1,8 @@
 const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
 __kernel void generate_touching_area_matrix (
-    IMAGE_src_label_TYPE src_label
-    IMAGE_dst_matrix_TYPE dst_matrix,
+    IMAGE_src_label_TYPE src_label,
+    IMAGE_dst_matrix_TYPE dst_matrix
 ) 
 {
   const int x = get_global_id(0);

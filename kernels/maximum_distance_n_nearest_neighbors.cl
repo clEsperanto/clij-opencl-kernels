@@ -1,16 +1,16 @@
 const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
-__kernel void maximum_distance_of_n_closest_points(
-    IMAGE_src_distancematrix_TYPE  src_distancematrix,
-    IMAGE_dst_distancelist_TYPE    dst_distancelist,
-    int                            nPoints
+__kernel void maximum_distance_n_closest_points(
+    IMAGE_src_distance_matrix_TYPE  src_distance_matrix,
+    IMAGE_dst_index_list_TYPE       dst_index_list,
+    int                             nPoints
 ) 
 {
 
   const int pointIndex = get_global_id(0);
 
   // so many point candidates are available:
-  const int height = GET_IMAGE_HEIGHT(src_distancematrix);
+  const int height = GET_IMAGE_HEIGHT(src_distance_matrix);
 
   float distances[1000];
   float indices[1000];
@@ -20,7 +20,7 @@ __kernel void maximum_distance_of_n_closest_points(
   // start at 1 to exclude background
   for (int y = 1; y < height; y++) {
     if (pointIndex != y) { // exclude distance to self
-        float distance = READ_IMAGE(src_distancematrix, sampler, POS_src_distancematrix_INSTANCE(pointIndex, y, 0, 0)).x;
+        float distance = READ_IMAGE(src_distance_matrix, sampler, POS_src_distance_matrix_INSTANCE(pointIndex, y, 0, 0)).x;
 
         if (initialized_values < nPoints) {
           initialized_values++;
@@ -53,5 +53,5 @@ __kernel void maximum_distance_of_n_closest_points(
     }
   }
 
-  WRITE_IMAGE(dst_distancelist, POS_dst_distancelist_INSTANCE(pointIndex, 0, 0, 0), CONVERT_dst_distancelist_PIXEL_TYPE(maximum));
+  WRITE_IMAGE(dst_index_list, POS_dst_index_list_INSTANCE(pointIndex, 0, 0, 0), CONVERT_dst_index_list_PIXEL_TYPE(maximum));
 }

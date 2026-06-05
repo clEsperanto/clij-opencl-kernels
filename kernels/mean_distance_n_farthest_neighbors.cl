@@ -1,6 +1,6 @@
 const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDGE | CLK_FILTER_NEAREST;
 
-__kernel void average_distance_n_far_off_points(
+__kernel void average_distance_n_farthest_points(
   IMAGE_src_distance_matrix_TYPE  src_distance_matrix,
   IMAGE_dst_index_list_TYPE       dst_index_list, 
   int                            nPoints) {

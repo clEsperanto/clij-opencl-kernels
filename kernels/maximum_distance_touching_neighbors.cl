@@ -3,7 +3,7 @@ const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDG
 __kernel void maximum_distance_touching_neighbors (
     IMAGE_src_distance_matrix_TYPE  src_distance_matrix,
     IMAGE_src_touch_matrix_TYPE     src_touch_matrix,
-    IMAGE_dst_distance_list_TYPE    dst_distance_list
+    IMAGE_dst_index_list_TYPE     dst_index_list
 ) 
 {
   const int label_id = get_global_id(0);
@@ -38,5 +38,5 @@ __kernel void maximum_distance_touching_neighbors (
     }
   }
 
-  WRITE_IMAGE(dst_distance_list, (POS_dst_distance_list_INSTANCE(label_id, 0, 0, 0)), CONVERT_dst_distance_list_PIXEL_TYPE(minimum));
+  WRITE_IMAGE(dst_index_list, (POS_dst_index_list_INSTANCE(label_id, 0, 0, 0)), CONVERT_dst_index_list_PIXEL_TYPE(minimum));
 }

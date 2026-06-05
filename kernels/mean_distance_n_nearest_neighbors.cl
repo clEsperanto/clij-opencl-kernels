@@ -3,7 +3,7 @@ const sampler_t sampler = CLK_NORMALIZED_COORDS_FALSE | CLK_ADDRESS_CLAMP_TO_EDG
 __kernel void mean_distance_n_nearest_neighbors(
     IMAGE_src_distance_matrix_TYPE  src_distance_matrix,
     IMAGE_dst_index_list_TYPE       dst_index_list, 
-    int                            nPoints
+    int                             nPoints
 ) 
 {
 
@@ -20,6 +20,7 @@ __kernel void mean_distance_n_nearest_neighbors(
 
   // start at 1 to exclude background
   for (int y = 1; y < height; y++) {
+    if (pointIndex != y) { // exclude distance to self
         float distance = READ_IMAGE(src_distance_matrix, sampler, POS_src_distance_matrix_INSTANCE(pointIndex, y, 0, 0)).x;
 
         if (initialized_values < nPoints) {
@@ -39,6 +40,7 @@ __kernel void mean_distance_n_nearest_neighbors(
                break;
             }
         }
+    }
   }
 
   float sum = 0;
